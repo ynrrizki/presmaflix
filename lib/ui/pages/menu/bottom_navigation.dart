@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:presmaflix/ui/pages/menu/home/home_page.dart';
+import 'package:badges/badges.dart' as badges;
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key});
@@ -9,6 +10,8 @@ class BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PersistentTabController controller;
+    DateTime preBackpress = DateTime.now();
+    final GlobalKey<ScaffoldState> globalKey = GlobalKey<ScaffoldState>();
 
     controller = PersistentTabController(initialIndex: 0);
 
@@ -24,39 +27,106 @@ class BottomNavigation extends StatelessWidget {
     List<PersistentBottomNavBarItem> navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.home),
+          icon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -10, end: -12),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.house_fill),
+          ),
           title: "Home",
           // activeColorPrimary: CupertinoColors.activeOrange,
           activeColorPrimary: Theme.of(context).primaryColor,
           inactiveColorPrimary: Colors.grey,
+          inactiveIcon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.home),
+          ),
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.heart),
+          icon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.heart_fill),
+          ),
           title: "For You",
-          // activeColorPrimary: CupertinoColors.activeOrange,
           activeColorPrimary: Theme.of(context).primaryColor,
           inactiveColorPrimary: Colors.grey,
+          inactiveIcon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.heart),
+          ),
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.square_stack_fill),
+          icon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.square_stack_fill),
+          ),
           title: "Daftarku",
-          // activeColorPrimary: CupertinoColors.activeOrange,
           activeColorPrimary: Theme.of(context).primaryColor,
           inactiveColorPrimary: Colors.grey,
+          inactiveIcon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.square_stack),
+          ),
         ),
         PersistentBottomNavBarItem(
-          icon: const Icon(CupertinoIcons.profile_circled),
+          icon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.person_crop_circle_fill),
+          ),
           title: "Profile",
-          // activeColorPrimary: CupertinoColors.activeOrange,
           activeColorPrimary: Theme.of(context).primaryColor,
           inactiveColorPrimary: Colors.grey,
+          inactiveIcon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(CupertinoIcons.profile_circled),
+          ),
         ),
       ];
     }
 
     return PersistentTabView(
       context,
+      key: globalKey,
       controller: controller,
+      onWillPop: (context) async {
+        final timegap = DateTime.now().difference(preBackpress);
+        final canExit = timegap >= const Duration(seconds: 2);
+
+        preBackpress = DateTime.now();
+        if (canExit) {
+          ScaffoldMessenger.of(context!).showSnackBar(
+            const SnackBar(
+              content: Text("Tekan Exit Kembali Untuk Keluar"),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+          return false;
+        } else {
+          return true;
+        }
+      },
       backgroundColor:
           Theme.of(context).bottomNavigationBarTheme.backgroundColor ??
               Colors.white,
@@ -70,11 +140,9 @@ class BottomNavigation extends StatelessWidget {
       popAllScreensOnTapOfSelectedTab: true,
       popActionScreens: PopActionScreensType.all,
       itemAnimationProperties: const ItemAnimationProperties(
-        // duration: Duration(milliseconds: 300),
         curve: Curves.ease,
       ),
       screenTransitionAnimation: const ScreenTransitionAnimation(
-        // duration: Duration(milliseconds: 300),
         animateTabTransition: true,
         curve: Curves.easeInOut,
       ),
