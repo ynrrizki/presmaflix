@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "923273589990",
+    "project_id": "presmaflix",
+    "storage_bucket": "presmaflix.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923273589990:android:32496b4bd86ba524b33727",
+        "android_client_info": {
+          "package_name": "com.example.presmaflix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923273589990-ki32mn959vo1qkre98mk7vofpl30cgvs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQBP6VQb0yQENcdclCLxkayDsfWP4IO3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923273589990-ki32mn959vo1qkre98mk7vofpl30cgvs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

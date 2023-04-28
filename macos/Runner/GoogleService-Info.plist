@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>923273589990-hmls550h1ku7ofk8n1606sjo8b0oc638.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.923273589990-hmls550h1ku7ofk8n1606sjo8b0oc638</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDBBeN0j4btD1ARGilCv3ThUc7fmgCqDPQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>923273589990</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.presmaflix</string>
+	<key>PROJECT_ID</key>
+	<string>presmaflix</string>
+	<key>STORAGE_BUCKET</key>
+	<string>presmaflix.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:923273589990:ios:b427fbb7e25ef3f1b33727</string>
+</dict>
+</plist>
