@@ -1,0 +1,80 @@
+[
+    {
+        "contents": [
+            {
+                "id": "objectId",
+                "title": "string",
+                "type": "string",
+                "genre": [
+                    "string"
+                ],
+                "description": "string",
+                "casts": [
+                    "string"
+                ],
+                "directors": [
+                    "string"
+                ],
+                "thumbnailUrl": "string",
+                "posterUrl": "string",
+                "createdAt": "timestamp"
+            }
+        ],
+        "media": [
+            {
+                "id": "objectId",
+                "contentId": "objectId"
+            }
+        ],
+        "videos": [
+            {
+                "id": "objectId",
+                "mediaId": "objectId",
+                "type": "full-length",
+                "video": "string",
+                "duration": "string",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "objectId",
+                "mediaId": "objectId",
+                "type": "Episodes",
+                "video": "string",
+                "thumbnailUrl": "string",
+                "synopsis": "string",
+                "duration": "string",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "objectId",
+                "mediaId": "objectId",
+                "type": "Trailer",
+                "video": "string",
+                "thumbnailUrl": "string",
+                "synopsis": "string",
+                "duration": "string",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "objectId",
+                "mediaId": "objectId",
+                "type": "Extras",
+                "video": "string",
+                "thumbnailUrl": "string",
+                "synopsis": "string",
+                "duration": "string",
+                "createdAt": "timestamp"
+            }
+        ],
+        "reviews": [
+            {
+                "id": "objectId",
+                "videoId": "objectId",
+                "name": "string",
+                "email": "string",
+                "comment": "string",
+                "createdAt": "timestamp"
+            }
+        ]
+    }
+]
