@@ -22,7 +22,9 @@ class MyApp extends StatelessWidget {
     final router = AppRouter();
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => BottomNavigationCubit()),
+        BlocProvider(
+          create: (context) => BottomNavigationCubit(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 // import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/banner_widget.dart';
-import 'package:presmaflix/ui/widgets/poster_widget.dart';
+import 'package:presmaflix/ui/widgets/horizontal_list_poster_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -17,57 +16,30 @@ class HomePage extends StatelessWidget {
           BannerWidget(
             data: contents.map((e) => e.thumbnailUrl).toList(),
           ),
-          Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Top New Movies In 2023',
-                      style: GoogleFonts.plusJakartaSans(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        size: 24,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 200,
-                ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: contents.length,
-                    itemBuilder: (context, index) => PosterWidget(
-                      content: contents[index],
-                    ),
-                  ),
-                  // child: ListView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   shrinkWrap: true,
-                  //   children: [
-
-                  //   ],
-                  // ),
-                ),
-              ),
-            ],
+          HorizontalListPosterWidget(
+            title: 'Movies',
+            onTap: () {},
+            contents: contents,
           ),
+          const SizedBox(height: 25),
+          HorizontalListPosterWidget(
+            title: 'Animation',
+            onTap: () {},
+            contents: contents,
+          ),
+          const SizedBox(height: 25),
+          HorizontalListPosterWidget(
+            title: 'Tv Global',
+            onTap: () {},
+            contents: contents,
+          ),
+          const SizedBox(height: 25),
+          HorizontalListPosterWidget(
+            title: 'Music Video',
+            onTap: () {},
+            contents: contents,
+          ),
+          const SizedBox(height: 50),
         ],
       ),
     );

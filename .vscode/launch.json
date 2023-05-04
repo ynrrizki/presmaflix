@@ -8,7 +8,7 @@
             "name": "presmaflix (emulator)",
             "request": "launch",
             "type": "dart",
-            "deviceId": "emulator-5554"
+            "deviceId": "emulator-5554"            
         },
         {
             "name": "presmaflix (real device)",

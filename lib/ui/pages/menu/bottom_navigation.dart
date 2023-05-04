@@ -76,7 +76,7 @@ class BottomNavigation extends StatelessWidget {
             badgeContent: const Text('3'),
             child: const Icon(CupertinoIcons.square_stack_fill),
           ),
-          title: "Daftarku",
+          title: "Watchlist",
           activeColorPrimary: Theme.of(context).primaryColor,
           inactiveColorPrimary: Colors.grey,
           inactiveIcon: badges.Badge(
@@ -134,8 +134,13 @@ class BottomNavigation extends StatelessWidget {
                 preBackpress = DateTime.now();
                 if (canExit) {
                   ScaffoldMessenger.of(context!).showSnackBar(
-                    const SnackBar(
-                      content: Text("Tekan Exit Kembali Untuk Keluar"),
+                    SnackBar(
+                      content: Text(
+                        "Tekan Exit Kembali Untuk Keluar",
+                        style: const TextStyle().copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
                       behavior: SnackBarBehavior.floating,
                     ),
                   );
@@ -164,7 +169,7 @@ class BottomNavigation extends StatelessWidget {
                 curve: Curves.easeInOut,
               ),
               navBarStyle: NavBarStyle.style3,
-              hideNavigationBar: state,
+              // hideNavigationBar: state,
             );
           },
         ),

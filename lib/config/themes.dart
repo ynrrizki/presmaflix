@@ -25,6 +25,6 @@ class PresmaflixThemes {
     scaffoldBackgroundColor: const Color(0xff131313),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Colors.black,
-    ),
+    ),    
   );
 }

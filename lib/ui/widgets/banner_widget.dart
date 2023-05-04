@@ -21,10 +21,8 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    log("${widget.data}");
     return Column(
       children: [
-        // const SizedBox(height: 10),
         CarouselSlider(
           items: widget.data
               .map(
@@ -35,18 +33,13 @@ class _BannerWidgetState extends State<BannerWidget> {
               )
               .toList(),
           options: CarouselOptions(
-            height: 200,
-            // aspectRatio: 4 / 3,
-            // aspectRatio: 2.0,
-            viewportFraction: 1,
             initialPage: 0,
-            enableInfiniteScroll: true,
+            viewportFraction: 1,
             reverse: false,
             autoPlay: true,
             autoPlayInterval: const Duration(seconds: 5),
-            autoPlayAnimationDuration: const Duration(milliseconds: 1000),
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enlargeCenterPage: false,
+            autoPlayAnimationDuration: const Duration(milliseconds: 300),
+            autoPlayCurve: Curves.fastLinearToSlowEaseIn,
             scrollDirection: Axis.horizontal,
             onPageChanged: (index, reason) {
               setState(() {
@@ -73,32 +66,21 @@ class HeroCarouselCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        GestureDetector(
-          child: HeroMode(
-            enabled: true,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(0),
-              child: CachedNetworkImage(
-                imageUrl: data,
-                placeholder: (context, url) => Center(
-                  child: Shimmer.fromColors(
-                    baseColor: Colors.grey,
-                    highlightColor: Colors.white,
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+    return GestureDetector(
+      child: CachedNetworkImage(
+        imageUrl: data,
+        progressIndicatorBuilder: (context, url, progress) =>
+            Shimmer.fromColors(
+          baseColor: const Color.fromARGB(123, 121, 121, 121),
+          highlightColor: const Color.fromARGB(255, 128, 128, 128),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
             ),
           ),
         ),
-      ],
+        errorWidget: (context, url, error) => const Icon(Icons.error),
+      ),
     );
   }
 }
