@@ -21,7 +21,7 @@ class PosterWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 16, right: 0, top: 20),
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
       width: width,
       height: height,
       child: CachedNetworkImage(

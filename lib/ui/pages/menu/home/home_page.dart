@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/banner_widget.dart';
-import 'package:presmaflix/ui/widgets/horizontal_list_poster_widget.dart';
+import 'package:presmaflix/ui/widgets/horizontal_grid_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,25 +16,25 @@ class HomePage extends StatelessWidget {
           BannerWidget(
             data: contents.map((e) => e.thumbnailUrl).toList(),
           ),
-          HorizontalListPosterWidget(
+          HorizontalGridWidget(
             title: 'Movies',
             onTap: () {},
             contents: contents,
           ),
           const SizedBox(height: 25),
-          HorizontalListPosterWidget(
+          HorizontalGridWidget(
             title: 'Animation',
             onTap: () {},
             contents: contents,
           ),
           const SizedBox(height: 25),
-          HorizontalListPosterWidget(
+          HorizontalGridWidget(
             title: 'Tv Global',
             onTap: () {},
             contents: contents,
           ),
           const SizedBox(height: 25),
-          HorizontalListPosterWidget(
+          HorizontalGridWidget(
             title: 'Music Video',
             onTap: () {},
             contents: contents,

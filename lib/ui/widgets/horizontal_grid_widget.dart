@@ -7,19 +7,29 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../app/models/content.dart';
 
-class HorizontalListPosterWidget extends StatelessWidget {
-  const HorizontalListPosterWidget({
+class HorizontalGridWidget extends StatelessWidget {
+  const HorizontalGridWidget({
     super.key,
     required this.title,
     required this.onTap,
     required this.contents,
     this.maxHeight = 170,
+    this.crossAxisCount = 1,
+    this.childAspectRatio = 1.2,
+    this.crossAxisSpacing = 0.0,
+    this.mainAxisExtent,
+    this.mainAxisSpacing = 0.0,
   });
 
   final String title;
   final GestureTapCallback? onTap;
   final List<Content> contents;
   final double maxHeight;
+  final int crossAxisCount;
+  final double childAspectRatio;
+  final double crossAxisSpacing;
+  final double? mainAxisExtent;
+  final double mainAxisSpacing;
 
   Future<List<Content>> loadContent() async {
     return contents;
@@ -73,15 +83,18 @@ class HorizontalListPosterWidget extends StatelessWidget {
                 constraints: BoxConstraints(
                   maxHeight: maxHeight,
                 ),
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: contents.length,
-                    itemBuilder: (context, index) => PosterWidget(
-                      content: contents[index],
-                    ),
+                child: GridView.builder(
+                  scrollDirection: Axis.horizontal,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: childAspectRatio,
+                    crossAxisSpacing: crossAxisSpacing,
+                    mainAxisExtent: mainAxisExtent,
+                    mainAxisSpacing: mainAxisSpacing,
+                  ),
+                  itemCount: contents.length,
+                  itemBuilder: (context, index) => PosterWidget(
+                    content: contents[index],
                   ),
                 ),
               ),
