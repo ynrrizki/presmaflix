@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:presmaflix/app/models/content.dart';
+import 'package:presmaflix/config/routing/argument/content/detail_args.dart';
 import 'package:shimmer/shimmer.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:prima_studio/app/blocs/film/film_bloc.dart';
@@ -10,8 +13,8 @@ import 'package:shimmer/shimmer.dart';
 // import 'package:prima_studio/config/routing/arguments/arguments.dart';
 
 class BannerWidget extends StatefulWidget {
-  const BannerWidget({Key? key, required this.data}) : super(key: key);
-  final List<String> data;
+  const BannerWidget({Key? key, required this.contents}) : super(key: key);
+  final List<Content> contents;
   @override
   State<BannerWidget> createState() => _BannerWidgetState();
 }
@@ -21,14 +24,14 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
+      alignment: Alignment.bottomRight,
       children: [
         CarouselSlider(
-          items: widget.data
+          items: widget.contents
               .map(
-                (data) => HeroCarouselCard(
-                  data: data,
-                  indexCarousel: _indexCarousel,
+                (content) => HeroCarouselCard(
+                  content: content,
                 ),
               )
               .toList(),
@@ -48,7 +51,35 @@ class _BannerWidgetState extends State<BannerWidget> {
             },
           ),
         ),
-        const SizedBox(height: 15),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(150, 158, 158, 158),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${_indexCarousel + 1}',
+                style: GoogleFonts.plusJakartaSans(),
+              ),
+              Text(
+                ' / ',
+                style: GoogleFonts.plusJakartaSans(
+                  color: const Color.fromARGB(157, 255, 255, 255),
+                ),
+              ),
+              Text(
+                '${widget.contents.length}',
+                style: GoogleFonts.plusJakartaSans(
+                  color: const Color.fromARGB(157, 255, 255, 255),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -57,18 +88,22 @@ class _BannerWidgetState extends State<BannerWidget> {
 class HeroCarouselCard extends StatelessWidget {
   const HeroCarouselCard({
     super.key,
-    required this.data,
-    required this.indexCarousel,
+    required this.content,
   });
 
-  final String data;
-  final int indexCarousel;
+  final Content content;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).pushNamed(
+          '/detail',
+          arguments: DetailArguments(content: content),
+        );
+      },
       child: CachedNetworkImage(
-        imageUrl: data,
+        imageUrl: content.thumbnailUrl,
         progressIndicatorBuilder: (context, url, progress) =>
             Shimmer.fromColors(
           baseColor: const Color.fromARGB(123, 121, 121, 121),

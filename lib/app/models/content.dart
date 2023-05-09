@@ -9,6 +9,7 @@ class Content {
   final String thumbnailUrl;
   final String posterUrl;
   // final DateTime createdAt;
+  final bool isFeatured;
   final String createdAt;
 
   const Content({
@@ -21,6 +22,7 @@ class Content {
     required this.directors,
     required this.thumbnailUrl,
     required this.posterUrl,
+    this.isFeatured = false,
     required this.createdAt,
   });
 
@@ -46,6 +48,7 @@ class Content {
           'https://www.ruparupa.com/blog/wp-content/uploads/2021/12/SPIDER-MAN-_-3-NO-WAY-HOME-2021OFFICIAL-Teaser-Trailer-Tom-Holland-Jamie-Foxx-%C2%A6-Marvel-Studios.jpg',
       posterUrl:
           'https://assets-prd.ignimgs.com/2021/11/15/spiderman-nowayhome-button-1637000869202.jpg',
+      isFeatured: true,
       createdAt: '2021-12-17T00:00:00Z',
     ),
     Content(
@@ -64,6 +67,7 @@ class Content {
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       posterUrl:
           'https://m.media-amazon.com/images/M/MV5BMjhkZjQyOGYtM2Y3OS00ZDFjLWFiMTEtMzJmNjBjNmM0MTFiXkEyXkFqcGdeQXVyMTEzMTI1Mjk3._V1_FMjpg_UX1000_.jpg',
+      isFeatured: true,
       createdAt: '2018-03-07T00:00:00Z',
     ),
     Content(
@@ -103,6 +107,7 @@ class Content {
           'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fvhx.imgix.net%2Fhi-yahtv%2Fassets%2Fec2b996f-ad48-4f00-a4f1-190a75277cb7-0f7d510c.jpg%3Fauto%3Dformat%252Ccompress%26fit%3Dcrop%26h%3D720%26w%3D1280&f=1&nofb=1&ipt=5ca164c5f05ea4cd6653d57782daf728f2d0596c4bc65983f157c37c6b626ce4&ipo=images',
       posterUrl:
           'https://m.media-amazon.com/images/M/MV5BYjk5MWVlMWUtZmJlYi00ZGQ0LWJkZDItOGViZjdhOTI4YWE5XkEyXkFqcGdeQXVyNDA1NDA2NTk@._V1_FMjpg_UY691_.jpg',
+      isFeatured: true,
       createdAt: '2019-08-01T00:00:00Z',
     ),
     Content(
@@ -124,6 +129,28 @@ class Content {
       posterUrl:
           'https://m.media-amazon.com/images/M/MV5BZTgzNWUyMDUtOTlhZi00NzE5LWI5YTAtZjcxMDQ5YzE5N2ZmXkEyXkFqcGdeQXVyMzY3MDU4NDk@._V1_FMjpg_UX674_.jpg',
       createdAt: '2017-10-15T00:00:00Z',
+    ),
+    Content(
+      id: '4',
+      title: 'Game of Thrones',
+      type: 'tv-global',
+      genre: ["Fantasy", "Drama"],
+      description:
+          'Game of Thrones is an American fantasy drama television series created by David Benioff and D. B. Weiss. It is based on the A Song of Ice and Fire novels by George R. R. Martin. The series follows several noble houses in a civil war for the Iron Throne of the Seven Kingdoms of Westeros, and the stories of the various characters involved. It premiered on HBO in 2011 and ran for eight seasons. It stars an ensemble cast including Peter Dinklage, Lena Headey, Emilia Clarke, Kit Harington, Sophie Turner, and Maisie Williams.',
+      casts: [
+        "Peter Dinklage",
+        "Lena Headey",
+        "Emilia Clarke",
+        "Kit Harington",
+        "Sophie Turner",
+        "Maisie Williams",
+      ],
+      directors: ["David Benioff", "D. B. Weiss"],
+      thumbnailUrl:
+          'https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fabconventionagent.com%2Fwp-content%2Fuploads%2F2019%2F05%2Fthumbnail_game-of-thrones-background-1366x768-laptop-383313-1.jpg&f=1&nofb=1&ipt=98f2ce1733ef8e2ac99a02584d4447800f7e1159c2226aeda891bbd63e3f32ad&ipo=images',
+      posterUrl:
+          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.redd.it%2Fh7uga1bv24fz.jpg&f=1&nofb=1&ipt=83525d5bc6b1eb6882dbb0b93231deabfad9f6adcdc005579a33200fbc76f0b1&ipo=images',
+      createdAt: '2011-04-17T00:00:00Z',
     )
   ];
 }

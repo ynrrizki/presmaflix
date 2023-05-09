@@ -56,13 +56,23 @@ class _DetailTabBarWidgetState extends State<DetailTabBarWidget>
                 Scaffold(
                   body: ListView(
                     physics: const NeverScrollableScrollPhysics(),
-                    children: const [],
+                    shrinkWrap: true,
+                    children: [
+                      Container(
+                        height: 100,
+                        color: Colors.blue,
+                      ),
+                      Container(
+                        height: 100,
+                        color: Colors.green,
+                      ),
+                    ],
                   ),
                 ),
                 Scaffold(
                   body: Column(
                     children: const [
-                      // Text('Tab 2'),
+                      Text('Tab 2'),
                     ],
                   ),
                 ),

@@ -11,17 +11,19 @@ class PosterWidget extends StatelessWidget {
     this.width,
     this.height,
     this.isRedirect = true,
+    this.margin,
   });
 
   final Content content;
   final double? width;
   final double? height;
   final bool isRedirect;
+  final EdgeInsetsGeometry? margin;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 16, right: 16, top: 20),
+      margin: margin,
       width: width,
       height: height,
       child: CachedNetworkImage(

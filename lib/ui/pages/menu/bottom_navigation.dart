@@ -25,12 +25,15 @@ class BottomNavigation extends StatelessWidget {
         Scaffold(),
         Scaffold(),
         Scaffold(),
+        Scaffold(),
       ];
     }
 
     List<PersistentBottomNavBarItem> navBarsItems() {
       return [
         PersistentBottomNavBarItem(
+          iconSize: 24,
+          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -10, end: -12),
             showBadge: false,
@@ -46,10 +49,33 @@ class BottomNavigation extends StatelessWidget {
             showBadge: false,
             ignorePointer: false,
             badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.home),
+            child: const Icon(CupertinoIcons.house),
           ),
         ),
         PersistentBottomNavBarItem(
+          iconSize: 24,
+          
+          icon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(Icons.download),
+          ),
+          title: "Download",
+          activeColorPrimary: Theme.of(context).primaryColor,
+          inactiveColorPrimary: Colors.grey,
+          inactiveIcon: badges.Badge(
+            position: badges.BadgePosition.topEnd(top: -0, end: -9),
+            showBadge: false,
+            ignorePointer: false,
+            badgeContent: const Text('3'),
+            child: const Icon(Icons.download_outlined),
+          ),
+        ),
+        PersistentBottomNavBarItem(
+          iconSize: 24,
+          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -0, end: -9),
             showBadge: false,
@@ -69,12 +95,14 @@ class BottomNavigation extends StatelessWidget {
           ),
         ),
         PersistentBottomNavBarItem(
+          iconSize: 24,
+          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -0, end: -9),
             showBadge: false,
             ignorePointer: false,
             badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.square_stack_fill),
+            child: const Icon(CupertinoIcons.bookmark_fill),
           ),
           title: "Watchlist",
           activeColorPrimary: Theme.of(context).primaryColor,
@@ -84,18 +112,20 @@ class BottomNavigation extends StatelessWidget {
             showBadge: false,
             ignorePointer: false,
             badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.square_stack),
+            child: const Icon(CupertinoIcons.bookmark),
           ),
         ),
         PersistentBottomNavBarItem(
+          iconSize: 24,
+          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -0, end: -9),
             showBadge: false,
             ignorePointer: false,
             badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.person_crop_circle_fill),
+            child: const Icon(Icons.menu),
           ),
-          title: "Profile",
+          title: "More",
           activeColorPrimary: Theme.of(context).primaryColor,
           inactiveColorPrimary: Colors.grey,
           inactiveIcon: badges.Badge(
@@ -103,7 +133,7 @@ class BottomNavigation extends StatelessWidget {
             showBadge: false,
             ignorePointer: false,
             badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.profile_circled),
+            child: const Icon(Icons.menu),
           ),
         ),
       ];
@@ -125,6 +155,7 @@ class BottomNavigation extends StatelessWidget {
           builder: (context, state) {
             return PersistentTabView(
               context,
+              decoration: NavBarDecoration(),
               key: globalKey,
               controller: controller,
               onWillPop: (context) async {
