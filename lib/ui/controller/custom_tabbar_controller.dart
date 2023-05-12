@@ -4,11 +4,13 @@ class CustomTabBarController extends StatefulWidget {
   const CustomTabBarController({
     super.key,
     required this.header,
+    required this.tabCount,
     required this.tabs,
     required this.tabBarViews,
   });
 
   final Widget header;
+  final int tabCount;
   final List<Tab> tabs;
   final List<Widget> tabBarViews;
 
@@ -22,7 +24,7 @@ class _CustomTabBarControllerState extends State<CustomTabBarController>
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: widget.tabCount, vsync: this);
     super.initState();
   }
 

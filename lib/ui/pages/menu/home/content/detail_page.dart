@@ -30,15 +30,21 @@ class DetailPage extends StatelessWidget {
       body: CustomTabBarController(
         header: Column(
           children: [
-            _posterImage(content),
+            _posterImage(
+              content,
+            ),
             const SizedBox(
               height: 25,
             ),
-            _title(content.title),
+            _title(
+              content.title,
+            ),
             const SizedBox(
               height: 25,
             ),
-            _genre(content.genre.join(' • ')),
+            _genre(
+              content.genre.join(' • '),
+            ),
             const SizedBox(
               height: 25,
             ),
@@ -46,7 +52,9 @@ class DetailPage extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            _description(),
+            _description(
+              content.description,
+            ),
             const SizedBox(
               height: 25,
             ),
@@ -54,12 +62,16 @@ class DetailPage extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            _directsAndCasts(),
+            _directsAndCasts(
+              content.directors.join(', '),
+              content.casts.join(', '),
+            ),
             const SizedBox(
               height: 50,
             ),
           ],
         ),
+        tabCount: 2,
         tabs: const [
           Tab(
             text: 'Trailer',
@@ -139,7 +151,7 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Padding _directsAndCasts() {
+  Padding _directsAndCasts(String directors, String casts) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -156,7 +168,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ),
               Text(
-                content.directors.join(', '),
+                directors,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
                 ),
@@ -175,7 +187,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ),
               Text(
-                content.casts.join(', '),
+                casts,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
                 ),
@@ -187,13 +199,13 @@ class DetailPage extends StatelessWidget {
     );
   }
 
-  Padding _description() {
+  Padding _description(String description) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Text(
-            content.description,
+            description,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
             ),
