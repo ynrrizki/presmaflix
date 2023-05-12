@@ -1,9 +1,11 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
+import 'package:presmaflix/ui/controller/custom_tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
-import 'package:presmaflix/ui/widgets/detail_tabbar_widget.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({
@@ -25,952 +27,297 @@ class DetailPage extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: CustomTabBarController(
+        header: Column(
           children: [
-            // stack poster image
-            Stack(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(content.thumbnailUrl),
-                      fit: BoxFit.cover,
-                      opacity: 0.2,
-                    ),
-                  ),
-                  height: 170,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: PosterWidget(
-                      content: content,
-                      height: 170,
-                      width: 125,
-                      isRedirect: false,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
+            _posterImage(content),
             const SizedBox(
               height: 25,
             ),
-            // title
-            Text(
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-              content.title,
-            ),
+            _title(content.title),
             const SizedBox(
               height: 25,
             ),
-            // genre
-            SizedBox(
-              // color: Colors.amber,
-              width: double.infinity,
-              child: Wrap(
-                alignment: WrapAlignment.center,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 1.5,
-                        horizontal: 5,
-                      ),
-                      child: Text(
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 10,
-                        ),
-                        '13+',
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 12,
-                    ),
-                    content.genre.join(' • '),
-                  )
-                ],
-              ),
-            ),
+            _genre(content.genre.join(' • ')),
             const SizedBox(
               height: 25,
             ),
-            // button play
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.play_arrow,
-                      ),
-                      Text(
-                        style: GoogleFonts.plusJakartaSans(
-                          fontWeight: FontWeight.bold,
-                        ),
-                        'Play Now',
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            _buttonPlay(context),
             const SizedBox(
               height: 25,
             ),
-            // description
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  Text(
-                    content.description,
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
+            _description(),
+            const SizedBox(
+              height: 25,
             ),
-            const SizedBox(height: 25),
-            // add watchlist and share
-            // direct and cast
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        'Directs: ',
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        content.directors.join(', '),
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: [
-                      Text(
-                        'Casts: ',
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        content.casts.join(', '),
-                        style: GoogleFonts.poppins(
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+            _watchlistAndShareBtn(),
+            const SizedBox(
+              height: 25,
             ),
+            _directsAndCasts(),
             const SizedBox(
               height: 50,
             ),
-            // tabbar
-            const DetailTabBarWidget(),
           ],
+        ),
+        tabs: const [
+          Tab(
+            text: 'Trailer',
+          ),
+          Tab(
+            text: 'Similar',
+          )
+        ],
+        tabBarViews: [
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              if (index % 2 == 0) {
+                return Container(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  height: 100,
+                  color: Colors.blue,
+                );
+              }
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                height: 100,
+                color: Colors.red,
+              );
+            },
+            itemCount: 100,
+          ),
+          Column(
+            children: const [
+              Text('Tab 2'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===============================
+
+  Padding _watchlistAndShareBtn() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.bookmark,
+            ),
+            label: const Text('Daftarku'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              side: const BorderSide(
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 15,
+          ),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.share,
+            ),
+            label: const Text('Daftarku'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              side: const BorderSide(
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _directsAndCasts() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Directs: ',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                content.directors.join(', '),
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Casts: ',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                content.casts.join(', '),
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _description() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Text(
+            content.description,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Padding _buttonPlay(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.play_arrow,
+              ),
+              const SizedBox(width: 15),
+              Text(
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.bold,
+                ),
+                'Play Now',
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  SizedBox _genre(String genre) {
+    return SizedBox(
+      // color: Colors.amber,
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 1.5,
+                horizontal: 5,
+              ),
+              child: Text(
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 10,
+                ),
+                '13+',
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 12,
+            ),
+            genre,
+          )
+        ],
+      ),
+    );
+  }
+
+  Text _title(String title) {
+    return Text(
+      style: GoogleFonts.plusJakartaSans(
+        fontSize: 17,
+        fontWeight: FontWeight.bold,
+      ),
+      title,
+    );
+  }
+
+  Stack _posterImage(Content content) {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(
+                content.thumbnailUrl,
+              ),
+              fit: BoxFit.cover,
+              opacity: 0.2,
+            ),
+          ),
+          height: 170,
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
+              child: Container(
+                decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 45),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: PosterWidget(
+              content: content,
+              height: 170,
+              width: 125,
+              isRedirect: false,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
-
-// class DetailPage extends StatelessWidget {
-//   const DetailPage({
-//     super.key,
-//     required this.content,
-//   });
-
-//   final Content content;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // final double width = MediaQuery.of(context).size.width;
-//     // final double height = MediaQuery.of(context).size.height;
-//     return Scaffold(
-//       extendBodyBehindAppBar: true,
-//       extendBody: true,
-//       body: CustomScrollView(
-//         slivers: <Widget>[
-//           SliverAppBar(
-//             pinned: true,
-//             expandedHeight: 500,
-//             iconTheme: const IconThemeData(
-//               color: Colors.white,
-//             ),
-//             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-//             flexibleSpace: appBar(context),
-//             // bottom: PreferredSize(
-//             //   preferredSize: const Size.fromHeight(417),
-//             //   child: appBar(context),
-//             // ),
-//           ),
-//           SliverGrid(
-//             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-//               maxCrossAxisExtent: 200.0,
-//               mainAxisSpacing: 10.0,
-//               crossAxisSpacing: 10.0,
-//               childAspectRatio: 4.0,
-//             ),
-//             delegate: SliverChildBuilderDelegate(
-//               (BuildContext context, int index) {
-//                 return Container(
-//                   alignment: Alignment.center,
-//                   color: Colors.teal[100 * (index % 9)],
-//                   child: Text('Grid Item $index'),
-//                 );
-//               },
-//               childCount: 20,
-//             ),
-//           ),
-//           SliverFixedExtentList(
-//             itemExtent: 50.0,
-//             delegate: SliverChildBuilderDelegate(
-//               (BuildContext context, int index) {
-//                 return Container(
-//                   alignment: Alignment.center,
-//                   color: Colors.lightBlue[100 * (index % 9)],
-//                   child: Text('List Item $index'),
-//                 );
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//       // body: SingleChildScrollView(
-//       //   child: Column(
-//       //     // mainAxisAlignment: MainAxisAlignment.center,
-//       //     children: [
-//       //       appBar(context),
-//       //       // tabbar
-//       //       // DetailTabBarWidget(width),
-//       //     ],
-//       //   ),
-//       // ),
-//     );
-//   }
-
-//   Widget appBar(BuildContext context) {
-//     return Column(
-//       children: [
-//         // stack poster image
-//         Stack(
-//           children: [
-//             Container(
-//               decoration: BoxDecoration(
-//                 image: DecorationImage(
-//                   image: CachedNetworkImageProvider(content.thumbnailUrl),
-//                   fit: BoxFit.cover,
-//                   opacity: 0.2,
-//                 ),
-//               ),
-//               height: 170,
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.only(top: 20),
-//               child: Align(
-//                 alignment: Alignment.bottomCenter,
-//                 child: PosterWidget(
-//                   content: content,
-//                   height: 170,
-//                   width: 125,
-//                   isRedirect: false,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-
-//         const SizedBox(
-//           height: 25,
-//         ),
-//         // title
-//         Text(
-//           style: GoogleFonts.plusJakartaSans(
-//             fontSize: 17,
-//             fontWeight: FontWeight.bold,
-//           ),
-//           content.title,
-//         ),
-//         const SizedBox(
-//           height: 25,
-//         ),
-//         // genre
-//         SizedBox(
-//           // color: Colors.amber,
-//           width: double.infinity,
-//           child: Wrap(
-//             alignment: WrapAlignment.center,
-//             children: [
-//               Container(
-//                 decoration: BoxDecoration(
-//                   color: Colors.grey[800],
-//                   borderRadius: BorderRadius.circular(10),
-//                 ),
-//                 child: Padding(
-//                   padding: const EdgeInsets.symmetric(
-//                     vertical: 1.5,
-//                     horizontal: 5,
-//                   ),
-//                   child: Text(
-//                     style: GoogleFonts.plusJakartaSans(
-//                       fontSize: 10,
-//                     ),
-//                     '13+',
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(
-//                 width: 10,
-//               ),
-//               Text(
-//                 style: GoogleFonts.plusJakartaSans(
-//                   fontSize: 12,
-//                 ),
-//                 content.genre.join(' • '),
-//               )
-//             ],
-//           ),
-//         ),
-//         const SizedBox(
-//           height: 25,
-//         ),
-//         // button play
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 16),
-//           child: ElevatedButton(
-//             onPressed: () {},
-//             style: ElevatedButton.styleFrom(
-//               backgroundColor: Theme.of(context).primaryColor,
-//             ),
-//             child: Padding(
-//               padding: const EdgeInsets.symmetric(vertical: 10),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   const Icon(
-//                     Icons.play_arrow,
-//                   ),
-//                   Text(
-//                     style: GoogleFonts.plusJakartaSans(
-//                       fontWeight: FontWeight.bold,
-//                     ),
-//                     'Play Now',
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ),
-//         ),
-//         const SizedBox(
-//           height: 25,
-//         ),
-//         // description
-//         Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 16),
-//           child: Column(
-//             children: [
-//               Text(
-//                 content.description,
-//               ),
-//             ],
-//           ),
-//         ),
-//         const SizedBox(
-//           height: 50,
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// Scaffold
-// |__ AppBar
-// |__ SingleChildScrollView
-//    |__ Column
-//    |__ Stack
-//    |__ SizedBox
-//    |__ Text
-//    |__ SizedBox
-//    |__ SizedBox
-//    |__ SizedBox
-//    |__ Padding
-//    |__ SizedBox
-//    |__ Padding
-//    |__ SizedBox
-//    |__ Column
-//       |__ Column
-//       |__ TabBar
-//          |__ Tab
-//          |__ Tab
-//       |__ Expanded
-//          |__ TabBarView
-//             |__ TabBarView
-//                |__ Scaffold
-//                |__ Scaffold
-
-// import 'dart:ui';
-
-// import 'package:cached_network_image/cached_network_image.dart';
-// // import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:presmaflix/app/models/content.dart';
-// import 'package:presmaflix/ui/widgets/poster_widget.dart';
-// import 'package:presmaflix/ui/widgets/detail_tabbar_widget.dart';
-
-// class DetailPage extends StatefulWidget {
-//   const DetailPage({
-//     super.key,
-//     required this.content,
-//   });
-
-//   final Content content;
-
-//   @override
-//   State<DetailPage> createState() => _DetailPageState();
-// }
-
-// class _DetailPageState extends State<DetailPage>
-//     with SingleTickerProviderStateMixin {
-//   List<String> _tabs = ['Episodes', 'Details'];
-
-//   int _selectedTabIndex = 0;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       extendBodyBehindAppBar: true,
-//       extendBody: true,
-//       appBar: AppBar(
-//         backgroundColor: Colors.transparent,
-//         elevation: 0.0,
-//         iconTheme: const IconThemeData(
-//           color: Colors.white,
-//         ),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: [
-//             // stack poster image
-//             Stack(
-//               children: [
-//                 Container(
-//                   decoration: BoxDecoration(
-//                     image: DecorationImage(
-//                       image: CachedNetworkImageProvider(
-//                           widget.content.thumbnailUrl),
-//                       fit: BoxFit.cover,
-//                       opacity: 0.2,
-//                     ),
-//                   ),
-//                   height: 170,
-//                   child: BackdropFilter(
-//                     filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-//                     child: Container(
-//                       decoration: BoxDecoration(
-//                         color: Colors.white.withOpacity(0.0),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 Padding(
-//                   padding: const EdgeInsets.only(top: 50),
-//                   child: Align(
-//                     alignment: Alignment.bottomCenter,
-//                     child: PosterWidget(
-//                       content: widget.content,
-//                       height: 180,
-//                       width: 125,
-//                       isRedirect: false,
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-
-//             const SizedBox(
-//               height: 25,
-//             ),
-//             // title
-//             Text(
-//               style: GoogleFonts.plusJakartaSans(
-//                 fontSize: 17,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//               widget.content.title,
-//             ),
-//             const SizedBox(
-//               height: 25,
-//             ),
-//             // genre
-//             SizedBox(
-//               // color: Colors.amber,
-//               width: double.infinity,
-//               child: Wrap(
-//                 alignment: WrapAlignment.center,
-//                 children: [
-//                   Container(
-//                     decoration: BoxDecoration(
-//                       color: Colors.grey[800],
-//                       borderRadius: BorderRadius.circular(10),
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.symmetric(
-//                         vertical: 1.5,
-//                         horizontal: 5,
-//                       ),
-//                       child: Text(
-//                         style: GoogleFonts.plusJakartaSans(
-//                           fontSize: 10,
-//                         ),
-//                         '13+',
-//                       ),
-//                     ),
-//                   ),
-//                   const SizedBox(
-//                     width: 10,
-//                   ),
-//                   Text(
-//                     style: GoogleFonts.plusJakartaSans(
-//                       fontSize: 12,
-//                     ),
-//                     widget.content.genre.join('・'),
-//                   )
-//                 ],
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 25,
-//             ),
-//             // button play
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16),
-//               child: ElevatedButton(
-//                 onPressed: () {},
-//                 style: ElevatedButton.styleFrom(
-//                   backgroundColor: Theme.of(context).primaryColor,
-//                 ),
-//                 child: Padding(
-//                   padding: const EdgeInsets.symmetric(vertical: 10),
-//                   child: Row(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       const Icon(
-//                         Icons.play_arrow,
-//                       ),
-//                       const SizedBox(width: 15),
-//                       Text(
-//                         style: GoogleFonts.plusJakartaSans(
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                         'Play Now',
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 25,
-//             ),
-//             // description
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16),
-//               child: Column(
-//                 children: [
-//                   Text(
-//                     widget.content.description,
-//                     style: GoogleFonts.poppins(
-//                       fontWeight: FontWeight.w400,
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             const SizedBox(height: 25),
-//             // add watchlist and share
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16),
-//               child: Row(
-//                 children: [
-//                   ElevatedButton.icon(
-//                     onPressed: () {},
-//                     icon: const Icon(Icons.bookmark_add_outlined),
-//                     label: const Text('Daftarku'),
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor:
-//                           Theme.of(context).scaffoldBackgroundColor,
-//                       side: const BorderSide(
-//                         color: Colors.white,
-//                       ),
-//                     ),
-//                   ),
-//                   const SizedBox(width: 15),
-//                   ElevatedButton.icon(
-//                     onPressed: () {},
-//                     icon: const Icon(Icons.share),
-//                     label: const Text('Daftarku'),
-//                     style: ElevatedButton.styleFrom(
-//                       backgroundColor:
-//                           Theme.of(context).scaffoldBackgroundColor,
-//                       side: const BorderSide(
-//                         color: Colors.white,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             const SizedBox(height: 25),
-//             // direct and cast
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: [
-//                   Wrap(
-//                     alignment: WrapAlignment.start,
-//                     crossAxisAlignment: WrapCrossAlignment.center,
-//                     children: [
-//                       Text(
-//                         'Directs: ',
-//                         style: GoogleFonts.poppins(
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       Text(
-//                         widget.content.directors.join(', '),
-//                         style: GoogleFonts.poppins(
-//                           fontWeight: FontWeight.w400,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                   const SizedBox(height: 20),
-//                   Wrap(
-//                     alignment: WrapAlignment.start,
-//                     crossAxisAlignment: WrapCrossAlignment.center,
-//                     children: [
-//                       Text(
-//                         'Casts: ',
-//                         style: GoogleFonts.poppins(
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                       Text(
-//                         widget.content.casts.join(', '),
-//                         style: GoogleFonts.poppins(
-//                           fontWeight: FontWeight.w400,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             const SizedBox(
-//               height: 50,
-//             ),
-//             // Render row of _tabs
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 16),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 children: [
-//                   for (final _tab in _tabs)
-//                     GestureDetector(
-//                       onTap: () {
-//                         setState(() {});
-//                       },
-//                       child: Text(
-//                         _tab,
-//                         style: GoogleFonts.poppins(
-//                           fontWeight: FontWeight.bold,
-//                         ),
-//                       ),
-//                     ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// // class DetailPage extends StatelessWidget {
-// //   const DetailPage({
-// //     super.key,
-// //     required this.content,
-// //   });
-
-// //   final Content content;
-
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     // final double width = MediaQuery.of(context).size.width;
-// //     // final double height = MediaQuery.of(context).size.height;
-// //     return Scaffold(
-// //       extendBodyBehindAppBar: true,
-// //       extendBody: true,
-// //       body: CustomScrollView(
-// //         slivers: <Widget>[
-// //           SliverAppBar(
-// //             pinned: true,
-// //             expandedHeight: 500,
-// //             iconTheme: const IconThemeData(
-// //               color: Colors.white,
-// //             ),
-// //             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-// //             flexibleSpace: appBar(context),
-// //             // bottom: PreferredSize(
-// //             //   preferredSize: const Size.fromHeight(417),
-// //             //   child: appBar(context),
-// //             // ),
-// //           ),
-// //           SliverGrid(
-// //             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-// //               maxCrossAxisExtent: 200.0,
-// //               mainAxisSpacing: 10.0,
-// //               crossAxisSpacing: 10.0,
-// //               childAspectRatio: 4.0,
-// //             ),
-// //             delegate: SliverChildBuilderDelegate(
-// //               (BuildContext context, int index) {
-// //                 return Container(
-// //                   alignment: Alignment.center,
-// //                   color: Colors.teal[100 * (index % 9)],
-// //                   child: Text('Grid Item $index'),
-// //                 );
-// //               },
-// //               childCount: 20,
-// //             ),
-// //           ),
-// //           SliverFixedExtentList(
-// //             itemExtent: 50.0,
-// //             delegate: SliverChildBuilderDelegate(
-// //               (BuildContext context, int index) {
-// //                 return Container(
-// //                   alignment: Alignment.center,
-// //                   color: Colors.lightBlue[100 * (index % 9)],
-// //                   child: Text('List Item $index'),
-// //                 );
-// //               },
-// //             ),
-// //           ),
-// //         ],
-// //       ),
-// //       // body: SingleChildScrollView(
-// //       //   child: Column(
-// //       //     // mainAxisAlignment: MainAxisAlignment.center,
-// //       //     children: [
-// //       //       appBar(context),
-// //       //       // tabbar
-// //       //       // DetailTabBarWidget(width),
-// //       //     ],
-// //       //   ),
-// //       // ),
-// //     );
-// //   }
-
-// //   Widget appBar(BuildContext context) {
-// //     return Column(
-// //       children: [
-// //         // stack poster image
-// //         Stack(
-// //           children: [
-// //             Container(
-// //               decoration: BoxDecoration(
-// //                 image: DecorationImage(
-// //                   image: CachedNetworkImageProvider(content.thumbnailUrl),
-// //                   fit: BoxFit.cover,
-// //                   opacity: 0.2,
-// //                 ),
-// //               ),
-// //               height: 170,
-// //             ),
-// //             Padding(
-// //               padding: const EdgeInsets.only(top: 20),
-// //               child: Align(
-// //                 alignment: Alignment.bottomCenter,
-// //                 child: PosterWidget(
-// //                   content: content,
-// //                   height: 170,
-// //                   width: 125,
-// //                   isRedirect: false,
-// //                 ),
-// //               ),
-// //             ),
-// //           ],
-// //         ),
-
-// //         const SizedBox(
-// //           height: 25,
-// //         ),
-// //         // title
-// //         Text(
-// //           style: GoogleFonts.plusJakartaSans(
-// //             fontSize: 17,
-// //             fontWeight: FontWeight.bold,
-// //           ),
-// //           content.title,
-// //         ),
-// //         const SizedBox(
-// //           height: 25,
-// //         ),
-// //         // genre
-// //         SizedBox(
-// //           // color: Colors.amber,
-// //           width: double.infinity,
-// //           child: Wrap(
-// //             alignment: WrapAlignment.center,
-// //             children: [
-// //               Container(
-// //                 decoration: BoxDecoration(
-// //                   color: Colors.grey[800],
-// //                   borderRadius: BorderRadius.circular(10),
-// //                 ),
-// //                 child: Padding(
-// //                   padding: const EdgeInsets.symmetric(
-// //                     vertical: 1.5,
-// //                     horizontal: 5,
-// //                   ),
-// //                   child: Text(
-// //                     style: GoogleFonts.plusJakartaSans(
-// //                       fontSize: 10,
-// //                     ),
-// //                     '13+',
-// //                   ),
-// //                 ),
-// //               ),
-// //               const SizedBox(
-// //                 width: 10,
-// //               ),
-// //               Text(
-// //                 style: GoogleFonts.plusJakartaSans(
-// //                   fontSize: 12,
-// //                 ),
-// //                 content.genre.join(' • '),
-// //               )
-// //             ],
-// //           ),
-// //         ),
-// //         const SizedBox(
-// //           height: 25,
-// //         ),
-// //         // button play
-// //         Padding(
-// //           padding: const EdgeInsets.symmetric(horizontal: 16),
-// //           child: ElevatedButton(
-// //             onPressed: () {},
-// //             style: ElevatedButton.styleFrom(
-// //               backgroundColor: Theme.of(context).primaryColor,
-// //             ),
-// //             child: Padding(
-// //               padding: const EdgeInsets.symmetric(vertical: 10),
-// //               child: Row(
-// //                 mainAxisAlignment: MainAxisAlignment.center,
-// //                 children: [
-// //                   const Icon(
-// //                     Icons.play_arrow,
-// //                   ),
-// //                   Text(
-// //                     style: GoogleFonts.plusJakartaSans(
-// //                       fontWeight: FontWeight.bold,
-// //                     ),
-// //                     'Play Now',
-// //                   ),
-// //                 ],
-// //               ),
-// //             ),
-// //           ),
-// //         ),
-// //         const SizedBox(
-// //           height: 25,
-// //         ),
-// //         // description
-// //         Padding(
-// //           padding: const EdgeInsets.symmetric(horizontal: 16),
-// //           child: Column(
-// //             children: [
-// //               Text(
-// //                 content.description,
-// //               ),
-// //             ],
-// //           ),
-// //         ),
-// //         const SizedBox(
-// //           height: 50,
-// //         ),
-// //       ],
-// //     );
-// //   }
-// // }
-
-// // Scaffold
-// // |__ AppBar
-// // |__ SingleChildScrollView
-// //    |__ Column
-// //    |__ Stack
-// //    |__ SizedBox
-// //    |__ Text
-// //    |__ SizedBox
-// //    |__ SizedBox
-// //    |__ SizedBox
-// //    |__ Padding
-// //    |__ SizedBox
-// //    |__ Padding
-// //    |__ SizedBox
-// //    |__ Column
-// //       |__ Column
-// //       |__ TabBar
-// //          |__ Tab
-// //          |__ Tab
-// //       |__ Expanded
-// //          |__ TabBarView
-// //             |__ TabBarView
-// //                |__ Scaffold
-// //                |__ Scaffold

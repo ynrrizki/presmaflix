@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
-class DetailTabBarWidget extends StatefulWidget {
-  const DetailTabBarWidget({
+class TabBarViewWidget extends StatefulWidget {
+  const TabBarViewWidget({
     super.key,
+    required this.tabController,
   });
 
+  final TabController tabController;
+
   @override
-  State<DetailTabBarWidget> createState() => _DetailTabBarWidgetState();
+  State<TabBarViewWidget> createState() => _TabBarViewWidgetState();
 }
 
-class _DetailTabBarWidgetState extends State<DetailTabBarWidget>
+class _TabBarViewWidgetState extends State<TabBarViewWidget>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -27,60 +30,34 @@ class _DetailTabBarWidgetState extends State<DetailTabBarWidget>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height / 2,
-      child: Column(
-        children: [
-          TabBar(
-            controller: _tabController,
-            indicatorColor: Theme.of(context).primaryColor,
-            tabs: const [
-              Tab(
-                text: 'Trailer',
-              ),
-              Tab(
-                text: 'Similar',
-              )
-            ],
-          ),
-          Expanded(
-            // constraints: const BoxConstraints(
-            //   maxWidth: double.infinity,
-            //   // maxHeight: MediaQuery.of(context).size.height / 1.5,
-            //   // minHeight: 100,
-            //   maxHeight: 100,
-            // ),
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                Scaffold(
-                  body: ListView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      Container(
-                        height: 100,
-                        color: Colors.blue,
-                      ),
-                      Container(
-                        height: 100,
-                        color: Colors.green,
-                      ),
-                    ],
-                  ),
-                ),
-                Scaffold(
-                  body: Column(
-                    children: const [
-                      Text('Tab 2'),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return TabBarView(
+      controller: _tabController,
+      children: [
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            if (index % 2 == 0) {
+              return Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                height: 100,
+                color: Colors.blue,
+              );
+            }
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              height: 100,
+              color: Colors.red,
+            );
+          },
+          itemCount: 100,
+        ),
+        Column(
+          children: const [
+            Text('Tab 2'),
+          ],
+        ),
+      ],
     );
   }
 }

@@ -14,4 +14,15 @@ class Review {
     required this.comment,
     required this.createdAt,
   });
+
+  static List<Review> reviews = [
+    Review(
+      id: '1',
+      videoId: '1',
+      name: 'Yanuar Rizki',
+      email: 'yanuarrizki165@gmail.com',
+      comment: "Videonya keren banget gilaaa",
+      createdAt: DateTime.now(), 
+    ),
+  ];
 }

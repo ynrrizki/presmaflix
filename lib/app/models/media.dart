@@ -26,6 +26,10 @@ class Media {
     Media(
       id: '5',
       contentId: '5',
+    ),
+    Media(
+      id: '6',
+      contentId: '6',
     )
   ];
 }

@@ -33,21 +33,21 @@ class HomePage extends StatelessWidget {
                         .where((content) => content.type == 'movie')
                         .toList(),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 15),
                   HorizontalGridWidget(
                     title: 'Animation',
                     contents: contents
                         .where((content) => content.type == 'animation')
                         .toList(),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 15),
                   HorizontalGridWidget(
                     title: 'Tv Global',
                     contents: contents
                         .where((content) => content.type == 'tv-global')
                         .toList(),
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 15),
                   HorizontalGridWidget(
                     title: 'Music Video',
                     contents: contents
