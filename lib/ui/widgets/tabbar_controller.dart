@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
-class CustomTabBarController extends StatefulWidget {
-  const CustomTabBarController({
+class TabBarController extends StatefulWidget {
+  const TabBarController({
     super.key,
     required this.header,
     required this.tabCount,
@@ -15,15 +17,16 @@ class CustomTabBarController extends StatefulWidget {
   final List<Widget> tabBarViews;
 
   @override
-  State<CustomTabBarController> createState() => _CustomTabBarControllerState();
+  State<TabBarController> createState() => _TabBarControllerState();
 }
 
-class _CustomTabBarControllerState extends State<CustomTabBarController>
+class _TabBarControllerState extends State<TabBarController>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
+    log("${widget.tabCount}");
     _tabController = TabController(length: widget.tabCount, vsync: this);
     super.initState();
   }
@@ -43,8 +46,6 @@ class _CustomTabBarControllerState extends State<CustomTabBarController>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.header,
-              // tabbar
-              // const DetailTabBarWidget(),
               TabBar(
                 controller: _tabController,
                 indicatorColor: Theme.of(context).primaryColor,

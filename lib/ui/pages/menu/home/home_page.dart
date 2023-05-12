@@ -3,7 +3,6 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/banner_widget.dart';
 import 'package:presmaflix/ui/widgets/horizontal_grid_widget.dart';
-import 'package:presmaflix/config/routing/argument/content/all_args.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

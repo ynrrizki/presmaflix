@@ -4,8 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/ui/controller/custom_tabbar_controller.dart';
+// import 'package:presmaflix/app/models/media.dart';
+import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
+import 'package:shimmer/shimmer.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({
@@ -17,6 +20,9 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<Video> videos = Video.videos;
+    List<Content> contents = Content.contents;
+    // List<Media> media = Media.media;
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -27,7 +33,7 @@ class DetailPage extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      body: CustomTabBarController(
+      body: TabBarController(
         header: Column(
           children: [
             _posterImage(
@@ -71,44 +77,78 @@ class DetailPage extends StatelessWidget {
             ),
           ],
         ),
-        tabCount: 2,
-        tabs: const [
-          Tab(
-            text: 'Trailer',
-          ),
-          Tab(
-            text: 'Similar',
-          )
+        tabCount: videos
+                .where(
+                  (video) =>
+                      video.mediaId == content.id &&
+                      video.type != 'full-length',
+                )
+                .length +
+            1,
+        tabs: [
+          ...videos
+              .where((video) =>
+                  video.mediaId == content.id && video.type != 'full-length')
+              .fold<List<Tab>>([], (list, video) {
+            if (!list.any((tab) => tab.text == video.type)) {
+              list.add(Tab(text: video.type));
+            }
+            return list;
+          }),
+          const Tab(text: 'Similar'),
         ],
         tabBarViews: [
-          ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
+          ListView(
             shrinkWrap: true,
-            itemBuilder: (context, index) {
-              if (index % 2 == 0) {
-                return Container(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  height: 100,
-                  color: Colors.blue,
-                );
-              }
-              return Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                height: 100,
-                color: Colors.red,
-              );
-            },
-            itemCount: 100,
-          ),
-          Column(
-            children: const [
-              Text('Tab 2'),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+            children: [
+              ...videos
+                  .where(
+                    (video) =>
+                        video.mediaId == content.id &&
+                        video.type != 'full-length',
+                  )
+                  .map(
+                    (video) => CardVideo(video: video),
+                  )
+                  .toList(),
             ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
+            child: GridView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 7,
+              ),
+              itemCount: contents.length,
+              itemBuilder: (context, index) => PosterWidget(
+                content: contents[index],
+              ),
+            ),
           ),
         ],
       ),
     );
   }
+
+  // tabBarViews: [
+  //   ListView(
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     shrinkWrap: true,
+  //     children: [
+  //       Container(),
+  //     ],
+  //   ),
+  //   Column(
+  //     children: const [
+  //       Text('Tab 2'),
+  //     ],
+  //   ),
+  // ],
 
   // ===============================
 
@@ -329,6 +369,98 @@ class DetailPage extends StatelessWidget {
             ),
           ),
         ),
+      ],
+    );
+  }
+}
+
+class CardVideo extends StatelessWidget {
+  const CardVideo({
+    super.key,
+    required this.video,
+  });
+  final Video video;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 65,
+              width: 110,
+              child: CachedNetworkImage(
+                imageUrl: video.thumbnailUrl!,
+                imageBuilder: (context, imageProvider) {
+                  Decoration boxDecoration = BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      repeat: ImageRepeat.noRepeat,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+
+                  return Container(
+                    decoration: boxDecoration,
+                  );
+                },
+                placeholder: (context, progress) {
+                  return Shimmer.fromColors(
+                    baseColor: const Color.fromARGB(123, 121, 121, 121),
+                    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                    ),
+                  );
+                },
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+            ),
+            const SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 5),
+                SizedBox(
+                  width: 100,
+                  child: Text(
+                    video.title ?? 'Title',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 33),
+                Text(
+                  video.duration,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(width: 25),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                side: const BorderSide(
+                  color: Colors.white,
+                ),
+              ),
+              child: const Icon(Icons.download),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        const Text(
+            'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero recusandae quis consequuntur perferendis. Blanditiis aliquid molestiae commodi dignissimos optio fugiat illo ut, provident inventore alias omnis excepturi cumque ducimus reprehenderit.'),
       ],
     );
   }

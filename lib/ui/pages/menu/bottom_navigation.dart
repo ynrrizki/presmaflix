@@ -25,7 +25,6 @@ class BottomNavigation extends StatelessWidget {
         Scaffold(),
         Scaffold(),
         Scaffold(),
-        Scaffold(),
       ];
     }
 
@@ -33,7 +32,6 @@ class BottomNavigation extends StatelessWidget {
       return [
         PersistentBottomNavBarItem(
           iconSize: 24,
-          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -10, end: -12),
             showBadge: false,
@@ -54,7 +52,6 @@ class BottomNavigation extends StatelessWidget {
         ),
         PersistentBottomNavBarItem(
           iconSize: 24,
-          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -0, end: -9),
             showBadge: false,
@@ -75,28 +72,6 @@ class BottomNavigation extends StatelessWidget {
         ),
         PersistentBottomNavBarItem(
           iconSize: 24,
-          
-          icon: badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -0, end: -9),
-            showBadge: false,
-            ignorePointer: false,
-            badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.heart_fill),
-          ),
-          title: "For You",
-          activeColorPrimary: Theme.of(context).primaryColor,
-          inactiveColorPrimary: Colors.grey,
-          inactiveIcon: badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -0, end: -9),
-            showBadge: false,
-            ignorePointer: false,
-            badgeContent: const Text('3'),
-            child: const Icon(CupertinoIcons.heart),
-          ),
-        ),
-        PersistentBottomNavBarItem(
-          iconSize: 24,
-          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -0, end: -9),
             showBadge: false,
@@ -117,7 +92,6 @@ class BottomNavigation extends StatelessWidget {
         ),
         PersistentBottomNavBarItem(
           iconSize: 24,
-          
           icon: badges.Badge(
             position: badges.BadgePosition.topEnd(top: -0, end: -9),
             showBadge: false,
