@@ -21,7 +21,7 @@ class AppRouter {
       case "/detail":
         final args = settings.arguments as DetailArguments;
         return PageTransition(
-          child: DetailPage(
+          child: DetailContentPage(
             content: args.content,
           ),
           type: PageTransitionType.rightToLeft,
@@ -29,7 +29,7 @@ class AppRouter {
       case "/all":
         final args = settings.arguments as AllArguments;
         return PageTransition(
-          child: AllPage(
+          child: AllContentPage(
             title: args.title,
             contents: args.contents,
           ),
