@@ -46,10 +46,14 @@ class _TabBarControllerState extends State<TabBarController>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.header,
-              TabBar(
-                controller: _tabController,
-                indicatorColor: Theme.of(context).primaryColor,
-                tabs: widget.tabs,
+              Container(
+                color: Colors.grey[900],
+                child: TabBar(
+                  indicatorWeight: widget.tabCount > 1 ? 1.0 : 2.0,
+                  controller: _tabController,
+                  indicatorColor: Theme.of(context).primaryColor,
+                  tabs: widget.tabs,
+                ),
               ),
             ],
           ),

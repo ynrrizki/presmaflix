@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 
-class AllPage extends StatelessWidget {
-  const AllPage({super.key, required this.title, required this.contents});
+class AllContentPage extends StatelessWidget {
+  const AllContentPage({super.key, required this.title, required this.contents});
   final String title;
   final List<Content> contents;
 

@@ -5,8 +5,8 @@ import 'package:page_transition/page_transition.dart';
 import 'package:presmaflix/config/routing/argument/content/all_args.dart';
 import 'package:presmaflix/config/routing/argument/content/detail_args.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/all_page.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/detail_page.dart';
+import 'package:presmaflix/ui/pages/menu/home/content/all_content_page.dart';
+import 'package:presmaflix/ui/pages/menu/home/content/detail_content_page.dart';
 
 class AppRouter {
   Route onRoute(RouteSettings settings) {

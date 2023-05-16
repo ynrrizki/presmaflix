@@ -10,8 +10,8 @@ import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-class DetailPage extends StatelessWidget {
-  const DetailPage({
+class DetailContentPage extends StatelessWidget {
+  const DetailContentPage({
     super.key,
     required this.content,
   });
@@ -205,12 +205,14 @@ class DetailPage extends StatelessWidget {
                 'Directs: ',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
+                  color: Colors.grey,
                 ),
               ),
               Text(
                 directors,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
+                  color: Colors.grey,
                 ),
               ),
             ],
@@ -224,12 +226,14 @@ class DetailPage extends StatelessWidget {
                 'Casts: ',
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
+                  color: Colors.grey,
                 ),
               ),
               Text(
                 casts,
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
+                  color: Colors.grey,
                 ),
               ),
             ],
@@ -248,6 +252,7 @@ class DetailPage extends StatelessWidget {
             description,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
+              color: Colors.grey,
             ),
           ),
         ],
@@ -314,10 +319,11 @@ class DetailPage extends StatelessWidget {
             width: 10,
           ),
           Text(
+            genre,
             style: GoogleFonts.plusJakartaSans(
               fontSize: 12,
+              color: Colors.grey,
             ),
-            genre,
           )
         ],
       ),
