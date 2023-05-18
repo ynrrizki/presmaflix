@@ -77,6 +77,9 @@ class DetailContentPage extends StatelessWidget {
             ),
           ],
         ),
+        // Mengambil jumlah tab yang akan ditampilkan
+        // (jumlah video yang berasosiasi dengan content.id dan memiliki tipe selain 'full-length' + 1)
+        // 1 ditambahkan karena akan ditambahkan Tab 'Similar'
         tabCount: videos
                 .where(
                   (video) =>
@@ -87,33 +90,49 @@ class DetailContentPage extends StatelessWidget {
             1,
         tabs: [
           ...videos
+              // Mengambil video yang memenuhi kriteria
+              // (berasosiasi dengan content.id dan memiliki tipe selain 'full-length')
               .where((video) =>
                   video.mediaId == content.id && video.type != 'full-length')
+              // Mengelompokkan video berdasarkan tipe dan membuat List<Tab> baru
               .fold<List<Tab>>([], (list, video) {
+            // Jika tipe video belum ada pada List<Tab>, tambahkan Tab baru dengan tipe tersebut
             if (!list.any((tab) => tab.text == video.type)) {
               list.add(Tab(text: video.type));
             }
             return list;
           }),
+          // Menambahkan Tab 'Similar' ke List<Tab> yang sudah dibuat
           const Tab(text: 'Similar'),
         ],
         tabBarViews: [
-          ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-            children: [
-              ...videos
-                  .where(
-                    (video) =>
-                        video.mediaId == content.id &&
-                        video.type != 'full-length',
-                  )
-                  .map(
-                    (video) => CardVideo(video: video),
-                  )
-                  .toList(),
-            ],
-          ),
+          // Menampilkan video berdasarkan tipe
+          // tampilkan video yang berasosiasi dengan content.id dan memiliki tipe yang sama dengan Tab
+          ...videos
+              .where(
+                (video) =>
+                    video.mediaId == content.id && video.type != 'full-length',
+              )
+              .map(
+                (e) => ListView(
+                  shrinkWrap: true,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                  children: [
+                    ...videos
+                        .where(
+                          (video) =>
+                              video.mediaId == content.id &&
+                              video.type != 'full-length',
+                        )
+                        .map(
+                          (video) => CardVideo(video: video),
+                        )
+                        .toList(),
+                  ],
+                ),
+              ),
+          // Similar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
             child: GridView.builder(
@@ -455,12 +474,16 @@ class CardVideo extends StatelessWidget {
             ElevatedButton(
               onPressed: () {},
               style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(0),
                 backgroundColor: Colors.transparent,
                 side: const BorderSide(
                   color: Colors.white,
                 ),
               ),
-              child: const Icon(Icons.download),
+              child: const Icon(
+                Icons.download,
+                size: 20,
+              ),
             ),
           ],
         ),

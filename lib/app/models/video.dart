@@ -145,5 +145,29 @@ class Video {
       duration: '1m',
       createdAt: DateTime.now(),
     ),
+    Video(
+      id: '12',
+      mediaId: '2',
+      title: 'Buya Hamka Trailer',
+      type: 'Trailer',
+      video: 'https://youtu.be/bqsY1jDkQzk',
+      thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
+      description:
+          'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
+      duration: '1m',
+      createdAt: DateTime.now(),
+    ),
+    Video(
+      id: '13',
+      mediaId: '6',
+      title: 'Game of Thrones Trailer',
+      type: 'Trailer',
+      video: 'https://youtu.be/bqsY1jDkQzk',
+      thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
+      description:
+          'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
+      duration: '1m',
+      createdAt: DateTime.now(),
+    ),
   ];
 }
