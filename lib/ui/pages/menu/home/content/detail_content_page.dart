@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/app/models/video.dart';
@@ -135,9 +136,19 @@ class DetailContentPage extends StatelessWidget {
                           video.type == tabTypes[list.length],
                     )
                     .map(
-                      (video) => CardVideo(
-                        video: video,
-                        padding: const EdgeInsets.only(bottom: 20),
+                      (video) => AnimationConfiguration.staggeredList(
+                        position: 1,
+                        delay: const Duration(milliseconds: 500),
+                        child: SlideAnimation(
+                          horizontalOffset: -250.0,
+                          curve: Curves.easeOutExpo,
+                          child: FadeInAnimation(
+                            child: CardVideo(
+                              video: video,
+                              padding: const EdgeInsets.only(bottom: 20),
+                            ),
+                          ),
+                        ),
                       ),
                     )
                     .toList(),
