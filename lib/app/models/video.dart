@@ -82,6 +82,7 @@ class Video {
       id: '6',
       mediaId: '6',
       type: 'Episodes',
+      title: 'Episode 1',
       video: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
@@ -93,6 +94,7 @@ class Video {
       id: '7',
       mediaId: '6',
       type: 'Episodes',
+      title: 'Episode 2',
       video: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
@@ -104,6 +106,7 @@ class Video {
       id: '8',
       mediaId: '6',
       type: 'Episodes',
+      title: 'Episode 3',
       video: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
@@ -115,6 +118,7 @@ class Video {
       id: '9',
       mediaId: '6',
       type: 'Episodes',
+      title: 'Episode 4',
       video: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
@@ -126,6 +130,7 @@ class Video {
       id: '10',
       mediaId: '6',
       type: 'Episodes',
+      title: 'Episode 5',
       video: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:

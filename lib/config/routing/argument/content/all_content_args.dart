@@ -1,7 +1,7 @@
 import 'package:presmaflix/app/models/content.dart';
 
-class AllArguments {
-  const AllArguments({
+class AllContentArguments {
+  const AllContentArguments({
     required this.title,
     required this.contents,
   });

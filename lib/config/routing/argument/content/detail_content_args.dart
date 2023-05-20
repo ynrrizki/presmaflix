@@ -1,7 +1,7 @@
 import 'package:presmaflix/app/models/content.dart';
 
-class DetailArguments {
-  DetailArguments({
+class DetailContentArguments {
+  DetailContentArguments({
     required this.content,
   });
 

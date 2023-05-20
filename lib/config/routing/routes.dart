@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:presmaflix/config/routing/argument/content/all_args.dart';
-import 'package:presmaflix/config/routing/argument/content/detail_args.dart';
+import 'package:presmaflix/config/routing/argument/content/all_content_args.dart';
+import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/all_content_page.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/detail_content_page.dart';
@@ -18,8 +18,8 @@ class AppRouter {
         return CupertinoPageRoute(
           builder: (context) => const BottomNavigation(),
         );
-      case "/detail":
-        final args = settings.arguments as DetailArguments;
+      case "/detail-content":
+        final args = settings.arguments as DetailContentArguments;
         return PageTransition(
           child: DetailContentPage(
             content: args.content,
@@ -27,8 +27,8 @@ class AppRouter {
           type: PageTransitionType.rightToLeft,
           duration: const Duration(milliseconds: 300),
         );
-      case "/all":
-        final args = settings.arguments as AllArguments;
+      case "/all-content":
+        final args = settings.arguments as AllContentArguments;
         return PageTransition(
           child: AllContentPage(
             title: args.title,

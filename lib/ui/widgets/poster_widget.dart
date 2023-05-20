@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/config/routing/argument/content/detail_args.dart';
+import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PosterWidget extends StatelessWidget {
@@ -45,8 +45,8 @@ class PosterWidget extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context, rootNavigator: true).pushNamed(
-                        '/detail',
-                        arguments: DetailArguments(content: content),
+                        '/detail-content',
+                        arguments: DetailContentArguments(content: content),
                       );
                     },
                     child: const SizedBox(

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,6 +23,7 @@ class DetailContentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Video> videos = Video.videos;
     List<Content> contents = Content.contents;
+    List<String> tabTypes = [];
     // List<Media> media = Media.media;
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -77,61 +79,16 @@ class DetailContentPage extends StatelessWidget {
             ),
           ],
         ),
-        // Mengambil jumlah tab yang akan ditampilkan
-        // (jumlah video yang berasosiasi dengan content.id dan memiliki tipe selain 'full-length' + 1)
-        // 1 ditambahkan karena akan ditambahkan Tab 'Similar'
-        tabCount: videos
-                .where(
-                  (video) =>
-                      video.mediaId == content.id &&
-                      video.type != 'full-length',
-                )
-                .length +
-            1,
+        // Mengambil panjang tab video yang sudah di group dan ditambahkan angka satu
+        // untuk Tab 'Similar'
+        tabCount: generateTab(videos, tabTypes).length + 1,
         tabs: [
-          ...videos
-              // Mengambil video yang memenuhi kriteria
-              // (berasosiasi dengan content.id dan memiliki tipe selain 'full-length')
-              .where((video) =>
-                  video.mediaId == content.id && video.type != 'full-length')
-              // Mengelompokkan video berdasarkan tipe dan membuat List<Tab> baru
-              .fold<List<Tab>>([], (list, video) {
-            // Jika tipe video belum ada pada List<Tab>, tambahkan Tab baru dengan tipe tersebut
-            if (!list.any((tab) => tab.text == video.type)) {
-              list.add(Tab(text: video.type));
-            }
-            return list;
-          }),
+          ...generateTab(videos, tabTypes),
           // Menambahkan Tab 'Similar' ke List<Tab> yang sudah dibuat
           const Tab(text: 'Similar'),
         ],
         tabBarViews: [
-          // Menampilkan video berdasarkan tipe
-          // tampilkan video yang berasosiasi dengan content.id dan memiliki tipe yang sama dengan Tab
-          ...videos
-              .where(
-                (video) =>
-                    video.mediaId == content.id && video.type != 'full-length',
-              )
-              .map(
-                (e) => ListView(
-                  shrinkWrap: true,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-                  children: [
-                    ...videos
-                        .where(
-                          (video) =>
-                              video.mediaId == content.id &&
-                              video.type != 'full-length',
-                        )
-                        .map(
-                          (video) => CardVideo(video: video),
-                        )
-                        .toList(),
-                  ],
-                ),
-              ),
+          ...generateTabView(videos, tabTypes),
           // Similar
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
@@ -154,22 +111,61 @@ class DetailContentPage extends StatelessWidget {
     );
   }
 
-  // tabBarViews: [
-  //   ListView(
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     shrinkWrap: true,
-  //     children: [
-  //       Container(),
-  //     ],
-  //   ),
-  //   Column(
-  //     children: const [
-  //       Text('Tab 2'),
-  //     ],
-  //   ),
-  // ],
+  List<ListView> generateTabView(List<Video> videos, List<String> tabTypes) {
+    // Menampilkan video berdasarkan tipe
+    // tampilkan video yang berasosiasi dengan content.id dan memiliki tipe yang sama dengan Tab
+    return videos
+        .where((video) =>
+            video.mediaId == content.id && video.type != 'full-length')
+        .fold<List<ListView>>(
+      [],
+      (list, video) {
+        // Jika tipe video sama dengan tipe Tab, tambahkan video ke List<Video>
+        if (video.type == tabTypes[list.length]) {
+          list.add(ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+            children: [
+              ...videos
+                  .where(
+                    (video) =>
+                        video.mediaId == content.id &&
+                        video.type != 'full-length' &&
+                        video.type == tabTypes[list.length],
+                  )
+                  .map(
+                    (video) => CardVideo(
+                      video: video,
+                      padding: const EdgeInsets.only(bottom: 20),
+                    ),
+                  )
+                  .toList(),
+            ],
+          ));
+        }
+        return list;
+      },
+    );
+  }
 
-  // ===============================
+  List<Tab> generateTab(List<Video> videos, List<String> tabTypes) {
+    return videos
+        // Mengambil video yang memenuhi kriteria
+        // (berasosiasi dengan content.id dan memiliki tipe selain 'full-length')
+        .where((video) =>
+            video.mediaId == content.id && video.type != 'full-length')
+        // Mengelompokkan video berdasarkan tipe dan membuat List<Tab> baru
+        .fold<List<Tab>>([], (list, video) {
+      // Jika tipe video belum ada pada List<Tab>, tambahkan Tab baru dengan tipe tersebut
+      if (!list.any((tab) => tab.text == video.type)) {
+        list.add(Tab(text: video.type));
+        if (!tabTypes.contains(video.type)) {
+          tabTypes.add(video.type);
+        }
+      }
+      return list;
+    });
+  }
 
   Padding _watchlistAndShareBtn() {
     return Padding(
@@ -366,7 +362,7 @@ class DetailContentPage extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: CachedNetworkImageProvider(
-                content.thumbnailUrl,
+                content.posterUrl,
               ),
               fit: BoxFit.cover,
               opacity: 0.2,
@@ -403,94 +399,99 @@ class CardVideo extends StatelessWidget {
   const CardVideo({
     super.key,
     required this.video,
+    this.padding = const EdgeInsets.all(8.0),
   });
   final Video video;
+  final EdgeInsets padding;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 65,
-              width: 110,
-              child: CachedNetworkImage(
-                imageUrl: video.thumbnailUrl!,
-                imageBuilder: (context, imageProvider) {
-                  Decoration boxDecoration = BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    image: DecorationImage(
-                      image: imageProvider,
-                      repeat: ImageRepeat.noRepeat,
-                      fit: BoxFit.cover,
-                    ),
-                  );
-
-                  return Container(
-                    decoration: boxDecoration,
-                  );
-                },
-                placeholder: (context, progress) {
-                  return Shimmer.fromColors(
-                    baseColor: const Color.fromARGB(123, 121, 121, 121),
-                    highlightColor: const Color.fromARGB(255, 128, 128, 128),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
+    return Padding(
+      padding: padding,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 65,
+                width: 110,
+                child: CachedNetworkImage(
+                  imageUrl: video.thumbnailUrl!,
+                  imageBuilder: (context, imageProvider) {
+                    Decoration boxDecoration = BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      image: DecorationImage(
+                        image: imageProvider,
+                        repeat: ImageRepeat.noRepeat,
+                        fit: BoxFit.cover,
                       ),
+                    );
+
+                    return Container(
+                      decoration: boxDecoration,
+                    );
+                  },
+                  placeholder: (context, progress) {
+                    return Shimmer.fromColors(
+                      baseColor: const Color.fromARGB(123, 121, 121, 121),
+                      highlightColor: const Color.fromARGB(255, 128, 128, 128),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
+                    );
+                  },
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
+              const SizedBox(width: 15),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 5),
+                  SizedBox(
+                    width: 100,
+                    child: Text(
+                      video.title ?? 'Title',
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  );
-                },
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                  ),
+                  const SizedBox(height: 33),
+                  Text(
+                    video.duration,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(width: 15),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 5),
-                SizedBox(
-                  width: 100,
-                  child: Text(
-                    video.title ?? 'Title',
-                    overflow: TextOverflow.ellipsis,
+              const SizedBox(width: 25),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.all(0),
+                  backgroundColor: Colors.transparent,
+                  side: const BorderSide(
+                    color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 33),
-                Text(
-                  video.duration,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(width: 25),
-            ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(0),
-                backgroundColor: Colors.transparent,
-                side: const BorderSide(
-                  color: Colors.white,
+                child: const Icon(
+                  Icons.download,
+                  size: 20,
                 ),
               ),
-              child: const Icon(
-                Icons.download,
-                size: 20,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-        const Text(
-            'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero recusandae quis consequuntur perferendis. Blanditiis aliquid molestiae commodi dignissimos optio fugiat illo ut, provident inventore alias omnis excepturi cumque ducimus reprehenderit.'),
-      ],
+            ],
+          ),
+          const SizedBox(height: 20),
+          const Text(
+              'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero recusandae quis consequuntur perferendis. Blanditiis aliquid molestiae commodi dignissimos optio fugiat illo ut, provident inventore alias omnis excepturi cumque ducimus reprehenderit.'),
+        ],
+      ),
     );
   }
 }

@@ -1,20 +1,14 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/config/routing/argument/content/detail_args.dart';
+import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
 import 'package:shimmer/shimmer.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:prima_studio/app/blocs/film/film_bloc.dart';
-// import 'package:prima_studio/app/models/film.dart';
-// import 'package:prima_studio/config/routing/arguments/arguments.dart';
 
 class BannerWidget extends StatefulWidget {
   const BannerWidget({Key? key, required this.contents}) : super(key: key);
-  final List<Content> contents;
+  final List<dynamic> contents;
   @override
   State<BannerWidget> createState() => _BannerWidgetState();
 }
@@ -98,8 +92,8 @@ class HeroCarouselCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).pushNamed(
-          '/detail',
-          arguments: DetailArguments(content: content),
+          '/detail-content',
+          arguments: DetailContentArguments(content: content),
         );
       },
       child: CachedNetworkImage(
