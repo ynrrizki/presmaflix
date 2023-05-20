@@ -5,7 +5,8 @@ import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 
 class AllContentPage extends StatelessWidget {
-  const AllContentPage({super.key, required this.title, required this.contents});
+  const AllContentPage(
+      {super.key, required this.title, required this.contents});
   final String title;
   final List<Content> contents;
 
@@ -41,8 +42,17 @@ class AllContentPage extends StatelessWidget {
             crossAxisSpacing: 7,
           ),
           itemCount: contents.length,
-          itemBuilder: (context, index) => PosterWidget(
-            content: contents[index],
+          itemBuilder: (context, index) => AnimationConfiguration.staggeredGrid(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            columnCount: contents.length,
+            child: ScaleAnimation(
+              child: FadeInAnimation(
+                child: PosterWidget(
+                  content: contents[index],
+                ),
+              ),
+            ),
           ),
         ),
       ),

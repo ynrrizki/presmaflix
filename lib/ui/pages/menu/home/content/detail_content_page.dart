@@ -105,8 +105,17 @@ class DetailContentPage extends StatelessWidget {
           crossAxisSpacing: 7,
         ),
         itemCount: contents.length,
-        itemBuilder: (context, index) => PosterWidget(
-          content: contents[index],
+        itemBuilder: (context, index) => AnimationConfiguration.staggeredGrid(
+          position: index,
+          columnCount: contents.length,
+          delay: const Duration(milliseconds: 375),
+          child: ScaleAnimation(
+            child: FadeInAnimation(
+              child: PosterWidget(
+                content: contents[index],
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -138,7 +147,7 @@ class DetailContentPage extends StatelessWidget {
                     .map(
                       (video) => AnimationConfiguration.staggeredList(
                         position: 1,
-                        delay: const Duration(milliseconds: 500),
+                        delay: const Duration(milliseconds: 375),
                         child: SlideAnimation(
                           horizontalOffset: -250.0,
                           curve: Curves.easeOutExpo,
