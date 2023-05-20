@@ -108,7 +108,7 @@ class DetailContentPage extends StatelessWidget {
         itemBuilder: (context, index) => AnimationConfiguration.staggeredGrid(
           position: index,
           columnCount: contents.length,
-          delay: const Duration(milliseconds: 375),
+          delay: const Duration(milliseconds: 200),
           child: ScaleAnimation(
             child: FadeInAnimation(
               child: PosterWidget(
