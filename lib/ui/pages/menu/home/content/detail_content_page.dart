@@ -81,74 +81,78 @@ class DetailContentPage extends StatelessWidget {
         ),
         // Mengambil panjang tab video yang sudah di group dan ditambahkan angka satu
         // untuk Tab 'Similar'
-        tabCount: generateTab(videos, tabTypes).length + 1,
+        tabCount: _generateTab(videos, tabTypes).length + 1,
         tabs: [
-          ...generateTab(videos, tabTypes),
-          // Menambahkan Tab 'Similar' ke List<Tab> yang sudah dibuat
+          ..._generateTab(videos, tabTypes),
           const Tab(text: 'Similar'),
         ],
-        tabBarViews: [
-          ...generateTabView(videos, tabTypes),
-          // Similar
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
-            child: GridView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 0),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.7,
-                mainAxisSpacing: 16,
-                crossAxisSpacing: 7,
-              ),
-              itemCount: contents.length,
-              itemBuilder: (context, index) => PosterWidget(
-                content: contents[index],
-              ),
-            ),
+        tabBarViews: _generateTabView(videos, tabTypes)
+          ..add(
+            _tabSimilar(contents),
           ),
-        ],
       ),
     );
   }
 
-  List<ListView> generateTabView(List<Video> videos, List<String> tabTypes) {
+  Padding _tabSimilar(List<Content> contents) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
+      child: GridView.builder(
+        padding: const EdgeInsets.symmetric(vertical: 0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          childAspectRatio: 0.7,
+          mainAxisSpacing: 16,
+          crossAxisSpacing: 7,
+        ),
+        itemCount: contents.length,
+        itemBuilder: (context, index) => PosterWidget(
+          content: contents[index],
+        ),
+      ),
+    );
+  }
+
+  List<Widget> _generateTabView(List<Video> videos, List<String> tabTypes) {
     // Menampilkan video berdasarkan tipe
     // tampilkan video yang berasosiasi dengan content.id dan memiliki tipe yang sama dengan Tab
     return videos
         .where((video) =>
             video.mediaId == content.id && video.type != 'full-length')
-        .fold<List<ListView>>(
+        .fold<List<Widget>>(
       [],
       (list, video) {
         // Jika tipe video sama dengan tipe Tab, tambahkan video ke List<Video>
         if (video.type == tabTypes[list.length]) {
-          list.add(ListView(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
-            children: [
-              ...videos
-                  .where(
-                    (video) =>
-                        video.mediaId == content.id &&
-                        video.type != 'full-length' &&
-                        video.type == tabTypes[list.length],
-                  )
-                  .map(
-                    (video) => CardVideo(
-                      video: video,
-                      padding: const EdgeInsets.only(bottom: 20),
-                    ),
-                  )
-                  .toList(),
-            ],
-          ));
+          list.add(
+            ListView(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              children: [
+                ...videos
+                    .where(
+                      (video) =>
+                          video.mediaId == content.id &&
+                          video.type != 'full-length' &&
+                          video.type == tabTypes[list.length],
+                    )
+                    .map(
+                      (video) => CardVideo(
+                        video: video,
+                        padding: const EdgeInsets.only(bottom: 20),
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
+          );
         }
         return list;
       },
     );
   }
 
-  List<Tab> generateTab(List<Video> videos, List<String> tabTypes) {
+  List<Tab> _generateTab(List<Video> videos, List<String> tabTypes) {
     return videos
         // Mengambil video yang memenuhi kriteria
         // (berasosiasi dengan content.id dan memiliki tipe selain 'full-length')
