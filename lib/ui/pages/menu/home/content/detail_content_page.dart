@@ -1,11 +1,10 @@
-import 'dart:developer';
+// import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
-// import 'package:presmaflix/app/models/media.dart';
 import 'package:presmaflix/app/models/video.dart';
 import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
@@ -24,7 +23,6 @@ class DetailContentPage extends StatelessWidget {
     List<Video> videos = Video.videos;
     List<Content> contents = Content.contents;
     List<String> tabTypes = [];
-    // List<Media> media = Media.media;
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
@@ -269,6 +267,8 @@ class DetailContentPage extends StatelessWidget {
         children: [
           Text(
             description,
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
               color: Colors.grey,
@@ -474,26 +474,28 @@ class CardVideo extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 25),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(0),
-                  backgroundColor: Colors.transparent,
-                  side: const BorderSide(
-                    color: Colors.white,
-                  ),
-                ),
+              // const SizedBox(width: 25),
+              const Expanded(
+                child: SizedBox(),
+              ),
+              GestureDetector(
+                onTap: () {},
                 child: const Icon(
                   Icons.download,
-                  size: 20,
+                  size: 25,
                 ),
               ),
+              const SizedBox(width: 15),
             ],
           ),
           const SizedBox(height: 20),
+          // make view more text
           const Text(
-              'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero recusandae quis consequuntur perferendis. Blanditiis aliquid molestiae commodi dignissimos optio fugiat illo ut, provident inventore alias omnis excepturi cumque ducimus reprehenderit.'),
+            maxLines: 3,
+            textWidthBasis: TextWidthBasis.longestLine,
+            overflow: TextOverflow.ellipsis,
+            'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Libero recusandae quis consequuntur perferendis. Blanditiis aliquid molestiae commodi dignissimos optio fugiat illo ut, provident inventore alias omnis excepturi cumque ducimus reprehenderit.',
+          ),
         ],
       ),
     );
