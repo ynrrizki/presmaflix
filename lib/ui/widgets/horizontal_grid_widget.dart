@@ -33,138 +33,85 @@ class HorizontalGridWidget extends StatelessWidget {
   final double? mainAxisExtent;
   final double mainAxisSpacing;
 
-  Future<List<Content>> loadContent() async {
-    return contents;
-  }
+  // Future<List<Content>> loadContent() async {
+  //   return contents;
+  // }
 
   @override
   Widget build(BuildContext context) {
     if (contents.isEmpty) {
       return const SizedBox();
     } else {
-      return FutureBuilder(
-        future: Future.delayed(
-          const Duration(seconds: 2),
-          () => loadContent(),
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return skleton();
-          } else if (snapshot.hasData) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        title,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      InkWell(
-                        borderRadius: BorderRadius.circular(10),
-                        onTap: onTap ??
-                            () {
-                              Navigator.of(context, rootNavigator: true)
-                                  .pushNamed(
-                                '/all-content',
-                                arguments: AllContentArguments(
-                                  title: title,
-                                  contents: contents,
-                                ),
-                              );
-                            },
-                        child: const Padding(
-                          padding: EdgeInsets.all(5),
-                          child: Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 20,
+                Text(
+                  title,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: onTap ??
+                      () {
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          '/all-content',
+                          arguments: AllContentArguments(
+                            title: title,
+                            contents: contents,
                           ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: maxHeight,
-                  ),
-                  child: GridView.builder(
-                    scrollDirection: Axis.horizontal,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      childAspectRatio: childAspectRatio,
-                      crossAxisSpacing: crossAxisSpacing,
-                      mainAxisExtent: mainAxisExtent,
-                      mainAxisSpacing: mainAxisSpacing,
+                        );
+                      },
+                  child: const Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 20,
                     ),
-                    itemCount: contents.length,
-                    itemBuilder: (context, index) {
-                      double left = 0, right = 0;
-                      if (index == 0) {
-                        left = 16;
-                      } else if (index == contents.length - 1) {
-                        right = 16;
-                      }
-                      log('${contents.length}');
-                      return PosterWidget(
-                        content: contents[index],
-                        margin: EdgeInsets.only(left: left, right: right),
-                      );
-                    },
                   ),
-                ),
+                )
               ],
-            );
-          } else {
-            return Shimmer.fromColors(
-              baseColor: const Color.fromARGB(123, 121, 121, 121),
-              highlightColor: const Color.fromARGB(255, 128, 128, 128),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 150,
-                          height: 20,
-                          color: Colors.white,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    color: Colors.white,
-                    constraints: const BoxConstraints(
-                      maxHeight: 100,
-                    ),
-                    width: double.infinity,
-                  ),
-                ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              maxHeight: maxHeight,
+            ),
+            child: GridView.builder(
+              scrollDirection: Axis.horizontal,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: crossAxisCount,
+                childAspectRatio: childAspectRatio,
+                crossAxisSpacing: crossAxisSpacing,
+                mainAxisExtent: mainAxisExtent,
+                mainAxisSpacing: mainAxisSpacing,
               ),
-            );
-          }
-        },
+              itemCount: contents.length,
+              itemBuilder: (context, index) {
+                double left = 0, right = 0;
+                if (index == 0) {
+                  left = 16;
+                } else if (index == contents.length - 1) {
+                  right = 16;
+                }
+                log('${contents.length}');
+                return PosterWidget(
+                  content: contents[index],
+                  margin: EdgeInsets.only(left: left, right: right),
+                );
+              },
+            ),
+          ),
+        ],
       );
     }
   }

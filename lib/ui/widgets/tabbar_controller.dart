@@ -49,7 +49,10 @@ class _TabBarControllerState extends State<TabBarController>
               Container(
                 color: Colors.grey[900],
                 child: TabBar(
-                  indicatorWeight: widget.tabCount > 1 ? 1.0 : 2.0,
+                  // indicatorWeight: widget.tabCount > 1 ? 1.0 : 2.0,
+                  indicatorSize: widget.tabCount < 2
+                      ? TabBarIndicatorSize.label
+                      : TabBarIndicatorSize.tab,
                   controller: _tabController,
                   indicatorColor: Theme.of(context).primaryColor,
                   tabs: widget.tabs,

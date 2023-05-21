@@ -392,18 +392,18 @@ class DetailContentPage extends StatelessWidget {
               opacity: 0.2,
             ),
           ),
-          height: 170,
+          height: 195,
           child: ClipRRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
               child: Container(
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.0)),
+                decoration: const BoxDecoration(color: Colors.transparent),
               ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 45),
+          padding: const EdgeInsets.only(top: 95),
           child: Align(
             alignment: Alignment.bottomCenter,
             child: PosterWidget(
