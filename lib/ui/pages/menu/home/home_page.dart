@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,7 +23,12 @@ class HomePage extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topRight,
                   child: FloatingActionButton.small(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                        rootNavigator: true,
+                      ).pushNamed('/search');
+                    },
                     backgroundColor: const Color.fromARGB(125, 124, 124, 124),
                     child: const Icon(
                       CupertinoIcons.search,
@@ -47,28 +50,10 @@ class HomePage extends StatelessWidget {
                 children: [
                   _contentSection(title: 'Movie', type: 'movie'),
                   const SizedBox(height: 15),
-                  // HorizontalGridWidget(
-                  //   title: 'Animation',
-                  //   contents: contents
-                  //       .where((content) => content.type == 'animation')
-                  //       .toList(),
-                  // ),
                   _contentSection(title: 'Animation', type: 'animation'),
                   const SizedBox(height: 15),
-                  // HorizontalGridWidget(
-                  //   title: 'Tv Global',
-                  //   contents: contents
-                  //       .where((content) => content.type == 'tv-global')
-                  //       .toList(),
-                  // ),
                   _contentSection(title: 'Tv Global', type: 'tv-global'),
                   const SizedBox(height: 15),
-                  // HorizontalGridWidget(
-                  //   title: 'Music Video',
-                  //   contents: contents
-                  //       .where((content) => content.type == 'music-video')
-                  //       .toList(),
-                  // ),
                   _contentSection(title: 'Music Video', type: 'music-video'),
                   const SizedBox(height: 50),
                 ],
@@ -105,24 +90,6 @@ class HomePage extends StatelessWidget {
                   .toList(),
             )
           : const SkletonHorizontalGridWidget(),
-      // builder: (context, state) {
-      //   if (state is ContentLoading) {
-      //     return const SkletonHorizontalGridWidget();
-      //   }
-      //   if (state is ContentLoaded) {
-      //     return HorizontalGridWidget(
-      //       title: title,
-      //       contents:
-      //           state.contents.where((content) => content.isFeatured).toList(),
-      //     );
-      //   } else {
-      //     return Row(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       crossAxisAlignment: CrossAxisAlignment.center,
-      //       children: const [Text('Something went wrong')],
-      //     );
-      //   }
-      // },
     );
   }
 }

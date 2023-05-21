@@ -8,6 +8,7 @@ import 'package:presmaflix/config/routing/argument/content/detail_content_args.d
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/all_content_page.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/detail_content_page.dart';
+import 'package:presmaflix/ui/pages/menu/search/search_page.dart';
 
 class AppRouter {
   Route onRoute(RouteSettings settings) {
@@ -25,13 +26,6 @@ class AppRouter {
             content: args.content,
           ),
         );
-      // return PageTransition(
-      //   child: DetailContentPage(
-      //     content: args.content,
-      //   ),
-      //   type: PageTransitionType.rightToLeft,
-      //   duration: const Duration(milliseconds: 300),
-      // );
       case "/all-content":
         final args = settings.arguments as AllContentArguments;
         return CupertinoPageRoute(
@@ -40,14 +34,11 @@ class AppRouter {
             contents: args.contents,
           ),
         );
-      // return PageTransition(
-      //   child: AllContentPage(
-      //     title: args.title,
-      //     contents: args.contents,
-      //   ),
-      //   type: PageTransitionType.rightToLeft,
-      //   duration: const Duration(milliseconds: 300),
-      // );
+      case "/search":
+        return CupertinoPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const SearchPage(),
+        );
       default:
         return _errorRoute();
     }

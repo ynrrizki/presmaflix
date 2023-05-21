@@ -33,7 +33,6 @@ dependencies:
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.2
   google_fonts: ^4.0.3
-  page_transition: ^2.0.9
   persistent_bottom_nav_bar_v2: ^4.2.8
   flutter_icons: ^1.1.0
   cloud_firestore: ^4.5.2
