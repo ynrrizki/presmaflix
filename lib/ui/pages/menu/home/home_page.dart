@@ -53,26 +53,29 @@ class HomePage extends StatelessWidget {
                 children: [
                   _contentSection(title: 'Movie', type: 'movie'),
                   const SizedBox(height: 15),
-                  HorizontalGridWidget(
-                    title: 'Animation',
-                    contents: contents
-                        .where((content) => content.type == 'animation')
-                        .toList(),
-                  ),
+                  // HorizontalGridWidget(
+                  //   title: 'Animation',
+                  //   contents: contents
+                  //       .where((content) => content.type == 'animation')
+                  //       .toList(),
+                  // ),
+                  _contentSection(title: 'Animation', type: 'animation'),
                   const SizedBox(height: 15),
-                  HorizontalGridWidget(
-                    title: 'Tv Global',
-                    contents: contents
-                        .where((content) => content.type == 'tv-global')
-                        .toList(),
-                  ),
+                  // HorizontalGridWidget(
+                  //   title: 'Tv Global',
+                  //   contents: contents
+                  //       .where((content) => content.type == 'tv-global')
+                  //       .toList(),
+                  // ),
+                  _contentSection(title: 'Tv Global', type: 'tv-global'),
                   const SizedBox(height: 15),
-                  HorizontalGridWidget(
-                    title: 'Music Video',
-                    contents: contents
-                        .where((content) => content.type == 'music-video')
-                        .toList(),
-                  ),
+                  // HorizontalGridWidget(
+                  //   title: 'Music Video',
+                  //   contents: contents
+                  //       .where((content) => content.type == 'music-video')
+                  //       .toList(),
+                  // ),
+                  _contentSection(title: 'Music Video', type: 'music-video'),
                   const SizedBox(height: 50),
                 ],
               ),
