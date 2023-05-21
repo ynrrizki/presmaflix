@@ -21,30 +21,47 @@ class _BannerWidgetState extends State<BannerWidget> {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [
-        CarouselSlider(
-          items: widget.contents
-              .map(
-                (content) => HeroCarouselCard(
-                  content: content,
+        widget.contents.isNotEmpty
+            ? CarouselSlider(
+                items: widget.contents
+                    .map(
+                      (content) => HeroCarouselCard(
+                        content: content,
+                      ),
+                    )
+                    .toList(),
+                options: CarouselOptions(
+                  initialPage: 0,
+                  viewportFraction: 1,
+                  reverse: false,
+                  autoPlay: true,
+                  autoPlayInterval: const Duration(seconds: 5),
+                  autoPlayAnimationDuration: const Duration(milliseconds: 300),
+                  autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                  scrollDirection: Axis.horizontal,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _indexCarousel = index;
+                    });
+                  },
                 ),
               )
-              .toList(),
-          options: CarouselOptions(
-            initialPage: 0,
-            viewportFraction: 1,
-            reverse: false,
-            autoPlay: true,
-            autoPlayInterval: const Duration(seconds: 5),
-            autoPlayAnimationDuration: const Duration(milliseconds: 300),
-            autoPlayCurve: Curves.fastLinearToSlowEaseIn,
-            scrollDirection: Axis.horizontal,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _indexCarousel = index;
-              });
-            },
-          ),
-        ),
+            : CarouselSlider(
+                items: [
+                  Shimmer.fromColors(
+                    baseColor: const Color.fromARGB(123, 121, 121, 121),
+                    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+                options: CarouselOptions(
+                    viewportFraction: 1,
+                    scrollPhysics: const NeverScrollableScrollPhysics()),
+              ),
         Container(
           decoration: BoxDecoration(
             color: const Color.fromARGB(150, 158, 158, 158),

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:presmaflix/app/bloc/content/content_bloc.dart';
-import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/banner_widget.dart';
 import 'package:presmaflix/ui/widgets/horizontal_grid_widget.dart';
 import 'package:presmaflix/ui/widgets/skleton_horizontal_grid_widget.dart';
@@ -15,26 +14,21 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Content> contents = Content.contents;
     return Scaffold(
       body: ListView(
         children: [
           Stack(
             children: [
-              BannerWidget(
-                contents:
-                    contents.where((content) => content.isFeatured).toList(),
-              ),
+              _banner(),
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: FloatingActionButton.small(
                     onPressed: () {},
-                    backgroundColor: Colors.transparent,
+                    backgroundColor: const Color.fromARGB(125, 124, 124, 124),
                     child: const Icon(
                       CupertinoIcons.search,
-                      size: 30,
                     ),
                   ),
                 ),
@@ -86,30 +80,49 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _banner() {
+    return BlocBuilder<ContentBloc, ContentState>(
+      builder: (context, state) => state is ContentLoaded
+          ? BannerWidget(
+              contents: state.contents
+                  .where((content) => content.isFeatured)
+                  .toList(),
+            )
+          : const BannerWidget(contents: []),
+    );
+  }
+
   Widget _contentSection({
     required String title,
     required String type,
   }) {
     return BlocBuilder<ContentBloc, ContentState>(
-      builder: (context, state) {
-        if (state is ContentLoading) {
-          return const SkletonHorizontalGridWidget();
-        }
-        if (state is ContentLoaded) {
-          return HorizontalGridWidget(
-            title: title,
-            contents: state.contents
-                .where((content) => content.type == type)
-                .toList(),
-          );
-        } else {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [Text('Something went wrong')],
-          );
-        }
-      },
+      builder: (context, state) => state is ContentLoaded
+          ? HorizontalGridWidget(
+              title: title,
+              contents: state.contents
+                  .where((content) => content.type == type)
+                  .toList(),
+            )
+          : const SkletonHorizontalGridWidget(),
+      // builder: (context, state) {
+      //   if (state is ContentLoading) {
+      //     return const SkletonHorizontalGridWidget();
+      //   }
+      //   if (state is ContentLoaded) {
+      //     return HorizontalGridWidget(
+      //       title: title,
+      //       contents:
+      //           state.contents.where((content) => content.isFeatured).toList(),
+      //     );
+      //   } else {
+      //     return Row(
+      //       mainAxisAlignment: MainAxisAlignment.center,
+      //       crossAxisAlignment: CrossAxisAlignment.center,
+      //       children: const [Text('Something went wrong')],
+      //     );
+      //   }
+      // },
     );
   }
 }
