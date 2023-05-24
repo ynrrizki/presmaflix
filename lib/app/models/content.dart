@@ -1,4 +1,6 @@
-class Content {
+import 'package:equatable/equatable.dart';
+
+class Content extends Equatable {
   final String id;
   final String title;
   final String type;
@@ -8,10 +10,8 @@ class Content {
   final List<String> directors;
   final String thumbnailUrl;
   final String posterUrl;
-  // final DateTime createdAt;
   final bool isFeatured;
   final String createdAt;
-
   const Content({
     required this.id,
     required this.title,
@@ -25,6 +25,21 @@ class Content {
     this.isFeatured = false,
     required this.createdAt,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        title,
+        type,
+        genre,
+        description,
+        casts,
+        directors,
+        thumbnailUrl,
+        posterUrl,
+        isFeatured,
+        createdAt,
+      ];
 
   static List<Content> contents = const [
     Content(

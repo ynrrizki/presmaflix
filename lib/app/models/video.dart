@@ -1,4 +1,6 @@
-class Video {
+import 'package:equatable/equatable.dart';
+
+class Video extends Equatable {
   final String id;
   final String mediaId;
   final String? title;
@@ -20,6 +22,19 @@ class Video {
     required this.duration,
     required this.createdAt,
   });
+
+  @override
+  List<Object?> get props => [
+        id,
+        mediaId,
+        title,
+        type,
+        video,
+        thumbnailUrl,
+        description,
+        duration,
+        createdAt,
+      ];
 
   // 1 - 6
   static List<Video> videos = [

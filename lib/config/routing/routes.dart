@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:page_transition/page_transition.dart';
 import 'package:presmaflix/config/routing/argument/content/all_content_args.dart';
 import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';

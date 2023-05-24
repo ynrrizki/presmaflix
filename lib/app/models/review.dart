@@ -1,4 +1,6 @@
-class Review {
+import 'package:equatable/equatable.dart';
+
+class Review extends Equatable {
   final String id;
   final String videoId;
   final String name;
@@ -15,6 +17,16 @@ class Review {
     required this.createdAt,
   });
 
+  @override
+  List<Object?> get props => [
+        id,
+        videoId,
+        name,
+        email,
+        comment,
+        createdAt,
+      ];
+
   static List<Review> reviews = [
     Review(
       id: '1',
@@ -22,7 +34,7 @@ class Review {
       name: 'Yanuar Rizki',
       email: 'yanuarrizki165@gmail.com',
       comment: "Videonya keren banget gilaaa",
-      createdAt: DateTime.now(), 
+      createdAt: DateTime.now(),
     ),
   ];
 }
