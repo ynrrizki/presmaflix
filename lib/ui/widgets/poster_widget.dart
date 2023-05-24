@@ -40,18 +40,15 @@ class PosterWidget extends StatelessWidget {
           );
 
           return isRedirect
-              ? Ink(
-                  decoration: boxDecoration,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context, rootNavigator: true).pushNamed(
-                        '/detail-content',
-                        arguments: DetailContentArguments(content: content),
-                      );
-                    },
-                    child: const SizedBox(
-                      width: 120,
-                    ),
+              ? GestureDetector(
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true).pushNamed(
+                      '/detail-content',
+                      arguments: DetailContentArguments(content: content),
+                    );
+                  },
+                  child: Container(
+                    decoration: boxDecoration,
                   ),
                 )
               : Container(

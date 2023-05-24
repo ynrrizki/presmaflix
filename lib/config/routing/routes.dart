@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
+// import 'package:page_transition/page_transition.dart';
 import 'package:presmaflix/config/routing/argument/content/all_content_args.dart';
 import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/all_content_page.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/detail_content_page.dart';
+import 'package:presmaflix/ui/pages/menu/search/search_page.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/video_content_page.dart';
 
 class AppRouter {
@@ -21,22 +22,23 @@ class AppRouter {
         );
       case "/detail-content":
         final args = settings.arguments as DetailContentArguments;
-        return PageTransition(
-          child: DetailContentPage(
+        return CupertinoPageRoute(
+          builder: (context) => DetailContentPage(
             content: args.content,
           ),
-          type: PageTransitionType.rightToLeft,
-          duration: const Duration(milliseconds: 300),
         );
       case "/all-content":
         final args = settings.arguments as AllContentArguments;
-        return PageTransition(
-          child: AllContentPage(
+        return CupertinoPageRoute(
+          builder: (context) => AllContentPage(
             title: args.title,
             contents: args.contents,
           ),
-          type: PageTransitionType.rightToLeft,
-          duration: const Duration(milliseconds: 300),
+        );
+      case "/search":
+        return CupertinoPageRoute(
+          fullscreenDialog: true,
+          builder: (context) => const SearchPage(),
         );
       case "/video-page":
         //TODO add dynamic data to Video Player

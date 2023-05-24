@@ -41,8 +41,17 @@ class AllContentPage extends StatelessWidget {
             crossAxisSpacing: 7,
           ),
           itemCount: contents.length,
-          itemBuilder: (context, index) => PosterWidget(
-            content: contents[index],
+          itemBuilder: (context, index) => AnimationConfiguration.staggeredGrid(
+            position: index,
+            duration: const Duration(milliseconds: 375),
+            columnCount: contents.length,
+            child: ScaleAnimation(
+              child: FadeInAnimation(
+                child: PosterWidget(
+                  content: contents[index],
+                ),
+              ),
+            ),
           ),
         ),
       ),
