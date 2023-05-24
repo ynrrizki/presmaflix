@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -283,7 +282,7 @@ class DetailContentPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => Navigator.of(context).pushNamed("/video-page"),
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor,
         ),

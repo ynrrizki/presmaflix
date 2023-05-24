@@ -129,7 +129,7 @@ class BottomNavigation extends StatelessWidget {
           builder: (context, state) {
             return PersistentTabView(
               context,
-              decoration: NavBarDecoration(),
+              decoration: const NavBarDecoration(),
               key: globalKey,
               controller: controller,
               onWillPop: (context) async {
