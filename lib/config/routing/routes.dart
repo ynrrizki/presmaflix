@@ -42,10 +42,8 @@ class AppRouter {
         );
       case "/video-page":
         //TODO add dynamic data to Video Player
-        return PageTransition(
-          child: const VideoPage(),
-          type: PageTransitionType.rightToLeft,
-          duration: const Duration(milliseconds: 300),
+        return CupertinoPageRoute(
+          builder: (context) => const VideoPage(),
         );
       default:
         return _errorRoute();
