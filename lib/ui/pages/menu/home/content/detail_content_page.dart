@@ -303,7 +303,7 @@ class DetailContentPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => Navigator.of(context).pushNamed("/video-page"),
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor,
         ),

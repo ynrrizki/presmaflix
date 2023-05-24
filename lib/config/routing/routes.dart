@@ -8,6 +8,7 @@ import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/all_content_page.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/detail_content_page.dart';
 import 'package:presmaflix/ui/pages/menu/search/search_page.dart';
+import 'package:presmaflix/ui/pages/menu/home/content/video_content_page.dart';
 
 class AppRouter {
   Route onRoute(RouteSettings settings) {
@@ -37,6 +38,11 @@ class AppRouter {
         return CupertinoPageRoute(
           fullscreenDialog: true,
           builder: (context) => const SearchPage(),
+        );
+      case "/video-page":
+        //TODO add dynamic data to Video Player
+        return CupertinoPageRoute(
+          builder: (context) => const VideoPage(),
         );
       default:
         return _errorRoute();

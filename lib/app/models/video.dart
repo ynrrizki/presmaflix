@@ -5,7 +5,7 @@ class Video extends Equatable {
   final String mediaId;
   final String? title;
   final String type;
-  final String video;
+  final String videoUrl;
   final String? thumbnailUrl;
   final String? description;
   final String duration;
@@ -16,7 +16,7 @@ class Video extends Equatable {
     required this.mediaId,
     this.title,
     required this.type,
-    required this.video,
+    required this.videoUrl,
     this.thumbnailUrl,
     this.description,
     required this.duration,
@@ -42,7 +42,7 @@ class Video extends Equatable {
       id: '1',
       mediaId: '1',
       type: 'full-length',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -53,7 +53,7 @@ class Video extends Equatable {
       id: '2',
       mediaId: '2',
       type: 'full-length',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -64,7 +64,7 @@ class Video extends Equatable {
       id: '3',
       mediaId: '3',
       type: 'full-length',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -75,7 +75,7 @@ class Video extends Equatable {
       id: '4',
       mediaId: '4',
       type: 'full-length',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -86,7 +86,7 @@ class Video extends Equatable {
       id: '5',
       mediaId: '5',
       type: 'full-length',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -98,7 +98,7 @@ class Video extends Equatable {
       mediaId: '6',
       type: 'Episodes',
       title: 'Episode 1',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -110,7 +110,7 @@ class Video extends Equatable {
       mediaId: '6',
       type: 'Episodes',
       title: 'Episode 2',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -122,7 +122,7 @@ class Video extends Equatable {
       mediaId: '6',
       type: 'Episodes',
       title: 'Episode 3',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -134,7 +134,7 @@ class Video extends Equatable {
       mediaId: '6',
       type: 'Episodes',
       title: 'Episode 4',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -146,7 +146,7 @@ class Video extends Equatable {
       mediaId: '6',
       type: 'Episodes',
       title: 'Episode 5',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -158,7 +158,7 @@ class Video extends Equatable {
       mediaId: '1',
       title: 'Sipder-Man: No Way Home Trailer',
       type: 'Trailer',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -170,7 +170,7 @@ class Video extends Equatable {
       mediaId: '2',
       title: 'Buya Hamka Trailer',
       type: 'Trailer',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
@@ -182,7 +182,7 @@ class Video extends Equatable {
       mediaId: '6',
       title: 'Game of Thrones Trailer',
       type: 'Trailer',
-      video: 'https://youtu.be/bqsY1jDkQzk',
+      videoUrl: 'https://youtu.be/bqsY1jDkQzk',
       thumbnailUrl: 'https://i.ytimg.com/vi/fAQnkdaGisM/maxresdefault.jpg',
       description:
           'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dignissimos eaque odio repudiandae magni cum adipisci doloribus nulla eos perspiciatis expedita, laudantium fuga omnis sed deleniti ratione dolorum ducimus minus cumque?',
