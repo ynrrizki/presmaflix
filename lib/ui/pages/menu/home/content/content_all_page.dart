@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class AllContentPage extends StatelessWidget {
-  const AllContentPage(
+class ContentAllPage extends StatelessWidget {
+  const ContentAllPage(
       {super.key, required this.title, required this.contents});
   final String title;
   final List<Content> contents;

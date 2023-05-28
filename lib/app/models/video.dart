@@ -29,7 +29,7 @@ class Video extends Equatable {
         mediaId,
         title,
         type,
-        video,
+        videoUrl,
         thumbnailUrl,
         description,
         duration,

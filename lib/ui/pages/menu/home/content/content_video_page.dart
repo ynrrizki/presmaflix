@@ -7,14 +7,14 @@ import 'package:flutter/services.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:presmaflix/app/models/video.dart';
 
-class VideoPage extends StatefulWidget {
-  const VideoPage({super.key});
+class ContentVideoPage extends StatefulWidget {
+  const ContentVideoPage({super.key});
 
   @override
-  State<VideoPage> createState() => VideoPageState();
+  State<ContentVideoPage> createState() => ContentVideoPageState();
 }
 
-class VideoPageState extends State<VideoPage> {
+class ContentVideoPageState extends State<ContentVideoPage> {
   late final PodPlayerController videoController;
   List<Video> videos = Video.videos;
   bool isFullScreen = true;

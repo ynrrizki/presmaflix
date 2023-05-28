@@ -11,8 +11,8 @@ import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-class DetailContentPage extends StatelessWidget {
-  const DetailContentPage({
+class ContentDetailPage extends StatelessWidget {
+  const ContentDetailPage({
     super.key,
     required this.content,
   });
@@ -132,6 +132,7 @@ class DetailContentPage extends StatelessWidget {
       (list, video) {
         // Jika tipe video sama dengan tipe Tab, tambahkan video ke List<Video>
         if (video.type == tabTypes[list.length]) {
+          // conver to ListView.builder
           list.add(
             ListView(
               shrinkWrap: true,
@@ -146,8 +147,8 @@ class DetailContentPage extends StatelessWidget {
                     )
                     .map(
                       (video) => AnimationConfiguration.staggeredList(
-                        position: 1,
-                        delay: const Duration(milliseconds: 375),
+                        position: videos.indexOf(video),
+                        duration: const Duration(milliseconds: 375),
                         child: SlideAnimation(
                           horizontalOffset: -250.0,
                           curve: Curves.easeOutExpo,

@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:presmaflix/config/routing/argument/content/all_content_args.dart';
 import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/all_content_page.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/detail_content_page.dart';
+import 'package:presmaflix/ui/pages/menu/home/content/content_all_page.dart';
+import 'package:presmaflix/ui/pages/menu/home/content/content_detail_page.dart';
 import 'package:presmaflix/ui/pages/menu/search/search_page.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/video_content_page.dart';
+import 'package:presmaflix/ui/pages/menu/home/content/content_video_page.dart';
 
 class AppRouter {
   Route onRoute(RouteSettings settings) {
@@ -22,14 +22,14 @@ class AppRouter {
       case "/detail-content":
         final args = settings.arguments as DetailContentArguments;
         return CupertinoPageRoute(
-          builder: (context) => DetailContentPage(
+          builder: (context) => ContentDetailPage(
             content: args.content,
           ),
         );
       case "/all-content":
         final args = settings.arguments as AllContentArguments;
         return CupertinoPageRoute(
-          builder: (context) => AllContentPage(
+          builder: (context) => ContentAllPage(
             title: args.title,
             contents: args.contents,
           ),
@@ -40,9 +40,8 @@ class AppRouter {
           builder: (context) => const SearchPage(),
         );
       case "/video-page":
-        //TODO add dynamic data to Video Player
         return CupertinoPageRoute(
-          builder: (context) => const VideoPage(),
+          builder: (context) => const ContentVideoPage(),
         );
       default:
         return _errorRoute();
