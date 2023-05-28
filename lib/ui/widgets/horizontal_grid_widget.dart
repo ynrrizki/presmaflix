@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 // import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:presmaflix/config/routing/argument/content/all_content_args.dart';
+import 'package:presmaflix/config/routing/argument/content/content_all_args.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -84,8 +84,8 @@ class HorizontalGridWidget extends StatelessWidget {
                 onTap: onTap ??
                     () {
                       Navigator.of(context, rootNavigator: true).pushNamed(
-                        '/all-content',
-                        arguments: AllContentArguments(
+                        '/content-all',
+                        arguments: ContentAllArguments(
                           title: title,
                           contents: contents,
                         ),

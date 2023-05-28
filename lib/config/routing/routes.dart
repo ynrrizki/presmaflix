@@ -2,8 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:presmaflix/config/routing/argument/content/all_content_args.dart';
-import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
+import 'package:presmaflix/config/routing/argument/content/content_all_args.dart';
+import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
+import 'package:presmaflix/ui/pages/auth/login_page.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/content_all_page.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/content_detail_page.dart';
@@ -17,31 +18,35 @@ class AppRouter {
     switch (settings.name) {
       case "/":
         return CupertinoPageRoute(
+          builder: (context) => const LoginPage(),
+        );
+      case "/home":
+        return CupertinoPageRoute(
           builder: (context) => const BottomNavigation(),
         );
-      case "/detail-content":
-        final args = settings.arguments as DetailContentArguments;
+      case "/content-detail":
+        final args = settings.arguments as ContentDetailArguments;
         return CupertinoPageRoute(
           builder: (context) => ContentDetailPage(
             content: args.content,
           ),
         );
-      case "/all-content":
-        final args = settings.arguments as AllContentArguments;
+      case "/content-all":
+        final args = settings.arguments as ContentAllArguments;
         return CupertinoPageRoute(
           builder: (context) => ContentAllPage(
             title: args.title,
             contents: args.contents,
           ),
         );
+      case "/content-video":
+        return CupertinoPageRoute(
+          builder: (context) => const ContentVideoPage(),
+        );
       case "/search":
         return CupertinoPageRoute(
           fullscreenDialog: true,
           builder: (context) => const SearchPage(),
-        );
-      case "/video-page":
-        return CupertinoPageRoute(
-          builder: (context) => const ContentVideoPage(),
         );
       default:
         return _errorRoute();

@@ -3,7 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/config/routing/argument/content/detail_content_args.dart';
+import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BannerWidget extends StatefulWidget {
@@ -110,7 +110,7 @@ class HeroCarouselCard extends StatelessWidget {
       onTap: () {
         Navigator.of(context, rootNavigator: true).pushNamed(
           '/detail-content',
-          arguments: DetailContentArguments(content: content),
+          arguments: ContentDetailArguments(content: content),
         );
       },
       child: CachedNetworkImage(
