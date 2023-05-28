@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:presmaflix/config/routing/argument/content/content_all_args.dart';
 import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
+import 'package:presmaflix/config/routing/argument/content/content_video_args.dart';
 import 'package:presmaflix/ui/pages/auth/login_page.dart';
 import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
 import 'package:presmaflix/ui/pages/menu/home/content/content_all_page.dart';
@@ -40,8 +41,11 @@ class AppRouter {
           ),
         );
       case "/content-video":
+        final args = settings.arguments as ContentVideoArguments;
         return CupertinoPageRoute(
-          builder: (context) => const ContentVideoPage(),
+          builder: (context) => ContentVideoPage(
+            video: args.video,
+          ),
         );
       case "/search":
         return CupertinoPageRoute(

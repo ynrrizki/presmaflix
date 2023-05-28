@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:presmaflix/ui/widgets/search_field_widget.dart';
+// import 'package:presmaflix/ui/widgets/text_field_widget.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -7,10 +9,17 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search'),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        iconTheme: const IconThemeData(color: Colors.white),
+        elevation: 0,
+        title: SearchFieldWidget(
+          searchController: TextEditingController(),
+        ),
       ),
-      body: const Center(
-        child: Text('Search'),
+      body: SingleChildScrollView(
+        child: Column(
+          children: const [],
+        ),
       ),
     );
   }

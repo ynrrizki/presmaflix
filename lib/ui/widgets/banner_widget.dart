@@ -109,7 +109,7 @@ class HeroCarouselCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).pushNamed(
-          '/detail-content',
+          '/content-detail',
           arguments: ContentDetailArguments(content: content),
         );
       },

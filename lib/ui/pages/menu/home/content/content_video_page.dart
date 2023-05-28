@@ -8,7 +8,9 @@ import 'package:pod_player/pod_player.dart';
 import 'package:presmaflix/app/models/video.dart';
 
 class ContentVideoPage extends StatefulWidget {
-  const ContentVideoPage({super.key});
+  const ContentVideoPage({super.key, required this.video});
+
+  final Video video;
 
   @override
   State<ContentVideoPage> createState() => ContentVideoPageState();
@@ -62,7 +64,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               overlayBuilder: (OverLayOptions options) => CustomOverlay(
                 options: options,
                 controller: videoController,
-                video: videos[0],
+                video: widget.video,
               ),
               onToggleFullScreen: (isFullScreen) {
                 if (isFullScreen) {
@@ -95,7 +97,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               controller: videoController,
               videoThumbnail: DecorationImage(
                 image: NetworkImage(
-                  videos[0].thumbnailUrl.toString(),
+                  widget.video.thumbnailUrl.toString(),
                 ),
               ),
             ),

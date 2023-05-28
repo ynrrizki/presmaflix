@@ -7,6 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/config/routing/argument/content/content_video_args.dart';
 import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 import 'package:shimmer/shimmer.dart';
@@ -55,7 +56,10 @@ class ContentDetailPage extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            _buttonPlay(context),
+            _buttonPlay(
+              context,
+              videos.where((video) => video.type == 'full-length').first,
+            ),
             const SizedBox(
               height: 25,
             ),
@@ -300,11 +304,12 @@ class ContentDetailPage extends StatelessWidget {
     );
   }
 
-  Padding _buttonPlay(BuildContext context) {
+  Padding _buttonPlay(BuildContext context, Video video) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton(
-        onPressed: () => Navigator.of(context).pushNamed("/video-page"),
+        onPressed: () => Navigator.of(context).pushNamed("/content-video",
+            arguments: ContentVideoArguments(video: video)),
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor,
         ),
