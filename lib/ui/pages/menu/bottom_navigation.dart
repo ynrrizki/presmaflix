@@ -6,6 +6,7 @@ import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:presmaflix/app/cubits/bottomNavigation/bottom_navigation_cubit.dart';
 import 'package:presmaflix/ui/pages/menu/home/home_page.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:presmaflix/ui/pages/menu/watchlist/watchlist_page.dart';
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key});
@@ -23,7 +24,7 @@ class BottomNavigation extends StatelessWidget {
       return const [
         HomePage(),
         Scaffold(),
-        Scaffold(),
+        WatchListPage(),
         Scaffold(),
       ];
     }

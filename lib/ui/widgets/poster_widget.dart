@@ -8,6 +8,7 @@ class PosterWidget extends StatelessWidget {
   const PosterWidget({
     super.key,
     required this.content,
+    this.isThumbnail = false,
     this.width,
     this.height,
     this.isRedirect = true,
@@ -15,6 +16,7 @@ class PosterWidget extends StatelessWidget {
   });
 
   final Content content;
+  final bool isThumbnail;
   final double? width;
   final double? height;
   final bool isRedirect;
@@ -27,7 +29,7 @@ class PosterWidget extends StatelessWidget {
       width: width,
       height: height,
       child: CachedNetworkImage(
-        imageUrl: content.posterUrl,
+        imageUrl: isThumbnail ? content.thumbnailUrl : content.posterUrl,
         imageBuilder: (context, imageProvider) {
           Decoration boxDecoration = BoxDecoration(
             color: Colors.white,
