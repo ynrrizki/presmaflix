@@ -5,11 +5,13 @@ class SearchFieldWidget extends StatelessWidget {
   const SearchFieldWidget({
     Key? key,
     required this.searchController,
+    this.hintText = 'Search',
     this.onChanged,
     this.onSubmitted,
   }) : super(key: key);
 
   final TextEditingController searchController;
+  final String hintText;
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
 
@@ -19,7 +21,8 @@ class SearchFieldWidget extends StatelessWidget {
       controller: searchController,
       onChanged: onChanged,
       autofocus: false,
-      style: GoogleFonts.plusJakartaSans(color: Colors.black, fontSize: 15),
+      style: GoogleFonts.plusJakartaSans(
+          color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
       textInputAction: TextInputAction.search,
       onSubmitted: onSubmitted,
       decoration: InputDecoration(
@@ -27,24 +30,13 @@ class SearchFieldWidget extends StatelessWidget {
           maxHeight: 35,
         ),
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
-        hintText: 'Search',
+            const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
+        hintText: hintText,
         filled: true,
-        fillColor: Colors.grey.shade100,
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: Theme.of(context).primaryColor,
-            width: 2.0,
-          ),
-        ),
+        fillColor: const Color.fromARGB(255, 43, 43, 43),
+        border: InputBorder.none,
+        prefixIcon: const Icon(Icons.search),
+        prefixIconColor: Colors.white,
         hintStyle: GoogleFonts.plusJakartaSans(
           color: Colors.grey,
         ),
