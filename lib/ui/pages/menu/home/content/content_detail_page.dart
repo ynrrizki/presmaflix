@@ -3,8 +3,10 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:presmaflix/app/bloc/video/video_bloc.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/app/models/video.dart';
 import 'package:presmaflix/config/routing/argument/content/content_video_args.dart';
@@ -56,9 +58,21 @@ class ContentDetailPage extends StatelessWidget {
             const SizedBox(
               height: 25,
             ),
-            _buttonPlay(
-              context,
-              videos.where((video) => video.type == 'full-length').first,
+            // dynamic
+            BlocBuilder<VideoBloc, VideoState>(
+              bloc: context.read<VideoBloc>()..add(LoadVideos(content)),
+              builder: (context, state) {
+                if (state is VideoLoaded) {
+                  return _buttonPlay(
+                    context,
+                    video: state.videos
+                        .where((video) => video.type == 'full-length')
+                        .first,
+                  );
+                } else {
+                  return _buttonPlay(context);
+                }
+              },
             ),
             const SizedBox(
               height: 25,
@@ -82,6 +96,7 @@ class ContentDetailPage extends StatelessWidget {
             ),
           ],
         ),
+        // dynamic
         // Mengambil panjang tab video yang sudah di group dan ditambahkan angka satu
         // untuk Tab 'Similar'
         tabCount: _generateTab(videos, tabTypes).length + 1,
@@ -89,6 +104,7 @@ class ContentDetailPage extends StatelessWidget {
           ..._generateTab(videos, tabTypes),
           const Tab(text: 'Similar'),
         ],
+        // dynamic
         tabBarViews: _generateTabView(videos, tabTypes)
           ..add(
             _tabSimilar(contents),
@@ -130,7 +146,7 @@ class ContentDetailPage extends StatelessWidget {
     // tampilkan video yang berasosiasi dengan content.id dan memiliki tipe yang sama dengan Tab
     return videos
         .where((video) =>
-            video.mediaId == content.id && video.type != 'full-length')
+            video.contentId == content.id && video.type != 'full-length')
         .fold<List<Widget>>(
       [],
       (list, video) {
@@ -145,7 +161,7 @@ class ContentDetailPage extends StatelessWidget {
                 ...videos
                     .where(
                       (video) =>
-                          video.mediaId == content.id &&
+                          video.contentId == content.id &&
                           video.type != 'full-length' &&
                           video.type == tabTypes[list.length],
                     )
@@ -180,7 +196,7 @@ class ContentDetailPage extends StatelessWidget {
         // Mengambil video yang memenuhi kriteria
         // (berasosiasi dengan content.id dan memiliki tipe selain 'full-length')
         .where((video) =>
-            video.mediaId == content.id && video.type != 'full-length')
+            video.contentId == content.id && video.type != 'full-length')
         // Mengelompokkan video berdasarkan tipe dan membuat List<Tab> baru
         .fold<List<Tab>>([], (list, video) {
       // Jika tipe video belum ada pada List<Tab>, tambahkan Tab baru dengan tipe tersebut
@@ -304,12 +320,14 @@ class ContentDetailPage extends StatelessWidget {
     );
   }
 
-  Padding _buttonPlay(BuildContext context, Video video) {
+  Padding _buttonPlay(BuildContext context, {Video? video}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton(
-        onPressed: () => Navigator.of(context).pushNamed("/content-video",
-            arguments: ContentVideoArguments(video: video)),
+        onPressed: () => video != null
+            ? Navigator.of(context).pushNamed("/content-video",
+                arguments: ContentVideoArguments(video: video))
+            : null,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).primaryColor,
         ),
