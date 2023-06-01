@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presmaflix/app/bloc/content/content_bloc.dart';
+import 'package:presmaflix/app/bloc/video/video_bloc.dart';
 import 'package:presmaflix/app/cubits/auth/auth_cubit.dart';
 import 'package:presmaflix/app/cubits/bottomNavigation/bottom_navigation_cubit.dart';
-import 'package:presmaflix/app/repositories/auth/auth_repo.dart';
-import 'package:presmaflix/app/repositories/content/content_repository.dart';
-import 'package:presmaflix/app/repositories/user/user_repo.dart';
+import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
+import 'package:presmaflix/app/repositories/firestore/content/content_repository.dart';
+import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
+import 'package:presmaflix/app/repositories/firestore/video/video_repository.dart';
 import 'firebase_options.dart';
 import 'package:presmaflix/config/routing/routes.dart';
 import 'package:presmaflix/config/themes.dart';
@@ -38,6 +40,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => ContentRepository(),
         ),
+        RepositoryProvider(
+          create: (context) => VideoRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -55,6 +60,11 @@ class MyApp extends StatelessWidget {
             )..add(
                 LoadContents(),
               ),
+          ),
+          BlocProvider(
+            create: (context) => VideoBloc(
+              videoRepository: context.read<VideoRepository>(),
+            ),
           ),
         ],
         child: MaterialApp(
