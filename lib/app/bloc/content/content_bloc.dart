@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/app/repositories/content/content_repository.dart';
+import 'package:presmaflix/app/repositories/firestore/content/content_repository.dart';
 
 part 'content_event.dart';
 part 'content_state.dart';
@@ -19,6 +19,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
     on<LoadContents>(_onLoadContents);
     on<UpdateContents>(_onUpdateContents);
   }
+  
   void _onLoadContents(
     LoadContents event,
     Emitter<ContentState> emit,
