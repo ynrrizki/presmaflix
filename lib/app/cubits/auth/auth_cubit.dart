@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:presmaflix/app/models/user.dart';
 // import 'package:presmaflix/app/models/models.dart';
-import 'package:presmaflix/app/repositories/auth/auth_repo.dart';
-import 'package:presmaflix/app/repositories/user/user_repo.dart';
+import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
+import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 part 'auth_state.dart';
