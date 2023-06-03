@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:equatable/equatable.dart';
 
 class Video extends Equatable {
@@ -38,9 +39,22 @@ class Video extends Equatable {
       ];
 
   factory Video.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final data = snapshot;
+    final id = snapshot.id;
+    final data = snapshot.data();
+    if (data == null) {
+      // Tambahkan log untuk mencatat kesalahan
+      throw Exception('Data snapshot is null');
+    }
+    if (!data.containsKey('contentId') ||
+        !data.containsKey('type') ||
+        !data.containsKey('videoUrl') ||
+        !data.containsKey('duration') ||
+        !data.containsKey('createdAt')) {
+      // Tambahkan log untuk mencatat kesalahan
+      throw Exception('Required fields are missing in data snapshot');
+    }
     return Video(
-      id: data.id,
+      id: id,
       contentId: data['contentId'],
       title: data['title'] ?? '',
       type: data['type'],

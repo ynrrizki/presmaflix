@@ -1,4 +1,5 @@
 // import 'dart:developer';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -60,7 +61,8 @@ class ContentDetailPage extends StatelessWidget {
             ),
             // dynamic
             BlocBuilder<VideoBloc, VideoState>(
-              bloc: context.read<VideoBloc>()..add(LoadVideos(content)),
+              bloc: context.read<VideoBloc>()
+                ..add(LoadVideosByContent(content)),
               builder: (context, state) {
                 if (state is VideoLoaded) {
                   return _buttonPlay(
@@ -236,7 +238,7 @@ class ContentDetailPage extends StatelessWidget {
             icon: const Icon(
               Icons.share,
             ),
-            label: const Text('Daftarku'),
+            label: const Text('Share'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
               side: const BorderSide(

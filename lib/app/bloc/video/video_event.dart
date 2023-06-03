@@ -7,9 +7,11 @@ abstract class VideoEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadVideos extends VideoEvent {
+class LoadVideos extends VideoEvent {}
+
+class LoadVideosByContent extends VideoEvent {
   final Content content;
-  const LoadVideos(this.content);
+  const LoadVideosByContent(this.content);
 
   @override
   List<Object> get props => [content];

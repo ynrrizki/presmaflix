@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => VideoBloc(
               videoRepository: context.read<VideoRepository>(),
-            ),
+            )..add(LoadVideos()),
           ),
         ],
         child: MaterialApp(

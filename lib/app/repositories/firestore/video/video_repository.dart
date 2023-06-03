@@ -17,22 +17,22 @@ class VideoRepository {
     yield _videos;
   }
 
+  Stream<List<Video>> getAllVideos() {
+    log('When add getAllVideos', name: 'VideoRepository');
+    return _firebaseFirestore.collection('videos').snapshots().map((snapshot) =>
+        snapshot.docs.map((docs) => Video.fromSnapshot(docs)).toList());
+  }
+
   Stream<List<Video>> getAllVideosByContent(Content content) {
     log('When add getAllVideosByContent', name: 'VideoRepository');
-    // _firebaseFirestore.collection('contents').snapshots().listen((event) {
-    //   log('When add getAllContents', name: 'ContentRepository');
-    //   return log(event.docs.map((e) => e.data()).toList().toString());
-    // });
+    String contentId = content.id.trim();
     return _firebaseFirestore
         .collection('videos')
-        .where('contentId', isEqualTo: content.id)
+        .where('contentId', isEqualTo: contentId)
         .snapshots()
         .map(
-          (snapshot) => snapshot.docs
-              .map(
-                (docs) => Video.fromSnapshot(docs),
-              )
-              .toList(),
+          (snapshot) =>
+              snapshot.docs.map((docs) => Video.fromSnapshot(docs)).toList(),
         );
   }
 }

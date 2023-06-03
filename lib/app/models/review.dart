@@ -8,7 +8,7 @@ class Review extends Equatable {
   final String comment;
   final DateTime createdAt;
 
-  Review({
+  const Review({
     required this.id,
     required this.videoId,
     required this.name,

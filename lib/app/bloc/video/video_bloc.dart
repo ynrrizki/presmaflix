@@ -18,14 +18,26 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
       : _videoRepository = videoRepository,
         super(VideoLoading()) {
     on<LoadVideos>(_onLoadVideos);
-    on<UpdateVideos>(_onUpdateContents);
+    on<LoadVideosByContent>(_onLoadVideosByContent);
+    on<UpdateVideos>(_onUpdateVideos);
   }
 
-  void _onLoadVideos(
-    LoadVideos event,
-    Emitter<VideoState> emit,
-  ) {
+  void _onLoadVideos(LoadVideos event, Emitter<VideoState> emit) {
+    _videoSubscription?.cancel();
+    _videoSubscription = _videoRepository.getAllVideos().listen(
+      (videos) {
+        log('when add UpdateVideos', name: 'VideoBloc');
+        return add(
+          UpdateVideos(videos),
+        );
+      },
+    );
+  }
+
+  void _onLoadVideosByContent(
+      LoadVideosByContent event, Emitter<VideoState> emit) {
     log('when add LoadVideos', name: 'VideoBloc');
+    // log(event.content.id.toString(), name: 'log id content');
     _videoSubscription?.cancel();
     _videoSubscription =
         _videoRepository.getAllVideosByContent(event.content).listen(
@@ -38,11 +50,8 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     );
   }
 
-  void _onUpdateContents(
-    UpdateVideos event,
-    Emitter<VideoState> emit,
-  ) {
-    // log(event.contents.toString());
+  void _onUpdateVideos(UpdateVideos event, Emitter<VideoState> emit) {
+    log('execute', name: 'UpdateVideos');
     emit(VideoLoaded(videos: event.videos));
   }
 }
