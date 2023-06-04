@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:presmaflix/app/models/user.dart';
-// import 'package:presmaflix/app/models/models.dart';
 import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
 import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
@@ -9,12 +8,13 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  // final auth.User currentUser = auth.FirebaseAuth.instance.currentUser!;
   final AuthRepository _authRepository;
+
   AuthCubit({required AuthRepository authRepository})
       : _authRepository = authRepository,
         super(AuthInitial());
 
+  // Melakukan proses sign in dengan email dan password
   void signIn({
     required String email,
     required String password,
@@ -37,9 +37,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // Melakukan proses sign in dengan akun Google
   void signInWithGoogle() async {
     try {
-      // emit(AuthGoogleLoading());
+      emit(AuthLoading());
       await _authRepository.signInWithGoogle();
       emit(AuthGoogleSuccess());
     } catch (e) {
@@ -47,6 +48,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // Melakukan proses sign up dengan email, password, nama, dan avatar (opsional)
   void signUp({
     required String email,
     required String password,
@@ -74,6 +76,7 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // Melakukan proses sign out
   void signOut() async {
     try {
       emit(AuthLoading());
@@ -84,11 +87,11 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  // Mendapatkan data pengguna berdasarkan ID
   void getCurrentUser(String id) async {
     try {
       final user = await UserRepository().getUserById(id);
       emit(AuthUser(user));
-      // print('Ini nama sapeee: ${user.name}');
     } catch (e) {
       emit(AuthFailed(e.toString()));
     }

@@ -30,10 +30,6 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Container(
-                  //   alignment: Alignment.center,
-                  //   child: const PrimaStudio(fontSize: 25),
-                  // ),
                   const SizedBox(height: 85),
                   Text(
                     'Selamat Datang!',

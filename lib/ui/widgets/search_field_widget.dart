@@ -30,7 +30,7 @@ class SearchFieldWidget extends StatelessWidget {
           maxHeight: 35,
         ),
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
+            const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
         hintText: hintText,
         filled: true,
         fillColor: const Color.fromARGB(255, 43, 43, 43),
