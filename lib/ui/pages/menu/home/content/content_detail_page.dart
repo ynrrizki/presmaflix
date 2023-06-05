@@ -1,5 +1,4 @@
 // import 'dart:developer';
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -15,7 +14,7 @@ import 'package:presmaflix/ui/widgets/card_video_widget.dart';
 import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 
-class ContentDetailPage extends StatelessWidget {
+class ContentDetailPage extends StatefulWidget {
   const ContentDetailPage({
     super.key,
     required this.content,
@@ -24,94 +23,97 @@ class ContentDetailPage extends StatelessWidget {
   final Content content;
 
   @override
+  State<ContentDetailPage> createState() => _ContentDetailPageState();
+}
+
+class _ContentDetailPageState extends State<ContentDetailPage> {
+  List<Video> videos = Video.videos;
+  List<Content> contents = Content.contents;
+  List<String> tabTypes = [];
+  int tabCount = 1;
+  @override
   Widget build(BuildContext context) {
-    List<Video> videos = Video.videos;
-    List<Content> contents = Content.contents;
-    List<String> tabTypes = [];
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-      ),
-      body: TabBarController(
-        header: Column(
-          children: [
-            _posterImage(
-              content,
+    return BlocBuilder<VideoBloc, VideoState>(
+      builder: (context, state) {
+        if (state is VideoLoaded) {
+          videos = state.videos;
+          tabCount = _generateTab(state.videos, tabTypes).length + 1;
+          return Scaffold(
+            extendBodyBehindAppBar: true,
+            extendBody: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
+              iconTheme: const IconThemeData(
+                color: Colors.white,
+              ),
             ),
-            const SizedBox(
-              height: 25,
-            ),
-            _title(
-              content.title,
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            _genre(
-              content.genre.join(' • '),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            // dynamic
-            BlocBuilder<VideoBloc, VideoState>(
-              bloc: context.read<VideoBloc>()
-                ..add(LoadVideosByContent(content)),
-              builder: (context, state) {
-                if (state is VideoLoaded) {
-                  return _buttonPlay(
+            body: TabBarController(
+              header: Column(
+                children: [
+                  _posterImage(
+                    widget.content,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  _title(
+                    widget.content.title,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  _genre(
+                    widget.content.genre.join(' • '),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  // dynamic
+                  _buttonPlay(
                     context,
-                    video: state.videos
+                    video: videos
                         .where((video) => video.type == 'full-length')
                         .first,
-                  );
-                } else {
-                  return _buttonPlay(context);
-                }
-              },
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  _description(
+                    widget.content.description,
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  _watchlistAndShareBtn(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  _directsAndCasts(
+                    widget.content.directors.join(', '),
+                    widget.content.casts.join(', '),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                ],
+              ),
+              tabCount: tabCount,
+              tabs: [
+                ..._generateTab(videos, tabTypes),
+                const Tab(text: 'Similar'),
+              ],
+              tabBarViews: [
+                ..._generateTabView(videos, tabTypes),
+                _tabSimilar(contents),
+              ],
             ),
-            const SizedBox(
-              height: 25,
-            ),
-            _description(
-              content.description,
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            _watchlistAndShareBtn(),
-            const SizedBox(
-              height: 25,
-            ),
-            _directsAndCasts(
-              content.directors.join(', '),
-              content.casts.join(', '),
-            ),
-            const SizedBox(
-              height: 50,
-            ),
-          ],
-        ),
-        // dynamic
-        // Mengambil panjang tab video yang sudah di group dan ditambahkan angka satu
-        // untuk Tab 'Similar'
-        tabCount: _generateTab(videos, tabTypes).length + 1,
-        tabs: [
-          ..._generateTab(videos, tabTypes),
-          const Tab(text: 'Similar'),
-        ],
-        // dynamic
-        tabBarViews: _generateTabView(videos, tabTypes)
-          ..add(
-            _tabSimilar(contents),
-          ),
-      ),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 
@@ -148,7 +150,7 @@ class ContentDetailPage extends StatelessWidget {
     // tampilkan video yang berasosiasi dengan content.id dan memiliki tipe yang sama dengan Tab
     return videos
         .where((video) =>
-            video.contentId == content.id && video.type != 'full-length')
+            video.contentId == widget.content.id && video.type != 'full-length')
         .fold<List<Widget>>(
       [],
       (list, video) {
@@ -163,7 +165,7 @@ class ContentDetailPage extends StatelessWidget {
                 ...videos
                     .where(
                       (video) =>
-                          video.contentId == content.id &&
+                          video.contentId == widget.content.id &&
                           video.type != 'full-length' &&
                           video.type == tabTypes[list.length],
                     )
@@ -198,7 +200,7 @@ class ContentDetailPage extends StatelessWidget {
         // Mengambil video yang memenuhi kriteria
         // (berasosiasi dengan content.id dan memiliki tipe selain 'full-length')
         .where((video) =>
-            video.contentId == content.id && video.type != 'full-length')
+            video.contentId == widget.content.id && video.type != 'full-length')
         // Mengelompokkan video berdasarkan tipe dan membuat List<Tab> baru
         .fold<List<Tab>>([], (list, video) {
       // Jika tipe video belum ada pada List<Tab>, tambahkan Tab baru dengan tipe tersebut

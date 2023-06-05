@@ -24,7 +24,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
   @override
   void initState() {
     videoController = PodPlayerController(
-      playVideoFrom: PlayVideoFrom.youtube(videos[0].videoUrl),
+      playVideoFrom: PlayVideoFrom.youtube(widget.video.videoUrl),
     )..initialise();
     videoController.setDoubeTapForwarDuration(10);
     log(videoController.currentVideoPosition.toString());
@@ -85,7 +85,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                     ? const EdgeInsets.symmetric(vertical: 25, horizontal: 15)
                     : const EdgeInsets.only(left: 15),
                 child: Text(
-                  videos[0].title.toString(),
+                  widget.video.title.toString(),
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
