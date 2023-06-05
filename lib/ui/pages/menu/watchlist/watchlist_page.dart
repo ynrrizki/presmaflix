@@ -36,6 +36,8 @@ class _WatchListPageState extends State<WatchListPage> {
             'Watchlist',
             style: GoogleFonts.plusJakartaSans(
               color: Colors.white,
+              fontWeight: FontWeight.w700,
+              fontSize: 25,
             ),
           ),
           backgroundColor:
@@ -44,7 +46,7 @@ class _WatchListPageState extends State<WatchListPage> {
           elevation: 0.5,
         ),
         body: ListView.builder(
-          padding: const EdgeInsets.symmetric(vertical: 10),
+          padding: const EdgeInsets.symmetric(vertical: 0),
           itemCount: contents.length,
           itemBuilder: (context, index) => GestureDetector(
             onLongPress: () {
@@ -69,7 +71,7 @@ class _WatchListPageState extends State<WatchListPage> {
               }
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 0),
               child: _CardContent(
                 content: contents[index],
                 isLongPress: isLongPress,

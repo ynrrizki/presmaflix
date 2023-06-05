@@ -15,7 +15,7 @@ class HorizontalGridWidget extends StatelessWidget {
     required this.title,
     this.onTap,
     required this.contents,
-    this.maxHeight = 170,
+    this.maxHeight = 200,
     this.crossAxisCount = 1,
     this.childAspectRatio = 1.4,
     this.crossAxisSpacing = 0.0,
@@ -75,8 +75,8 @@ class HorizontalGridWidget extends StatelessWidget {
               Text(
                 title,
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
               InkWell(

@@ -160,7 +160,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
           list.add(
             ListView(
               shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 0),
               children: [
                 ...videos
                     .where(
@@ -179,7 +179,8 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                           child: FadeInAnimation(
                             child: CardVideoWidget(
                               video: video,
-                              padding: const EdgeInsets.only(bottom: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 20, horizontal: 16),
                             ),
                           ),
                         ),

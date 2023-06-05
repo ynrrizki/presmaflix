@@ -8,19 +8,19 @@ class CardVideoWidget extends StatelessWidget {
   const CardVideoWidget({
     super.key,
     required this.video,
-    this.padding = const EdgeInsets.all(8.0),
+    this.padding = const EdgeInsets.symmetric(horizontal: 20),
   });
   final Video video;
   final EdgeInsets padding;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed(
-          "/content-video",
-          arguments: ContentVideoArguments(video: video),
-        ),
+    return InkWell(
+      onTap: () => Navigator.of(context).pushNamed(
+        "/content-video",
+        arguments: ContentVideoArguments(video: video),
+      ),
+      child: Padding(
+        padding: padding,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

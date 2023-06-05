@@ -14,10 +14,13 @@ class ContentAllPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           title,
           style: GoogleFonts.plusJakartaSans(
             color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 25,
           ),
         ),
         iconTheme: const IconThemeData(
