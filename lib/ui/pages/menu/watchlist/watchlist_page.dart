@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
+import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
 
 class WatchListPage extends StatefulWidget {
   const WatchListPage({super.key});
@@ -58,7 +59,13 @@ class _WatchListPageState extends State<WatchListPage> {
                   selectedItems[index] = !selectedItems[index];
                 });
               } else {
-                // Handle regular tap here
+                selectedItems.contains(true)
+                    ? null
+                    : Navigator.of(context, rootNavigator: true).pushNamed(
+                        '/content-detail',
+                        arguments:
+                            ContentDetailArguments(content: contents[index]),
+                      );
               }
             },
             child: Padding(
@@ -157,7 +164,7 @@ class _CardContent extends StatelessWidget {
               isThumbnail: true,
               height: 100,
               width: 170,
-              isRedirect: hasSelected ? false : true,
+              isRedirect: false,
             ),
             const SizedBox(width: 10),
             Expanded(
