@@ -5,6 +5,8 @@
 */
 // Path: lib\ui\auth
 export 'auth/login_page.dart';
+// Path: lib\ui\onboarding
+export 'onboarding/onboarding_page.dart';
 // Path: lib\ui\menu
 export 'menu/bottom_navigation.dart';
 // - home
