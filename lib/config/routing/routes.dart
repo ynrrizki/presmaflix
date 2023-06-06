@@ -2,15 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:presmaflix/config/routing/argument/content/content_all_args.dart';
-import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
-import 'package:presmaflix/config/routing/argument/content/content_video_args.dart';
-import 'package:presmaflix/ui/pages/auth/login_page.dart';
-import 'package:presmaflix/ui/pages/menu/bottom_navigation.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/content_all_page.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/content_detail_page.dart';
-import 'package:presmaflix/ui/pages/menu/search/search_page.dart';
-import 'package:presmaflix/ui/pages/menu/home/content/content_video_page.dart';
+import 'package:presmaflix/config/routing/argument/arguments.dart';
+import 'package:presmaflix/ui/pages/pages.dart';
 
 class AppRouter {
   Route onRoute(RouteSettings settings) {
@@ -51,6 +44,10 @@ class AppRouter {
         return CupertinoPageRoute(
           fullscreenDialog: true,
           builder: (context) => const SearchPage(),
+        );
+      case "/more":
+        return CupertinoPageRoute(
+          builder: (context) => const MorePage(),
         );
       default:
         return _errorRoute();
