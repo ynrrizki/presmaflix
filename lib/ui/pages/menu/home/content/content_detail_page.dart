@@ -253,9 +253,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             width: 68,
           ),
           ElevatedButton(
-            onPressed: () {
-              _downloadModalBottomSheet(context);
-            },
+            onPressed: () => _downloadModalBottomSheet(context),
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,
               side: const BorderSide(color: Colors.white),
