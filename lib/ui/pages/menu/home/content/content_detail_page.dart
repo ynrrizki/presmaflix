@@ -9,10 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/bloc/video/video_bloc.dart';
 import 'package:presmaflix/app/models/content.dart';
 import 'package:presmaflix/app/models/video.dart';
-import 'package:presmaflix/config/routing/argument/content/content_video_args.dart';
-import 'package:presmaflix/ui/widgets/card_video_widget.dart';
-import 'package:presmaflix/ui/widgets/tabbar_controller.dart';
-import 'package:presmaflix/ui/widgets/poster_widget.dart';
+import 'package:presmaflix/config/routing/argument/arguments.dart';
+import 'package:presmaflix/ui/widgets/widgets.dart';
 
 class ContentDetailPage extends StatefulWidget {
   const ContentDetailPage({

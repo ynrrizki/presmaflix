@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/ui/widgets/poster_widget.dart';
-import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
+import 'package:presmaflix/ui/widgets/widgets.dart';
+import 'package:presmaflix/config/routing/argument/arguments.dart';
 
 class WatchListPage extends StatefulWidget {
   const WatchListPage({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/cubits/auth/auth_cubit.dart';
 import 'package:presmaflix/config/themes.dart';
-import 'package:presmaflix/ui/widgets/text_field_widget.dart';
+import 'package:presmaflix/ui/widgets/widgets.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

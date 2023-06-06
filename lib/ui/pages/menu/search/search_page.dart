@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:presmaflix/ui/widgets/search_field_widget.dart';
-// import 'package:presmaflix/ui/widgets/text_field_widget.dart';
+import 'package:presmaflix/ui/widgets/widgets.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});

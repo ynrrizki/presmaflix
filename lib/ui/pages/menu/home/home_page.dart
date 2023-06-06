@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:presmaflix/app/bloc/content/content_bloc.dart';
-import 'package:presmaflix/ui/widgets/banner_widget.dart';
-import 'package:presmaflix/ui/widgets/horizontal_grid_widget.dart';
-import 'package:presmaflix/ui/widgets/skleton_horizontal_grid_widget.dart';
+import 'package:presmaflix/ui/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
