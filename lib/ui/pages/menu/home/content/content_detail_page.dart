@@ -69,7 +69,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   const SizedBox(
                     height: 25,
                   ),
-                  // dynamic
                   _buttonPlay(
                     context,
                     video: videos
