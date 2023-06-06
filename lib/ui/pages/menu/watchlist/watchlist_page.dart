@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content.dart';
@@ -28,6 +30,7 @@ class _WatchListPageState extends State<WatchListPage> {
 
   @override
   Widget build(BuildContext context) {
+    log(isLongPress.toString());
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -58,10 +61,16 @@ class _WatchListPageState extends State<WatchListPage> {
             onTap: () {
               if (isLongPress) {
                 setState(() {
-                  selectedItems[index] = !selectedItems[index];
+                  if (hasSelectedItems) {
+                    // Jika ada item yang terpilih, maka item yang ditekan akan berubah statusnya
+                    selectedItems[index] = !selectedItems[index];
+                  } else {
+                    // Jika tidak ada item yang terpilih, maka item yang ditekan akan diarahkan ke detail
+                    isLongPress = false;
+                  }
                 });
               } else {
-                selectedItems.contains(true)
+                hasSelectedItems
                     ? null
                     : Navigator.of(context, rootNavigator: true).pushNamed(
                         '/content-detail',
