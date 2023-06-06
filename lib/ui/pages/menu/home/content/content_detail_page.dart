@@ -85,7 +85,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   const SizedBox(
                     height: 25,
                   ),
-                  _watchlistAndShareBtn(),
+                  _watchlistAndShareBtn(context),
                   const SizedBox(
                     height: 25,
                   ),
@@ -215,7 +215,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
     });
   }
 
-  Padding _watchlistAndShareBtn() {
+  Padding _watchlistAndShareBtn(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -249,6 +249,55 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
               ),
             ),
           ),
+          const SizedBox(
+            width: 68,
+          ),
+          ElevatedButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return SizedBox(
+                    height: 350,
+                    child: Stack(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 25, left: 20),
+                            child: Text(
+                              "Download dengan kualitas",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, right: 10),
+                            child: IconButton(
+                              icon: const Icon(Icons.close),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              side: const BorderSide(color: Colors.white),
+            ),
+            child: const Icon(Icons.file_download_outlined),
+          )
         ],
       ),
     );
