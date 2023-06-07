@@ -19,7 +19,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
     on<LoadContents>(_onLoadContents);
     on<UpdateContents>(_onUpdateContents);
   }
-  
+
   void _onLoadContents(
     LoadContents event,
     Emitter<ContentState> emit,
@@ -41,6 +41,7 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
     Emitter<ContentState> emit,
   ) {
     // log(event.contents.toString());
+    emit(ContentLoading());
     emit(ContentLoaded(contents: event.contents));
   }
 }

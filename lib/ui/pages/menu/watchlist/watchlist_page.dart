@@ -37,7 +37,7 @@ class _WatchListPageState extends State<WatchListPage> {
           centerTitle: true,
           title: Text(
             'Watchlist',
-            style: GoogleFonts.plusJakartaSans(
+            style: GoogleFonts.montserrat(
               color: Colors.white,
               fontWeight: FontWeight.w700,
               fontSize: 25,

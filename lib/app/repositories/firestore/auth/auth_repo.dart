@@ -1,34 +1,40 @@
 import 'dart:developer';
 
-import 'package:firebase_auth/firebase_auth.dart' as firebaseAuth;
-import 'package:google_sign_in/google_sign_in.dart' as googleAuth;
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:google_sign_in/google_sign_in.dart' as google_auth;
 import 'package:presmaflix/app/models/user.dart';
 import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
 import 'repository.dart';
 
 class AuthRepository extends Repository {
-  final firebaseAuth.FirebaseAuth _auth;
-  final googleAuth.GoogleSignIn _googleSignIn;
+  final firebase_auth.FirebaseAuth _firebaseAuth;
+  final google_auth.GoogleSignIn _googleSignIn;
   final UserRepository _userRepository;
 
   AuthRepository({
-    firebaseAuth.FirebaseAuth? auth,
-    googleAuth.GoogleSignIn? googleSignIn,
+    firebase_auth.FirebaseAuth? firebaseAuth,
+    google_auth.GoogleSignIn? googleSignIn,
     required UserRepository userRepository,
-  })  : _auth = auth ?? firebaseAuth.FirebaseAuth.instance,
-        _googleSignIn =
-            googleSignIn ?? googleAuth.GoogleSignIn.standard(scopes: ['email']),
+  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ??
+            google_auth.GoogleSignIn.standard(scopes: ['email']),
         _userRepository = userRepository;
+
+  var currentUser = User.empty;
 
   // Mendapatkan stream dari perubahan pengguna saat ini
   @override
-  Stream<firebaseAuth.User?> get user => _auth.userChanges();
+  Stream<User> get user => _firebaseAuth.authStateChanges().map((firebaseUser) {
+        final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+        currentUser = user;
+        return user;
+      });
 
   // Melakukan proses sign in dengan email dan password
   @override
   Future<User> signIn({required String email, required String password}) async {
     try {
-      final userCredential = await _auth.signInWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -52,20 +58,20 @@ class AuthRepository extends Repository {
       if (account != null) {
         // Mendapatkan informasi otentikasi dari akun Google
         final auth = await account.authentication;
-        final credential = firebaseAuth.GoogleAuthProvider.credential(
+        final credential = firebase_auth.GoogleAuthProvider.credential(
           accessToken: auth.accessToken,
           idToken: auth.idToken,
         );
 
         // Melakukan sign in dengan kredensial Google ke Firebase
-        await _auth.signInWithCredential(credential);
+        await _firebaseAuth.signInWithCredential(credential);
 
         // Membuat objek User dari data pengguna saat ini
         user = const User().copyWith(
-          id: _auth.currentUser!.uid,
-          avatar: _auth.currentUser!.photoURL!,
-          name: _auth.currentUser!.displayName!,
-          email: _auth.currentUser!.email!,
+          id: _firebaseAuth.currentUser!.uid,
+          avatar: _firebaseAuth.currentUser!.photoURL!,
+          name: _firebaseAuth.currentUser!.displayName!,
+          email: _firebaseAuth.currentUser!.email!,
         );
 
         // Membuat pengguna di repository jika belum ada
@@ -90,7 +96,7 @@ class AuthRepository extends Repository {
     required String password,
   }) async {
     try {
-      final userCredential = await _auth.createUserWithEmailAndPassword(
+      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -114,9 +120,15 @@ class AuthRepository extends Repository {
   @override
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
+      await _firebaseAuth.signOut();
     } catch (e) {
       rethrow;
     }
+  }
+}
+
+extension on firebase_auth.User {
+  User get toUser {
+    return User(id: uid, email: email!, name: displayName!, avatar: photoURL);
   }
 }

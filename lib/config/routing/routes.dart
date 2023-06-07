@@ -10,11 +10,15 @@ class AppRouter {
     log('Route: ${settings.name}');
 
     switch (settings.name) {
+      // case "/":
+      //   return CupertinoPageRoute(
+      //     builder: (context) => const SplashPage(),
+      //   );
+      // case "/login":
+      //   return CupertinoPageRoute(
+      //     builder: (context) => const LoginPage(),
+      //   );
       case "/":
-        return CupertinoPageRoute(
-          builder: (context) => const LoginPage(),
-        );
-      case "/home":
         return CupertinoPageRoute(
           builder: (context) => const BottomNavigation(),
         );

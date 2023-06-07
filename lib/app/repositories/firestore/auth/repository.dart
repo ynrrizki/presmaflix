@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart' as auth;
+// import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:presmaflix/app/models/user.dart';
 
 abstract class Repository {
-  Stream<auth.User?> get user;
+  Stream<User> get user;
 
   Future<User> signIn({required String email, required String password});
 

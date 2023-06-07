@@ -52,6 +52,7 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
 
   void _onUpdateVideos(UpdateVideos event, Emitter<VideoState> emit) {
     log('execute', name: 'UpdateVideos');
+    emit(VideoLoading());
     emit(VideoLoaded(videos: event.videos));
   }
 }

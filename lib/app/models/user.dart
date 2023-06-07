@@ -16,6 +16,11 @@ class User extends Equatable {
   final String description;
   final String email;
 
+  static const empty = User(id: '');
+
+  bool get isEmpty => this == User.empty;
+  bool get isNotEmpty => this != User.empty;
+
   User copyWith({
     String? id,
     String? avatar,
