@@ -17,6 +17,7 @@ class ContentVideoPage extends StatefulWidget {
 }
 
 class ContentVideoPageState extends State<ContentVideoPage> {
+  TextEditingController commentController = TextEditingController();
   late final PodPlayerController videoController;
   List<Video> videos = Video.videos;
   bool isFullScreen = true;
@@ -91,34 +92,83 @@ class ContentVideoPageState extends State<ContentVideoPage> {
             color: Color.fromARGB(255, 49, 49, 49),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 100,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(8)),
-                    padding: const EdgeInsets.all(14.0),
-                    margin: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Username \t\t• 1 day ago'),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Comment",
-                            style: GoogleFonts.poppins(
+            child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              child: Stack(
+                children: [
+                  ListView.builder(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: 100,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(8)),
+                          padding: const EdgeInsets.all(14.0),
+                          margin: const EdgeInsets.symmetric(vertical: 4.0),
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Username \t\t• 1 day ago'),
+                                const SizedBox(height: 8),
+                                Text(
+                                  "Comment",
+                                  style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Positioned(
+                    bottom: 16,
+                    left: 8,
+                    right: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.black,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              offset: const Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: commentController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(8),
+                            hintText: 'Tambahkan Komentar...',
+                            hintStyle: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
-                              color: Colors.white,
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.send),
                             ),
                           ),
-                        ]),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         ],
