@@ -23,65 +23,85 @@ class MorePage extends StatelessWidget {
         shadowColor: Colors.grey,
         elevation: 0.5,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              borderOnForeground: false,
-              child: ListTile(
-                contentPadding:
-                    const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                onTap: () {},
-                leading: const CircleAvatar(
-                  radius: 40,
-                  backgroundImage: CachedNetworkImageProvider(
-                    'https://ui-avatars.com/api/?name=Yanuar Rizki Sanjaya',
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderOnForeground: false,
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 10),
+                      onTap: () {},
+                      leading: const CircleAvatar(
+                        radius: 40,
+                        backgroundImage: CachedNetworkImageProvider(
+                          'https://ui-avatars.com/api/?name=Yanuar Rizki Sanjaya',
+                        ),
+                      ),
+                      title: const Text('Yanuar Rizki Sanjaya'),
+                      subtitle: const Text('yanuarrizki165@gmail.com'),
+                    ),
                   ),
                 ),
-                title: const Text('Yanuar Rizki Sanjaya'),
-                subtitle: const Text('yanuarrizki165@gmail.com'),
+                Card(
+                  color: Colors.black,
+                  shadowColor: Colors.grey,
+                  elevation: 0.5,
+                  child: ListTile(
+                    leading: const Icon(Icons.search_outlined),
+                    title: const Text('Search'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () => Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).pushNamed('/search'),
+                  ),
+                ),
+                Card(
+                  color: Colors.black,
+                  shadowColor: Colors.grey,
+                  elevation: 0.5,
+                  child: ListTile(
+                    leading: const Icon(Icons.notifications_active_outlined),
+                    title: const Text('Notifications'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {},
+                  ),
+                ),
+                Card(
+                  color: Colors.black,
+                  shadowColor: Colors.grey,
+                  elevation: 0.5,
+                  child: ListTile(
+                    leading: const Icon(Icons.settings_outlined),
+                    title: const Text('Settings'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {},
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  minimumSize: const Size(double.infinity, 25),
+                ),
+                child: const Text('Logout'),
               ),
             ),
-          ),
-          Card(
-            color: Colors.black,
-            shadowColor: Colors.grey,
-            elevation: 0.5,
-            child: ListTile(
-              leading: const Icon(Icons.search_outlined),
-              title: const Text('Search'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () => Navigator.of(
-                context,
-                rootNavigator: true,
-              ).pushNamed('/search'),
-            ),
-          ),
-          Card(
-            color: Colors.black,
-            shadowColor: Colors.grey,
-            elevation: 0.5,
-            child: ListTile(
-              leading: const Icon(Icons.notifications_active_outlined),
-              title: const Text('Notifications'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            color: Colors.black,
-            shadowColor: Colors.grey,
-            elevation: 0.5,
-            child: ListTile(
-              leading: const Icon(Icons.settings_outlined),
-              title: const Text('Settings'),
-              trailing: const Icon(Icons.arrow_forward_ios),
-              onTap: () {},
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
