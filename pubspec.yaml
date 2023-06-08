@@ -41,7 +41,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.2
-  flutter_icons: ^1.1.0
+  flutter_icons_null_safety: ^1.1.0
   flutter_multi_select_items: ^0.4.2
   flutter_staggered_animations: ^1.1.1
   google_fonts: ^4.0.3
