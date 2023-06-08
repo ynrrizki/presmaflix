@@ -106,27 +106,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Username",
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              ListTile(
-                                leading: const Icon(Icons.circle),
-                                title: Text(
-                                  "1 day ago",
-                                  style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w400,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          const Text('Username \t\t• 1 day ago'),
                           const SizedBox(height: 8),
                           Text(
                             "Comment",
