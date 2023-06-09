@@ -83,9 +83,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => UserBloc(
               userRepository: context.read<UserRepository>(),
-            )..add(
-                LoadUser(),
-              ),
+            ),
           ),
           BlocProvider(
             create: (context) => BottomNavigationCubit(),

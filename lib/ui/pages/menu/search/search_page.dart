@@ -18,18 +18,25 @@ class SearchPage extends StatelessWidget {
           searchController: TextEditingController(),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.close),
+          TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
+            child: const Text(
+              'Batalkan',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+                fontSize: 15,
+              ),
+            ),
           ),
           const SizedBox(width: 15)
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
-          children: const [
+          children: [
             // Pencarian Terakhir
             // List<Chip>
 

@@ -33,6 +33,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoBloc, VideoState>(
+      bloc: context.read<VideoBloc>()
+        ..add(
+          LoadVideosByContent(widget.content),
+        ),
       builder: (context, state) {
         if (state is VideoLoading) {
           return _skleton(context);
@@ -75,7 +79,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     context,
                     video: videos
                         .where((video) => video.type == 'full-length')
-                        .first,
+                        .single,
                   ),
                   const SizedBox(
                     height: 25,

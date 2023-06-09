@@ -112,6 +112,10 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                         return ListView(
                           padding: const EdgeInsets.all(8),
                           children: snapshot.data?.docs
+                                  .where((video) =>
+                                      (video.data()
+                                          as Map<String, dynamic>)['videoId'] ==
+                                      widget.video.id)
                                   .map((doc) => commentWidget(doc))
                                   .toList() ??
                               [],

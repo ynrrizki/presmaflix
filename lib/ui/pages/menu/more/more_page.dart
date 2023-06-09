@@ -127,8 +127,9 @@ class _AccountCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserBloc, UserState>(
+      bloc: context.read<UserBloc>()..add(LoadUserById(id: user.id)),
       builder: (context, state) {
-        if (state is UserLoaded) {
+        if (state is UserByIdLoaded) {
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
@@ -159,8 +160,10 @@ class _AccountCard extends StatelessWidget {
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               onTap: () {},
-              title: const CircularProgressIndicator(
-                color: Colors.white,
+              title: const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -189,7 +192,9 @@ class _LogoutButton extends StatelessWidget {
                   child: const SizedBox(
                     height: 20,
                     width: 20,
-                    child: CircularProgressIndicator(),
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               )

@@ -15,32 +15,46 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc({required UserRepository userRepository})
       : _userRepository = userRepository,
         super(UserLoading()) {
-    on<UserEvent>((event, emit) {
-      if (event is LoadUser) {
-        _onLoaduserToState();
-      } else if (event is UpdateUser) {
-        _onUpdateUserToState(event, emit);
-      }
-    });
+    // on<UserEvent>((event, emit) {
+    //   if (event is LoadUser) {
+    //     _onLoadUserToState(uid: event.user.id);
+    //   } else if (event is UpdateUser) {
+    //     _onUpdateUserToState(event, emit);
+    //   }
+    // });
+    // on<LoadUser>(_onLoadUserToState);
+    on<LoadUserById>(_onLoadUserById);
+    on<UpdateUser>(_onUpdateUser);
 
     on<EditUser>((event, emit) async {
       await _userRepository.updateUser(event.user);
     });
   }
 
-  void _onLoaduserToState() {
+  void _onLoadUserById(LoadUserById event, Emitter<UserState> emit) {
     _userSubscription?.cancel();
-    _userSubscription = _userRepository.getUser().listen((user) {
+    _userSubscription = _userRepository.getUser(uid: event.id).listen((user) {
       return add(UpdateUser(user));
     });
   }
 
-  void _onUpdateUserToState(
-    UpdateUser event,
-    Emitter<UserState> emit,
-  ) {
-    emit(UserLoaded(user: event.user));
+  // void _onLoadUserToState({LoadUser? event, Emitter<UserState> emit}) {
+  //   _userSubscription?.cancel();
+  //   _userSubscription = _userRepository.getUser().listen((user) {
+  //     return add(UpdateUser(user));
+  //   });
+  // }
+
+  void _onUpdateUser(UpdateUser event, Emitter<UserState> emit) {
+    emit(UserByIdLoaded(user: event.user));
   }
+
+  // void _onUpdateUserToState(
+  //   UpdateUser event,
+  //   Emitter<UserState> emit,
+  // ) {
+  //   emit(UserLoaded(user: event.user));
+  // }
 
   @override
   Future<void> close() async {

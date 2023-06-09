@@ -45,8 +45,8 @@ class UserRepository extends Repository {
   }
 
   @override
-  Stream<User> getUser() {
-    final currentUserUid = _firebaseAuth.currentUser!.uid;
+  Stream<User> getUser({String? uid}) {
+    final currentUserUid = uid ?? _firebaseAuth.currentUser!.uid;
 
     return _firebaseFirestore
         .collection('users')
