@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => LogoutCubit(
               context.read<AuthRepository>(),
-              context.read<AppBloc>(),
+              // context.read<AppBloc>(),
             ),
           ),
           BlocProvider(

@@ -194,10 +194,10 @@ class HorizontalGridWidget extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(5),
         onTap: () {},
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
+          children: [
             Padding(
               padding: EdgeInsets.all(8.0),
               child: Icon(
