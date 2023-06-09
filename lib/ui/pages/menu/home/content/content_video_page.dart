@@ -64,16 +64,15 @@ class ContentVideoPageState extends State<ContentVideoPage> {
           ),
           const SizedBox(height: 4),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 8),
-                child: Text(videos[0].title.toString()),
+                child: Text(widget.video.title.toString()),
               ),
-              Padding(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.8),
-                child: IconButton.filled(
-                    onPressed: () {}, icon: const Icon(Icons.share)),
+              IconButton.filled(
+                onPressed: () {},
+                icon: const Icon(Icons.share),
               )
             ],
           ),

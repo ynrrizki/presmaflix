@@ -9,6 +9,7 @@ export 'splash_page.dart';
 
 // Path: lib\ui\auth
 export 'auth/login_page.dart';
+export 'auth/register_page.dart';
 
 // Path: lib\ui\onboarding
 export 'onboarding/onboarding_page.dart';

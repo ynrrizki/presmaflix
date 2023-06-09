@@ -2,23 +2,58 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
 import 'package:presmaflix/ui/pages/pages.dart';
 
 class AppRouter {
-  Route onRoute(RouteSettings settings) {
-    log('Route: ${settings.name}');
+  AppStatus state;
 
+  set appStatus(AppStatus appStatus) => state = appStatus;
+  set appState(AppState appState) => state = appState.status;
+  AppRouter({this.state = AppStatus.unauthenticated});
+  Route onRoute(RouteSettings settings) {
+    log('Route: ${settings.name}', name: 'AppRouter');
+    log('user: $state', name: 'AppRouter');
+    switch (state) {
+      case AppStatus.authenticated:
+        return _authenticatedRoute(settings);
+      case AppStatus.unauthenticated:
+        return _unauthenticatedRoute(settings);
+    }
+    // if (state == AppStatus.unauthenticated) {
+    //   return _unauthenticatedRoute(settings);
+    // } else {
+    //   return _authenticatedRoute(settings);
+    // }
+  }
+
+  Route _unauthenticatedRoute(RouteSettings settings) {
     switch (settings.name) {
-      // case "/":
-      //   return CupertinoPageRoute(
-      //     builder: (context) => const SplashPage(),
-      //   );
-      // case "/login":
-      //   return CupertinoPageRoute(
-      //     builder: (context) => const LoginPage(),
-      //   );
       case "/":
+        return CupertinoPageRoute(
+          builder: (context) => const SplashPage(),
+        );
+      case "/login":
+        return CupertinoPageRoute(
+          builder: (context) => const LoginPage(),
+        );
+      case "/register":
+        return CupertinoPageRoute(
+          builder: (context) => const RegisterPage(),
+        );
+      default:
+        return _errorRoute();
+    }
+  }
+
+  Route _authenticatedRoute(RouteSettings settings) {
+    switch (settings.name) {
+      case "/":
+        return CupertinoPageRoute(
+          builder: (context) => const SplashPage(),
+        );
+      case "/home":
         return CupertinoPageRoute(
           builder: (context) => const BottomNavigation(),
         );

@@ -21,7 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
   }) async {
     try {
       emit(AuthLoading());
-      await _authRepository.signIn(
+      await _authRepository.logInWithEmailAndPassword(
         email: email,
         password: password,
       );

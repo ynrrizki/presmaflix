@@ -25,14 +25,48 @@ class AuthRepository extends Repository {
   // Mendapatkan stream dari perubahan pengguna saat ini
   @override
   Stream<User> get user => _firebaseAuth.authStateChanges().map((firebaseUser) {
+        log('user: ${firebaseUser == null ? 'unauthenticated' : 'authenticated'}',
+            name: 'AuthRepository');
         final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
         currentUser = user;
         return user;
       });
 
+  // Melakukan proses sign up dengan nama, email, dan password
+  @override
+  Future<User> signUp({
+    required String name,
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Membuat objek User dari data pengguna yang baru dibuat
+      final user = User(
+        id: userCredential.user!.uid,
+        avatar: 'https://ui-avatars.com/api/?name=$name',
+        name: name,
+        email: email,
+      );
+
+      // Membuat pengguna di repository
+      await _userRepository.createUser(user);
+      return user;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   // Melakukan proses sign in dengan email dan password
   @override
-  Future<User> signIn({required String email, required String password}) async {
+  Future<User> logInWithEmailAndPassword({
+    required String email,
+    required String password,
+  }) async {
     try {
       final userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -88,39 +122,13 @@ class AuthRepository extends Repository {
     }
   }
 
-  // Melakukan proses sign up dengan nama, email, dan password
-  @override
-  Future<User> signUp({
-    required String name,
-    required String email,
-    required String password,
-  }) async {
-    try {
-      final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      // Membuat objek User dari data pengguna yang baru dibuat
-      final user = User(
-        id: userCredential.user!.uid,
-        name: name,
-        email: email,
-      );
-
-      // Membuat pengguna di repository
-      await _userRepository.createUser(user);
-      return user;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
   // Melakukan proses sign out
   @override
   Future<void> signOut() async {
     try {
-      await _firebaseAuth.signOut();
+      await Future.wait([
+        _firebaseAuth.signOut(),
+      ]);
     } catch (e) {
       rethrow;
     }
@@ -129,6 +137,11 @@ class AuthRepository extends Repository {
 
 extension on firebase_auth.User {
   User get toUser {
-    return User(id: uid, email: email!, name: displayName!, avatar: photoURL);
+    return User(
+      id: uid,
+      email: email,
+      name: displayName,
+      avatar: photoURL,
+    );
   }
 }
