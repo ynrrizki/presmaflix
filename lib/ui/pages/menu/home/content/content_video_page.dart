@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:presmaflix/app/models/video.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContentVideoPage extends StatefulWidget {
   const ContentVideoPage({super.key, required this.video});
@@ -17,6 +18,7 @@ class ContentVideoPage extends StatefulWidget {
 }
 
 class ContentVideoPageState extends State<ContentVideoPage> {
+  TextEditingController commentController = TextEditingController();
   late final PodPlayerController videoController;
   List<Video> videos = Video.videos;
   bool isFullScreen = true;
@@ -28,9 +30,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
     )..initialise();
     videoController.setDoubeTapForwarDuration(10);
     log(videoController.currentVideoPosition.toString());
-    // if (videos[0].type == 'movie') {
-    //   videoController.enableFullScreen();
-    // }
+    videoController.enableFullScreen();
     super.initState();
   }
 
@@ -52,6 +52,12 @@ class ContentVideoPageState extends State<ContentVideoPage> {
           AspectRatio(
             aspectRatio: 16 / 9,
             child: PodVideoPlayer(
+              alwaysShowProgressBar: false,
+              overlayBuilder: (OverLayOptions options) => CustomOverlay(
+                options: options,
+                controller: videoController,
+                video: widget.video,
+              ),
               controller: videoController,
               videoThumbnail: DecorationImage(
                 image: NetworkImage(
@@ -79,7 +85,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
           const SizedBox(height: 8),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(videos[0].description.toString(),
+            child: Text(widget.video.description.toString(),
                 style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w400,
                   color: Colors.grey,
@@ -90,34 +96,77 @@ class ContentVideoPageState extends State<ContentVideoPage> {
             color: Color.fromARGB(255, 49, 49, 49),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 100,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(8)),
-                    padding: const EdgeInsets.all(14.0),
-                    margin: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Username \t\t• 1 day ago'),
-                          const SizedBox(height: 8),
-                          Text(
-                            "Comment",
-                            style: GoogleFonts.poppins(
+            child: NotificationListener<OverscrollIndicatorNotification>(
+              onNotification: (overscroll) {
+                overscroll.disallowIndicator();
+                return true;
+              },
+              child: Stack(
+                children: [
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('review')
+                          .snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        return ListView(
+                          padding: const EdgeInsets.all(8),
+                          children: snapshot.data?.docs
+                                  .map((doc) => commentWidget(doc))
+                                  .toList() ??
+                              [],
+                        );
+                      }),
+                  const SizedBox(height: 8),
+                  Positioned(
+                    bottom: 16,
+                    left: 8,
+                    right: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.black,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              offset: const Offset(0, 0),
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          controller: commentController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(8),
+                            hintText: 'Tambahkan Komentar...',
+                            hintStyle: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
-                              color: Colors.white,
+                              color: Colors.grey,
+                            ),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                FirebaseFirestore.instance
+                                    .collection('review')
+                                    .add({
+                                  'videoId': widget.video.id,
+                                  'name': 'Yanuar Rizki',
+                                  'email': 'yanuarrizki165@gmail.com',
+                                  'comment': commentController.text,
+                                  'createdAt': DateTime.now(),
+                                }).then((value) => commentController.clear());
+                              },
+                              icon: const Icon(Icons.send),
                             ),
                           ),
-                        ]),
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              },
+                ],
+              ),
             ),
           ),
         ],
@@ -165,7 +214,39 @@ class ContentVideoPageState extends State<ContentVideoPage> {
   }
 }
 
-//FIXME Fix back button when the screen is landscape resulting going back to portrait
+Widget commentWidget(DocumentSnapshot docs) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+    child: Container(
+      decoration: BoxDecoration(
+          color: Colors.black.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.all(14.0),
+      margin: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            docs['name'],
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            docs['comment'],
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
 class CustomOverlay extends StatefulWidget {
   final OverLayOptions options;
   final PodPlayerController controller;
@@ -286,6 +367,11 @@ class _CustomOverlayState extends State<CustomOverlay> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        if (widget.options.podVideoState == PodVideoState.loading) ...[
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ],
         if (isOverlayVisible ||
             widget.options.podVideoState == PodVideoState.paused) ...[
           Container(
