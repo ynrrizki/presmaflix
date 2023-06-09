@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:presmaflix/app/bloc/app/app_bloc.dart';
+// import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
 
 part 'login_state.dart';
