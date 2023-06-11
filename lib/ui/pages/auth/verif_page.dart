@@ -28,7 +28,8 @@ class _VerifPageState extends State<VerifPage> {
       checkEmailVerified();
     });
     formatedtimer = DateFormat("mm:ss").format(
-        DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds));
+      DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds),
+    );
     super.initState();
   }
 

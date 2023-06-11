@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
-import 'package:presmaflix/ui/pages/auth/verif_page.dart';
 import 'package:presmaflix/ui/pages/pages.dart';
 
 class AppRouter {

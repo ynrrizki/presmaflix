@@ -22,6 +22,8 @@ class AuthRepository extends Repository {
 
   var currentUser = User.empty;
 
+  bool? get isVerify => _firebaseAuth.currentUser?.emailVerified;
+
   // Mendapatkan stream dari perubahan pengguna saat ini
   @override
   Stream<User> get user => _firebaseAuth.authStateChanges().map((firebaseUser) {

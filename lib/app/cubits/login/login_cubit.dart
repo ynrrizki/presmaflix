@@ -37,6 +37,11 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       );
       emit(state.copyWith(status: LoginStatus.success));
+      // jika dia tidak terverif
+      if (!_authRepository.isVerify!) {
+        // kita tampilkan status verif
+        emit(state.copyWith(status: LoginStatus.verify));
+      }
       // _appBloc.add(AppUserChanged(_authRepository.currentUser));
     } on Exception {
       emit(state.copyWith(status: LoginStatus.error));
