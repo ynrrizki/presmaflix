@@ -4,7 +4,7 @@ import 'package:presmaflix/app/models/user.dart';
 abstract class Repository {
   Stream<User> get user;
 
-  Future<User> signIn({required String email, required String password});
+  Future<User> logInWithEmailAndPassword({required String email, required String password});
 
   Future<void> signInWithGoogle();
 

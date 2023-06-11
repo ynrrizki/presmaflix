@@ -52,8 +52,8 @@ class _TabBarViewWidgetState extends State<TabBarViewWidget>
           },
           itemCount: 100,
         ),
-        Column(
-          children: const [
+        const Column(
+          children: [
             Text('Tab 2'),
           ],
         ),

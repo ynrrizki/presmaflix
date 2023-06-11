@@ -6,17 +6,17 @@ class User extends Equatable {
     this.id,
     this.avatar,
     this.name = '',
-    this.description = '',
     this.email = '',
+    this.description = '',
   });
 
   final dynamic id;
   final String? avatar;
-  final String name;
-  final String description;
-  final String email;
+  final String? name;
+  final String? email;
+  final String? description;
 
-  static const empty = User(id: '');
+  static const empty = User(id: '', email: null);
 
   bool get isEmpty => this == User.empty;
   bool get isNotEmpty => this != User.empty;
@@ -25,15 +25,15 @@ class User extends Equatable {
     String? id,
     String? avatar,
     String? name,
-    String? description,
     String? email,
+    String? description,
   }) {
     return User(
       id: id ?? this.id,
       avatar: avatar ?? this.avatar,
       name: name ?? this.name,
-      description: description ?? this.description,
       email: email ?? this.email,
+      description: description ?? this.description,
     );
   }
 
@@ -45,8 +45,8 @@ class User extends Equatable {
       id: data.id,
       avatar: data['avatar'],
       name: data['name'],
-      description: data['description'],
       email: data['email'],
+      description: data['description'],
     );
   }
 
@@ -54,13 +54,13 @@ class User extends Equatable {
     return {
       'avatar': avatar,
       'name': name,
-      'description': description,
       'email': email,
+      'description': description,
     };
   }
 
   @override
-  List<Object?> get props => [id, avatar, name, description, email];
+  List<Object?> get props => [id, avatar, name, email, description];
 
   static List<User> users = const [
     User(

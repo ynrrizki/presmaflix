@@ -33,6 +33,10 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoBloc, VideoState>(
+      bloc: context.read<VideoBloc>()
+        ..add(
+          LoadVideosByContent(widget.content),
+        ),
       builder: (context, state) {
         if (state is VideoLoading) {
           return _skleton(context);
@@ -75,7 +79,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     context,
                     video: videos
                         .where((video) => video.type == 'full-length')
-                        .first,
+                        .single,
                   ),
                   const SizedBox(
                     height: 25,
@@ -382,7 +386,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: Padding(
                   padding: EdgeInsets.only(top: 25, left: 20),
                   child: Text(
-                    "Download dengan kualitas",
+                    "Unduh dengan kualitas",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
@@ -401,6 +405,144 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     },
                   ),
                 ),
+              ),
+              Column(
+                children: [
+                  // Button Kualitas 360p
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 75),
+                      child: SizedBox(
+                        height: 70,
+                        width: 600,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: const Text(
+                                  "Rendah",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 235),
+                              const Text(
+                                "360p",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 20,
+                    color: Colors.grey,
+                  ),
+
+                  // Button Kualitas 480p
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        height: 70,
+                        width: 600,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: const Text(
+                                  "Sedang",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 235),
+                              const Text(
+                                "480p",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 20,
+                    color: Colors.grey,
+                  ),
+
+                  // Button Kualitas 720p
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: SizedBox(
+                        height: 70,
+                        width: 600,
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            elevation: 0,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: const Text(
+                                  "Tinggi",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 235),
+                              const Text(
+                                "720p",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

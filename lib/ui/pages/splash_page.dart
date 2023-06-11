@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+// import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 // import 'package:prima_studio/ui/widgets/prima_studio.dart';
 
 class SplashPage extends StatefulWidget {
@@ -27,8 +30,20 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     Timer(
       const Duration(milliseconds: 1800),
       () {
+        // final user = context.select((AppBloc bloc) => bloc.state.user);
+        // if (user.isNotEmpty) {
+        //   log(user.id);
+        //   Navigator.of(context)
+        //       .pushNamedAndRemoveUntil('/home', (route) => false);
+        // } else {
+        //   Navigator.of(context).pushNamedAndRemoveUntil(
+        //     '/login',
+        //     (route) => false,
+        //   );
+        // }
         User? user = FirebaseAuth.instance.currentUser;
         if (user != null) {
+          log(user.uid);
           Navigator.of(context)
               .pushNamedAndRemoveUntil('/home', (route) => false);
         } else {
