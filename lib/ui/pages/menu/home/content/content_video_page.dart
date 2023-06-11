@@ -23,6 +23,8 @@ class ContentVideoPageState extends State<ContentVideoPage> {
   late final PodPlayerController videoController;
   List<Video> videos = Video.videos;
   bool isFullScreen = true;
+  bool isEditing = false;
+  String commentId = '';
 
   @override
   void initState() {
@@ -42,6 +44,18 @@ class ContentVideoPageState extends State<ContentVideoPage> {
       DeviceOrientation.portraitUp,
     ]);
     super.dispose();
+  }
+
+  void toggleEditing() {
+    setState(() {
+      isEditing = true;
+    });
+  }
+
+  void setCommentId(String id) {
+    setState(() {
+      commentId = id;
+    });
   }
 
   @override
@@ -125,6 +139,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('review')
+                        .where('videoId', isEqualTo: widget.video.id)
                         .snapshots(),
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       return SliverList.separated(
@@ -135,7 +150,8 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                         itemCount: snapshot.data?.docs.length ?? 0,
                         itemBuilder: (context, index) {
                           final doc = snapshot.data!.docs[index];
-                          return commentWidget(doc, context, commentController);
+                          return commentWidget(doc, context, commentController,
+                              toggleEditing, doc.id, setCommentId);
                         },
                       );
                     },
@@ -185,17 +201,26 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                           ),
                         );
                       }
-                      FirebaseFirestore.instance.collection('review').add({
-                        'videoId': widget.video.id,
-                        'name': await FirebaseFirestore.instance
-                            .collection('users')
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .get()
-                            .then((value) => value.data()!['name']),
-                        'email': FirebaseAuth.instance.currentUser!.email,
-                        'comment': commentController.text,
-                        'createdAt': DateTime.now(),
-                      }).then((value) => commentController.clear());
+                      if (isEditing == false) {
+                        FirebaseFirestore.instance.collection('review').add({
+                          'videoId': widget.video.id,
+                          'name': await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .get()
+                              .then((value) => value.data()!['name']),
+                          'email': FirebaseAuth.instance.currentUser!.email,
+                          'comment': commentController.text,
+                          'createdAt': DateTime.now(),
+                        }).then((value) => commentController.clear());
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('review')
+                            .doc(commentId)
+                            .update({
+                          'comment': commentController.text,
+                        }).then((value) => commentController.clear());
+                      }
                     },
                     icon: const Icon(Icons.send),
                   ),
@@ -209,8 +234,13 @@ class ContentVideoPageState extends State<ContentVideoPage> {
   }
 }
 
-Widget commentWidget(DocumentSnapshot docs, BuildContext context,
-    TextEditingController commentController) {
+Widget commentWidget(
+    DocumentSnapshot docs,
+    BuildContext context,
+    TextEditingController commentController,
+    VoidCallback toggleEditing,
+    String commentId,
+    Function(String) updateCommentId) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12.0),
     child: Container(
@@ -260,14 +290,43 @@ Widget commentWidget(DocumentSnapshot docs, BuildContext context,
                                     .collection('review')
                                     .doc(docs.id)
                                     .get()
-                                    .then((value) => commentController.text =
-                                        value.data()!['comment']);
+                                    .then((value) {
+                                      updateCommentId(docs.id);
+                                      commentController.text =
+                                          value.data()!['comment'];
+                                    })
+                                    .then((value) => toggleEditing())
+                                    .then(
+                                        (value) => Navigator.of(context).pop());
                               },
                             ),
                             const Padding(padding: EdgeInsets.all(8)),
                             GestureDetector(
                               child: const Text('Hapus'),
-                              onTap: () {},
+                              onTap: () {
+                                FirebaseFirestore.instance
+                                    .collection('review')
+                                    .doc(docs.id)
+                                    .delete()
+                                    .then(
+                                      (value) => ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            "Komentar Berhasil Dihapus",
+                                            style: GoogleFonts.montserrat(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      ),
+                                    )
+                                    .then(
+                                        (value) => Navigator.of(context).pop());
+                              },
                             ),
                           ],
                         ),
@@ -430,7 +489,10 @@ class _CustomOverlayState extends State<CustomOverlay> {
           Positioned(
             top: 10,
             left: 10,
-            child: Text(widget.video.title.toString()),
+            child: Text(
+              widget.video.title.toString(),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           if (widget.options.podVideoState == PodVideoState.playing)
             buildPlayingOverlay(),
