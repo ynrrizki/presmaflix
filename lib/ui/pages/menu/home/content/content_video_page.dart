@@ -87,7 +87,16 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 8),
-                              child: Text(widget.video.title.toString()),
+                              child: Flexible(
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Text(
+                                    widget.video.title.toString(),
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ),
                             ),
                             IconButton.filled(
                               onPressed: () {},
@@ -160,11 +169,30 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                     color: Colors.grey,
                   ),
                   suffixIcon: IconButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      if (commentController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Komentar Tidak Boleh Kosong',
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                              ),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                       FirebaseFirestore.instance.collection('review').add({
                         'videoId': widget.video.id,
-                        'name': 'Yanuar Rizki',
-                        'email': 'yanuarrizki165@gmail.com',
+                        'name': await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .get()
+                            .then((value) => value.data()!['name']),
+                        'email': FirebaseAuth.instance.currentUser!.email,
                         'comment': commentController.text,
                         'createdAt': DateTime.now(),
                       }).then((value) => commentController.clear());
@@ -230,17 +258,16 @@ Widget commentWidget(DocumentSnapshot docs, BuildContext context,
                               onTap: () {
                                 FirebaseFirestore.instance
                                     .collection('review')
+                                    .doc(docs.id)
                                     .get()
                                     .then((value) => commentController.text =
-                                        value.docs[0]['comment'].toString());
+                                        value.data()!['comment']);
                               },
                             ),
                             const Padding(padding: EdgeInsets.all(8)),
                             GestureDetector(
                               child: const Text('Hapus'),
-                              onTap: () {
-                                // Handle option 2
-                              },
+                              onTap: () {},
                             ),
                           ],
                         ),
