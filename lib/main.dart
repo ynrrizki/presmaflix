@@ -2,27 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:presmaflix/app/bloc/app/app_bloc.dart';
-import 'package:presmaflix/app/bloc/content/content_bloc.dart';
-import 'package:presmaflix/app/bloc/user/user_bloc.dart';
-import 'package:presmaflix/app/bloc/video/video_bloc.dart';
-import 'package:presmaflix/app/cubits/auth/auth_cubit.dart';
-import 'package:presmaflix/app/cubits/bottomNavigation/bottom_navigation_cubit.dart';
-import 'package:presmaflix/app/cubits/login/login_cubit.dart';
-import 'package:presmaflix/app/cubits/logout/logout_cubit.dart';
-import 'package:presmaflix/app/cubits/signup/signup_cubit.dart';
-import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
-import 'package:presmaflix/app/repositories/firestore/content/content_repository.dart';
-import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
-import 'package:presmaflix/app/repositories/firestore/video/video_repository.dart';
-import 'package:presmaflix/bloc_observer.dart';
 import 'firebase_options.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'app/bloc/blocs.dart';
+import 'app/cubits/cubits.dart';
+import 'app/repositories/firestore/repositories.dart';
 import 'package:presmaflix/config/routing/routes.dart';
 import 'package:presmaflix/config/themes.dart';
 
 Future<void> main() async {
-  Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

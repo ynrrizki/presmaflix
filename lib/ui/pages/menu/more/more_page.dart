@@ -73,7 +73,7 @@ class MorePage extends StatelessWidget {
                   Card(
                     color: Colors.black,
                     shadowColor: Colors.grey,
-                    elevation: 0.5,
+                    elevation: 0.2,
                     child: ListTile(
                       leading: const Icon(Icons.search_outlined),
                       title: const Text('Search'),
@@ -87,7 +87,7 @@ class MorePage extends StatelessWidget {
                   Card(
                     color: Colors.black,
                     shadowColor: Colors.grey,
-                    elevation: 0.5,
+                    elevation: 0.2,
                     child: ListTile(
                       leading: const Icon(Icons.notifications_active_outlined),
                       title: const Text('Notifications'),
@@ -98,7 +98,7 @@ class MorePage extends StatelessWidget {
                   Card(
                     color: Colors.black,
                     shadowColor: Colors.grey,
-                    elevation: 0.5,
+                    elevation: 0.2,
                     child: ListTile(
                       leading: const Icon(Icons.settings_outlined),
                       title: const Text('Settings'),
