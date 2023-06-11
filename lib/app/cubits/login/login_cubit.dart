@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:presmaflix/app/bloc/app/app_bloc.dart';
@@ -37,6 +39,7 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       );
       emit(state.copyWith(status: LoginStatus.success));
+      log('${!_authRepository.isVerify!}', name: 'LoginCubit');
       // jika dia tidak terverif
       if (!_authRepository.isVerify!) {
         // kita tampilkan status verif
