@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
@@ -45,55 +46,29 @@ class ContentVideoPageState extends State<ContentVideoPage> {
 
   @override
   Widget build(BuildContext context) {
-    //if (videos[0].type == 'full-length') {
     return Scaffold(
       body: Column(
         children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: PodVideoPlayer(
-              alwaysShowProgressBar: false,
-              overlayBuilder: (OverLayOptions options) => CustomOverlay(
-                options: options,
-                controller: videoController,
-                video: widget.video,
-              ),
-              controller: videoController,
-              videoThumbnail: DecorationImage(
-                image: NetworkImage(
-                  widget.video.thumbnailUrl.toString(),
+          ClipRect(
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: PodVideoPlayer(
+                alwaysShowProgressBar: false,
+                overlayBuilder: (OverLayOptions options) => CustomOverlay(
+                  options: options,
+                  controller: videoController,
+                  video: widget.video,
                 ),
+                controller: videoController,
+                videoThumbnail: DecorationImage(
+                  image: NetworkImage(
+                    widget.video.thumbnailUrl.toString(),
+                  ),
+                ),
+                matchFrameAspectRatioToVideo: true,
+                matchVideoAspectRatioToFrame: true,
               ),
-              matchFrameAspectRatioToVideo: true,
-              matchVideoAspectRatioToFrame: true,
             ),
-          ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(widget.video.title.toString()),
-              ),
-              IconButton.filled(
-                onPressed: () {},
-                icon: const Icon(Icons.share),
-              )
-            ],
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(widget.video.description.toString(),
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                )),
-          ),
-          const Divider(
-            thickness: 2,
-            color: Color.fromARGB(255, 49, 49, 49),
           ),
           Expanded(
             child: NotificationListener<OverscrollIndicatorNotification>(
@@ -101,127 +76,141 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: Stack(
-                children: [
-                  StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('review')
-                          .snapshots(),
-                      builder:
-                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        return ListView(
-                          padding: const EdgeInsets.all(8),
-                          children: snapshot.data?.docs
-                                  .where((video) =>
-                                      (video.data()
-                                          as Map<String, dynamic>)['videoId'] ==
-                                      widget.video.id)
-                                  .map((doc) => commentWidget(doc))
-                                  .toList() ??
-                              [],
-                        );
-                      }),
-                  const SizedBox(height: 8),
-                  Positioned(
-                    bottom: 16,
-                    left: 8,
-                    right: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.black,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 6,
-                              offset: const Offset(0, 0),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: Flexible(
+                                child: SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  child: Text(
+                                    widget.video.title.toString(),
+                                    softWrap: true,
+                                  ),
+                                ),
+                              ),
                             ),
+                            IconButton.filled(
+                              onPressed: () {},
+                              icon: const Icon(Icons.share),
+                            )
                           ],
                         ),
-                        child: TextField(
-                          controller: commentController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 10,
-                            ),
-                            hintText: 'Tambahkan Komentar...',
-                            hintStyle: GoogleFonts.poppins(
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            widget.video.description.toString(),
+                            style: GoogleFonts.poppins(
                               fontWeight: FontWeight.w400,
                               color: Colors.grey,
                             ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                FirebaseFirestore.instance
-                                    .collection('review')
-                                    .add({
-                                  'videoId': widget.video.id,
-                                  'name': 'Yanuar Rizki',
-                                  'email': 'yanuarrizki165@gmail.com',
-                                  'comment': commentController.text,
-                                  'createdAt': DateTime.now(),
-                                }).then((value) => commentController.clear());
-                              },
-                              icon: const Icon(Icons.send),
-                            ),
                           ),
                         ),
-                      ),
+                        const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 49, 49, 49),
+                        ),
+                      ],
                     ),
                   ),
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('review')
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      return SliverList.separated(
+                        separatorBuilder: (context, index) => const Divider(
+                          thickness: 2,
+                          color: Color.fromARGB(255, 49, 49, 49),
+                        ),
+                        itemCount: snapshot.data?.docs.length ?? 0,
+                        itemBuilder: (context, index) {
+                          final doc = snapshot.data!.docs[index];
+                          return commentWidget(doc, context, commentController);
+                        },
+                      );
+                    },
+                  ),
                 ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.black,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(0, 0),
+                  ),
+                ],
+              ),
+              child: TextField(
+                controller: commentController,
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(8),
+                  hintText: 'Tambahkan Komentar...',
+                  hintStyle: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      if (commentController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Komentar Tidak Boleh Kosong',
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                              ),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      FirebaseFirestore.instance.collection('review').add({
+                        'videoId': widget.video.id,
+                        'name': await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .get()
+                            .then((value) => value.data()!['name']),
+                        'email': FirebaseAuth.instance.currentUser!.email,
+                        'comment': commentController.text,
+                        'createdAt': DateTime.now(),
+                      }).then((value) => commentController.clear());
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                ),
               ),
             ),
           ),
         ],
       ),
     );
-    // }
-    // return Scaffold(
-    //   body: Column(
-    //     children: [
-    //       AspectRatio(
-    //         aspectRatio: 16 / 9,
-    //         child: PodVideoPlayer(
-    //           overlayBuilder: (OverLayOptions options) => CustomOverlay(
-    //             options: options,
-    //             controller: videoController,
-    //             video: widget.video,
-    //           ),
-    //           matchFrameAspectRatioToVideo: true,
-    //           matchVideoAspectRatioToFrame: true,
-    //           videoTitle: Padding(
-    //             padding: kIsWeb
-    //                 ? const EdgeInsets.symmetric(vertical: 25, horizontal: 15)
-    //                 : const EdgeInsets.only(left: 15),
-    //             child: Text(
-    //               widget.video.title.toString(),
-    //               style: const TextStyle(
-    //                 color: Colors.white,
-    //                 fontSize: 18,
-    //               ),
-    //               maxLines: 1,
-    //               overflow: TextOverflow.ellipsis,
-    //             ),
-    //           ),
-    //           controller: videoController,
-    //           videoThumbnail: DecorationImage(
-    //             image: NetworkImage(
-    //               widget.video.thumbnailUrl.toString(),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
 
-Widget commentWidget(DocumentSnapshot docs) {
+Widget commentWidget(DocumentSnapshot docs, BuildContext context,
+    TextEditingController commentController) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 12.0),
     child: Container(
@@ -230,24 +219,65 @@ Widget commentWidget(DocumentSnapshot docs) {
           borderRadius: BorderRadius.circular(8)),
       padding: const EdgeInsets.all(14.0),
       margin: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text(
-            docs['name'],
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                docs['name'],
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                docs['comment'],
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            docs['comment'],
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w400,
-              color: Colors.grey,
-            ),
-          ),
+          const Spacer(),
+          if (FirebaseAuth.instance.currentUser!.email == docs['email'])
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Options'),
+                      content: SingleChildScrollView(
+                        child: ListBody(
+                          children: <Widget>[
+                            GestureDetector(
+                              child: const Text('Edit'),
+                              onTap: () {
+                                FirebaseFirestore.instance
+                                    .collection('review')
+                                    .doc(docs.id)
+                                    .get()
+                                    .then((value) => commentController.text =
+                                        value.data()!['comment']);
+                              },
+                            ),
+                            const Padding(padding: EdgeInsets.all(8)),
+                            GestureDetector(
+                              child: const Text('Hapus'),
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: const Icon(Icons.more_vert),
+            )
         ],
       ),
     ),
