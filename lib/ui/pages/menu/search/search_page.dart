@@ -1,6 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:presmaflix/app/bloc/blocs.dart';
+import 'package:presmaflix/app/cubits/search/search_cubit.dart' as search_cubit;
+import 'package:presmaflix/app/models/content.dart';
+import 'package:presmaflix/config/routing/argument/arguments.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 
@@ -46,6 +51,14 @@ class _SearchPageState extends State<SearchPage> {
         title: SearchFieldWidget(
           hintText: 'Judul',
           searchController: searchController,
+          onChanged: (value) {
+            // context
+            //     .read<search_cubit.SearchCubit>()
+            //     .searchChanged(title: value);
+            context.read<SearchBloc>().add(
+                  SearchContent(title: value),
+                );
+          },
         ),
         actions: [
           Padding(
@@ -79,55 +92,120 @@ class LoadSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String imageURL =
-        'https://th.bing.com/th/id/OIP.1Lu2dyIYNRTo9_ahY91GlwAAAA?pid=ImgDet&rs=1';
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      child: ListView(
-        children: [
-          Card(
-            child: ListTile(
-              onTap: () {},
-              leading: Container(
-                width: 50,
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                  image: const DecorationImage(
-                    image: CachedNetworkImageProvider(imageURL),
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                  ),
-                ),
-              ),
-              title: Text(
-                'Lookism',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Rating 0.0',
-                    style: GoogleFonts.poppins(
-                      color: kPrimaryColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+    List<Content> contents = Content.contents;
+    return BlocBuilder<SearchBloc, SearchState>(
+      buildWhen: (previous, current) => current is SearchLoaded,
+      builder: (context, state) {
+        if (state is SearchLoading) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
+          );
+        } else if (state is SearchLoaded) {
+          contents = state.contents;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: ListView(
+              children: contents
+                  .map(
+                    (content) => ContentCardWidget(
+                      content,
+                      name: content.title,
+                      directs: content.directors.first,
+                      imageURL: content.posterUrl,
+                      rating: 0.0,
                     ),
-                  ),
-                  const SizedBox(width: 5),
-                  const Icon(
-                    Icons.star,
-                    size: 14,
-                  ),
-                ],
-              ),
+                  )
+                  .toList(),
+              // children: [
+              //   ContentCardWidget(name: 'Lookism', imageURL: imageURL, rating: 2.5),
+              // ],
+            ),
+          );
+        }
+
+        return const Center(
+          child: Text('Something went wrong'),
+        );
+      },
+    );
+  }
+}
+
+class ContentCardWidget extends StatelessWidget {
+  const ContentCardWidget(
+    this.content, {
+    super.key,
+    required this.name,
+    required this.directs,
+    required this.imageURL,
+    required this.rating,
+  });
+
+  final Content content;
+  final String name;
+  final String directs;
+  final String imageURL;
+  final double rating;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        onTap: () {
+          Navigator.of(context, rootNavigator: true).pushNamed(
+            '/content-detail',
+            arguments: ContentDetailArguments(content: content),
+          );
+        },
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        leading: Container(
+          width: 50,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(imageURL),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
             ),
           ),
-        ],
+        ),
+        title: Text(
+          name,
+          style: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+          softWrap: false,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(directs),
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Rating $rating',
+                  style: GoogleFonts.poppins(
+                    color: kPrimaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 5),
+                const Icon(
+                  Icons.star,
+                  size: 14,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -170,7 +248,7 @@ class IdleSearch extends StatelessWidget {
                 GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  childAspectRatio: 3,
+                  childAspectRatio: 2.5,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
                   crossAxisCount: 2,
@@ -178,15 +256,15 @@ class IdleSearch extends StatelessWidget {
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.track_changes_outlined),
-                        title: const Text('Action'),
+                        leading: const Icon(Icons.house_outlined),
+                        title: const Text('Drama'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.house_outlined),
-                        title: const Text('Drama'),
+                        leading: const Icon(Icons.usb_rounded),
+                        title: const Text('Romance'),
                       ),
                     ),
                     Card(
@@ -207,14 +285,14 @@ class IdleSearch extends StatelessWidget {
                       child: ListTile(
                         onTap: () {},
                         leading: const Icon(Icons.usb_rounded),
-                        title: const Text('Drama'),
+                        title: const Text('Fiksi'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
                         leading: const Icon(Icons.usb_rounded),
-                        title: const Text('Thriller'),
+                        title: const Text('Misteri'),
                       ),
                     ),
                   ],

@@ -178,7 +178,8 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               child: TextField(
                 controller: commentController,
                 decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(8),
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 13),
                   hintText: 'Tambahkan Komentar...',
                   hintStyle: GoogleFonts.poppins(
                     fontWeight: FontWeight.w400,

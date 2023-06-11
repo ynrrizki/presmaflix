@@ -26,8 +26,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   void _onSearchContent(SearchContent event, Emitter<SearchState> emit) {
-    List<Content> films = (_contentBloc.state as ContentLoaded).contents;
-    List<Content> searchResult = films;
+    List<Content> contents = (_contentBloc.state as ContentLoaded).contents;
+    List<Content> searchResult = contents;
 
     if (event.title.isNotEmpty) {
       searchResult = searchResult

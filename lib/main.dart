@@ -88,6 +88,11 @@ class MyApp extends StatelessWidget {
               videoRepository: context.read<VideoRepository>(),
             )..add(LoadVideos()),
           ),
+          BlocProvider(
+            create: (context) => SearchBloc(
+              contentBloc: context.read<ContentBloc>(),
+            )..add(LoadSearch()),
+          ),
         ],
         child: BlocBuilder<AppBloc, AppState>(
           builder: (context, state) {

@@ -65,11 +65,13 @@ class _SearchFieldWidgetState extends State<SearchFieldWidget> {
           onSubmitted: widget.onSubmitted,
           decoration: InputDecoration(
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
+                const EdgeInsets.symmetric(horizontal: 13, vertical: 15),
             hintText: widget.hintText,
             filled: true,
             fillColor: const Color.fromARGB(255, 43, 43, 43),
-            border: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             prefixIcon: const Icon(Icons.search),
             prefixIconColor: Colors.white,
             hintStyle: GoogleFonts.plusJakartaSans(
