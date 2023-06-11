@@ -13,43 +13,66 @@ class VerifPage extends StatefulWidget {
 
 class _VerifPageState extends State<VerifPage> {
   bool isAlreadySend = false;
-  bool isVerified = false;
   late Timer timer;
   late Duration alreadysendtimer;
   late String formatedtimer;
 
   @override
   void initState() {
-    final isUserVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    if (!isUserVerified) {
-      FirebaseAuth.instance.currentUser!.sendEmailVerification();
-    }
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
+    alreadysendtimer = const Duration(seconds: 30);
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      updateFormattedTimer();
       checkEmailVerified();
     });
     formatedtimer = DateFormat("mm:ss").format(
       DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds),
     );
+
+    FirebaseAuth.instance.currentUser!.sendEmailVerification();
+    setState(() {
+      isAlreadySend = true;
+    });
+    sendAgainCooldown();
     super.initState();
   }
 
-  checkEmailVerified() {
-    final isUserVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    if (isUserVerified) {
-      timer.cancel();
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/home', (Route<dynamic> route) => false);
-    }
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
-  sendAgainCooldown() {
+  void updateFormattedTimer() {
     setState(() {
-      alreadysendtimer = const Duration(seconds: 30);
-      isAlreadySend = false;
+      alreadysendtimer -= const Duration(seconds: 1);
+      formatedtimer = DateFormat("mm:ss").format(
+        DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds),
+      );
     });
   }
 
-  sendVerification() {
+  void checkEmailVerified() {
+    final User user = FirebaseAuth.instance.currentUser!;
+    user.reload();
+    if (user.emailVerified) {
+      timer.cancel();
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        (Route<dynamic> route) => false,
+      );
+    }
+  }
+
+  void sendAgainCooldown() {
+    Timer(const Duration(seconds: 30), () {
+      setState(() {
+        isAlreadySend = false;
+      });
+    });
+  }
+
+  void sendVerification() {
     FirebaseAuth.instance.currentUser!.sendEmailVerification();
     setState(() {
       isAlreadySend = true;
@@ -68,10 +91,10 @@ class _VerifPageState extends State<VerifPage> {
           const Center(
             child: Text('Silahkan Cek Email Anda'),
           ),
-          if (isAlreadySend)
+          if (!isAlreadySend)
             Center(
               child: ElevatedButton(
-                onPressed: sendVerification(),
+                onPressed: sendVerification,
                 child: const Text('Kirim Ulang Email'),
               ),
             )
