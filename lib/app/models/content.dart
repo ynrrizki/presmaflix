@@ -60,6 +60,10 @@ class Content extends Equatable {
     );
   }
 
+  static List<Content> downloadedContent = [
+    // Logika Download
+  ];
+
   static List<Content> contents = [
     Content(
       id: '1',
