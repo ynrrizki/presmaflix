@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
+import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/bloc/blocs.dart';
@@ -38,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => VideoRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => RatingRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -89,8 +94,14 @@ class MyApp extends StatelessWidget {
             )..add(LoadVideos()),
           ),
           BlocProvider(
+            create: (context) => RatingBloc(
+              ratingRepository: context.read<RatingRepository>(),
+            ),
+          ),
+          BlocProvider(
             create: (context) => SearchBloc(
               contentBloc: context.read<ContentBloc>(),
+              ratingBloc: context.read<RatingBloc>(),
             )..add(LoadSearch()),
           ),
         ],
@@ -108,18 +119,6 @@ class MyApp extends StatelessWidget {
                 onGenerateRoute: router.onRoute,
               );
             }
-            // else if (state.status == AppStatus.unauthenticated) {
-            //   log('appState: $state', name: 'main.dart');
-            //   router.appState = state;
-            //   return MaterialApp(
-            //     debugShowCheckedModeBanner: false,
-            //     title: 'Presmaflix',
-            //     theme: PresmaflixThemes.darkTheme,
-            //     onGenerateRoute: router.onRoute,
-            //   );
-            // }
-            // router.appStatus =
-            //     context.select((AppBloc bloc) => bloc.state.status);
             log('app status: ${router.state}', name: 'main.dart');
             return MaterialApp(
               debugShowCheckedModeBanner: false,

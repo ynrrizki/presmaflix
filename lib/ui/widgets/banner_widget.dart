@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:presmaflix/app/models/content.dart';
+import 'package:presmaflix/app/models/content/content.dart';
 import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
 import 'package:shimmer/shimmer.dart';
 

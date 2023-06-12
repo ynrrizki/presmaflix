@@ -1,4 +1,4 @@
-import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/app/models/video/video.dart';
 
 class ContentVideoArguments {
   ContentVideoArguments({

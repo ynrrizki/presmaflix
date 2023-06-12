@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:pod_player/pod_player.dart';
-import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/app/models/video/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:presmaflix/config/themes.dart';
 
 class ContentVideoPage extends StatefulWidget {
   const ContentVideoPage({super.key, required this.video});
@@ -141,7 +142,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                         .collection('review')
                         .where('videoId', isEqualTo: widget.video.id)
                         .snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    builder: (context, snapshot) {
                       return SliverList.separated(
                         separatorBuilder: (context, index) => const Divider(
                           thickness: 2,
@@ -465,8 +466,10 @@ class _CustomOverlayState extends State<CustomOverlay> {
     return Stack(
       children: [
         if (widget.options.podVideoState == PodVideoState.loading) ...[
-          const Center(
-            child: CircularProgressIndicator(),
+          Center(
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
           ),
         ],
         if (isOverlayVisible ||

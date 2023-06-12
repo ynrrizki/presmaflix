@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Watchlist extends Equatable {
@@ -10,6 +11,15 @@ class Watchlist extends Equatable {
     required this.contentId,
     required this.userId,
   });
+
+  factory Watchlist.fromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot;
+    return Watchlist(
+      id: data.id,
+      contentId: data['contentId'],
+      userId: data['userId'],
+    );
+  }
 
   @override
   List<Object?> get props => [id, contentId, userId];

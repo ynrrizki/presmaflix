@@ -1,4 +1,4 @@
-import 'package:presmaflix/app/models/user.dart';
+import 'package:presmaflix/app/models/user/user.dart';
 
 
 abstract class Repository {

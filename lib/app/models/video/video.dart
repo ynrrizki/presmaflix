@@ -40,28 +40,16 @@ class Video extends Equatable {
 
   factory Video.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     final id = snapshot.id;
-    final data = snapshot.data();
-    if (data == null) {
-      // Tambahkan log untuk mencatat kesalahan
-      throw Exception('Data snapshot is null');
-    }
-    if (!data.containsKey('contentId') ||
-        !data.containsKey('type') ||
-        !data.containsKey('videoUrl') ||
-        !data.containsKey('duration') ||
-        !data.containsKey('createdAt')) {
-      // Tambahkan log untuk mencatat kesalahan
-      throw Exception('Required fields are missing in data snapshot');
-    }
+    final data = snapshot;
     return Video(
       id: id,
-      contentId: data['contentId'],
+      contentId: data['contentId'] ?? '',
       title: data['title'] ?? '',
-      type: data['type'],
-      videoUrl: data['videoUrl'],
-      thumbnailUrl: data['thumbnailUrl'],
-      description: data['description'],
-      duration: data['duration'],
+      type: data['type'] ?? '',
+      videoUrl: data['videoUrl'] ?? '',
+      thumbnailUrl: data['thumbnailUrl'] ?? '',
+      description: data['description'] ?? '',
+      duration: data['duration'] ?? '',
       createdAt: data['createdAt'],
     );
   }

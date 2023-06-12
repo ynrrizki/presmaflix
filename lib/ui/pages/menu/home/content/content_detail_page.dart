@@ -4,12 +4,15 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
 import 'package:presmaflix/app/bloc/video/video_bloc.dart';
-import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/models/video/video.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
+// import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -26,7 +29,7 @@ class ContentDetailPage extends StatefulWidget {
 }
 
 class _ContentDetailPageState extends State<ContentDetailPage> {
-  List<Video> videos = Video.videos;
+  List<Video>? videos = Video.videos;
   List<Content> contents = Content.contents;
   List<String> tabTypes = [];
   int tabCount = 1;
@@ -73,11 +76,15 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     widget.content.genre.join(' • '),
                   ),
                   const SizedBox(
+                    height: 10,
+                  ),
+                  _RatingWidget(content: widget.content),
+                  const SizedBox(
                     height: 25,
                   ),
                   _buttonPlay(
                     context,
-                    video: videos
+                    video: videos!
                         .where((video) => video.type == 'full-length')
                         .single,
                   ),
@@ -90,7 +97,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   const SizedBox(
                     height: 25,
                   ),
-                  _watchlistAndShareBtn(context),
+                  _actionsBtn(context),
                   const SizedBox(
                     height: 25,
                   ),
@@ -105,11 +112,11 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
               ),
               tabCount: tabCount,
               tabs: [
-                ..._generateTab(videos, tabTypes),
+                ..._generateTab(videos!, tabTypes),
                 const Tab(text: 'Similar'),
               ],
               tabBarViews: [
-                ..._generateTabView(videos, tabTypes),
+                ..._generateTabView(videos!, tabTypes),
                 _tabSimilar(contents),
               ],
             ),
@@ -140,7 +147,8 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             ),
             _buttonPlay(
               context,
-              video: videos.where((video) => video.type == 'full-length').first,
+              video:
+                  videos?.where((video) => video.type == 'full-length').first,
               isShimmer: true,
             ),
             const SizedBox(
@@ -150,7 +158,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             const SizedBox(
               height: 25,
             ),
-            _watchlistAndShareBtn(context, isShimmer: true),
+            _actionsBtn(context, isShimmer: true),
             const SizedBox(
               height: 25,
             ),
@@ -264,7 +272,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
     });
   }
 
-  Widget _watchlistAndShareBtn(BuildContext context, {bool isShimmer = false}) {
+  Widget _actionsBtn(BuildContext context, {bool isShimmer = false}) {
     if (!isShimmer) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -290,11 +298,11 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   width: 15,
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () => _ratingModalBottomSheet(context),
                   icon: const Icon(
-                    Icons.share,
+                    Icons.star,
                   ),
-                  label: const Text('Share'),
+                  label: const Text('Rating'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     side: const BorderSide(
@@ -304,13 +312,21 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 ),
               ],
             ),
+            // ElevatedButton(
+            //   onPressed: () => _downloadModalBottomSheet(context),
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.transparent,
+            //     side: const BorderSide(color: Colors.white),
+            //   ),
+            //   child: const Icon(Icons.file_download_outlined),
+            // )
             ElevatedButton(
-              onPressed: () => _downloadModalBottomSheet(context),
+              onPressed: () => _moreModalBottomSheet(context),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 side: const BorderSide(color: Colors.white),
               ),
-              child: const Icon(Icons.file_download_outlined),
+              child: const Icon(Icons.more_vert),
             )
           ],
         ),
@@ -370,6 +386,120 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
           )
         ],
       ),
+    );
+  }
+
+  Future<dynamic> _ratingModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 400,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  width: 100,
+                  child: Divider(
+                    height: 5,
+                    thickness: 5,
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Card(
+                      child: ListTile(
+                        onTap: () {},
+                        leading: const Icon(Icons.download),
+                        title: const Text('Bintang 1'),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        onTap: () {},
+                        leading: const Icon(Icons.share),
+                        title: const Text('Bintang 2'),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        onTap: () {},
+                        leading: const Icon(Icons.share),
+                        title: const Text('Bintang 3'),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        onTap: () {},
+                        leading: const Icon(Icons.share),
+                        title: const Text('Bintang 4'),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        onTap: () {},
+                        leading: const Icon(Icons.share),
+                        title: const Text('Bintang 5'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<dynamic> _moreModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: 200,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(
+                  width: 100,
+                  child: Divider(
+                    height: 5,
+                    thickness: 5,
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Card(
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.pop(context);
+                          _downloadModalBottomSheet(context);
+                        },
+                        leading: const Icon(Icons.download),
+                        title: const Text('Download'),
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        onTap: () {},
+                        leading: const Icon(Icons.share),
+                        title: const Text('Share'),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -1015,6 +1145,71 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _RatingWidget extends StatelessWidget {
+  final Content content;
+  const _RatingWidget({
+    // super.key,
+    required this.content,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<RatingBloc, double>(
+      bloc: context.read<RatingBloc>()..add(LoadRating(content.id)),
+      builder: (context, state) {
+        return Column(
+          children: [
+            Chip(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+              elevation: 0,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              labelPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(
+                  color: Colors.orange,
+                  style: BorderStyle.none,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              label: Text(
+                state.toString(),
+                style: GoogleFonts.poppins(
+                  color: Colors.orange,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            // const SizedBox(height: 7.5),
+            RatingBar(
+              allowHalfRating: true,
+              itemSize: 17,
+              ignoreGestures: true,
+              ratingWidget: RatingWidget(
+                full: const Icon(
+                  Icons.star,
+                  color: Colors.orange,
+                ),
+                half: const Icon(
+                  Icons.star_half,
+                  color: Colors.orange,
+                ),
+                empty: const Icon(
+                  Icons.star_border,
+                  color: Colors.orange,
+                ),
+              ),
+              initialRating: state,
+              onRatingUpdate: (value) {},
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,13 +1,20 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/bloc/blocs.dart';
-import 'package:presmaflix/app/cubits/search/search_cubit.dart' as search_cubit;
-import 'package:presmaflix/app/models/content.dart';
+import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
+// import 'package:presmaflix/app/cubits/search/search_cubit.dart' as search_cubit;
+import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
+import 'package:shimmer/shimmer.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -19,6 +26,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
   bool isSearchEmpty = true; // Tambahkan variabel ini
+  RatingRepository ratingRepository = RatingRepository();
 
   @override
   void initState() {
@@ -80,7 +88,11 @@ class _SearchPageState extends State<SearchPage> {
           const SizedBox(width: 15)
         ],
       ),
-      body: isSearchEmpty ? const IdleSearch() : const LoadSearch(),
+      body: isSearchEmpty
+          ? const IdleSearch()
+          : LoadSearch(
+              ratingRepository: ratingRepository,
+            ),
     );
   }
 }
@@ -88,7 +100,10 @@ class _SearchPageState extends State<SearchPage> {
 class LoadSearch extends StatelessWidget {
   const LoadSearch({
     super.key,
+    required this.ratingRepository,
   });
+
+  final RatingRepository ratingRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -107,20 +122,58 @@ class LoadSearch extends StatelessWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: ListView(
-              children: contents
-                  .map(
-                    (content) => ContentCardWidget(
-                      content,
-                      name: content.title,
-                      directs: content.directors.first,
-                      imageURL: content.posterUrl,
-                      rating: 0.0,
-                    ),
-                  )
-                  .toList(),
-              // children: [
-              //   ContentCardWidget(name: 'Lookism', imageURL: imageURL, rating: 2.5),
-              // ],
+              children: contents.map(
+                (content) {
+                  // double rating = 0.0;
+                  // ratingRepository
+                  //     .getRatingByContent(content.id)
+                  //     .listen((event) => rating = event).toString();
+                  return StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('ratings')
+                          .where('contentId', isEqualTo: content.id)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Shimmer.fromColors(
+                            baseColor: const Color.fromARGB(123, 121, 121, 121),
+                            highlightColor:
+                                const Color.fromARGB(255, 128, 128, 128),
+                            child: ContentCardWidget(
+                              content,
+                              name: content.title,
+                              directs: content.directors.first,
+                              imageURL: content.posterUrl,
+                              rating: 0.0,
+                            ),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          double totalRating = 0.0;
+                          int ratingCount = snapshot.data!.docs.length;
+                          for (var doc in snapshot.data!.docs) {
+                            totalRating += doc.data()['rating'] ?? 0;
+                          }
+                          log((totalRating / ratingCount).toString(),
+                              name: 'getRatingByContent');
+                          totalRating = totalRating / ratingCount;
+                          if (totalRating.isNaN) {
+                            totalRating = 0.0;
+                          }
+
+                          return ContentCardWidget(
+                            content,
+                            name: content.title,
+                            directs: content.directors.first,
+                            imageURL: content.posterUrl,
+                            rating: totalRating,
+                          );
+                        }
+                      });
+                },
+              ).toList(),
             ),
           );
         }
@@ -248,7 +301,8 @@ class IdleSearch extends StatelessWidget {
                 GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  childAspectRatio: 2.5,
+                  childAspectRatio: (9.5) / (3.6),
+                  // childAspectRatio: 3.55,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
                   crossAxisCount: 2,
@@ -263,7 +317,7 @@ class IdleSearch extends StatelessWidget {
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.usb_rounded),
+                        leading: const Icon(CupertinoIcons.heart),
                         title: const Text('Romance'),
                       ),
                     ),
@@ -277,21 +331,21 @@ class IdleSearch extends StatelessWidget {
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.wifi),
+                        leading: const Icon(CupertinoIcons.flame),
                         title: const Text('Horror'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.usb_rounded),
+                        leading: const Icon(CupertinoIcons.flame),
                         title: const Text('Fiksi'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.usb_rounded),
+                        leading: const Icon(CupertinoIcons.flame),
                         title: const Text('Misteri'),
                       ),
                     ),

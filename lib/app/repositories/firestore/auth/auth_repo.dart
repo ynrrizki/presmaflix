@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart' as google_auth;
-import 'package:presmaflix/app/models/user.dart';
+import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
 import 'repository.dart';
 

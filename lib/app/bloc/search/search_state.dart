@@ -11,6 +11,7 @@ class SearchLoading extends SearchState {}
 
 class SearchLoaded extends SearchState {
   final List<Content> contents;
+  // final double rating;
   const SearchLoaded({this.contents = const <Content>[]});
 
   @override
