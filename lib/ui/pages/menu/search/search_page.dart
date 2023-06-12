@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/bloc/blocs.dart';
-import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
+// import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
 // import 'package:presmaflix/app/cubits/search/search_cubit.dart' as search_cubit;
 import 'package:presmaflix/app/models/content/content.dart';
 import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
@@ -129,49 +129,49 @@ class LoadSearch extends StatelessWidget {
                   //     .getRatingByContent(content.id)
                   //     .listen((event) => rating = event).toString();
                   return StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('ratings')
-                          .where('contentId', isEqualTo: content.id)
-                          .snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Shimmer.fromColors(
-                            baseColor: const Color.fromARGB(123, 121, 121, 121),
-                            highlightColor:
-                                const Color.fromARGB(255, 128, 128, 128),
-                            child: ContentCardWidget(
-                              content,
-                              name: content.title,
-                              directs: content.directors.first,
-                              imageURL: content.posterUrl,
-                              rating: 0.0,
-                            ),
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          double totalRating = 0.0;
-                          int ratingCount = snapshot.data!.docs.length;
-                          for (var doc in snapshot.data!.docs) {
-                            totalRating += doc.data()['rating'] ?? 0;
-                          }
-                          log((totalRating / ratingCount).toString(),
-                              name: 'getRatingByContent');
-                          totalRating = totalRating / ratingCount;
-                          if (totalRating.isNaN) {
-                            totalRating = 0.0;
-                          }
-
-                          return ContentCardWidget(
+                    stream: FirebaseFirestore.instance
+                        .collection('ratings')
+                        .where('contentId', isEqualTo: content.id)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Shimmer.fromColors(
+                          baseColor: const Color.fromARGB(123, 121, 121, 121),
+                          highlightColor:
+                              const Color.fromARGB(255, 128, 128, 128),
+                          child: ContentCardWidget(
                             content,
                             name: content.title,
                             directs: content.directors.first,
                             imageURL: content.posterUrl,
-                            rating: totalRating,
-                          );
+                            rating: 0.0,
+                          ),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        double totalRating = 0.0;
+                        int ratingCount = snapshot.data!.docs.length;
+                        for (var doc in snapshot.data!.docs) {
+                          totalRating += doc.data()['rating'] ?? 0;
                         }
-                      });
+                        log((totalRating / ratingCount).toString(),
+                            name: 'getRatingByContent');
+                        totalRating = totalRating / ratingCount;
+                        if (totalRating.isNaN) {
+                          totalRating = 0.0;
+                        }
+
+                        return ContentCardWidget(
+                          content,
+                          name: content.title,
+                          directs: content.directors.first,
+                          imageURL: content.posterUrl,
+                          rating: totalRating,
+                        );
+                      }
+                    },
+                  );
                 },
               ).toList(),
             ),

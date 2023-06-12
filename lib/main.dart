@@ -3,7 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
+import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
+import 'package:presmaflix/app/cubits/watchlist/watchlist_cubit.dart';
 import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
+import 'package:presmaflix/app/repositories/firestore/watchlist/watchlist_repo.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/bloc/blocs.dart';
@@ -43,6 +46,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => RatingRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => WatchlistRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -103,6 +109,17 @@ class MyApp extends StatelessWidget {
               contentBloc: context.read<ContentBloc>(),
               ratingBloc: context.read<RatingBloc>(),
             )..add(LoadSearch()),
+          ),
+          BlocProvider(
+            create: (context) => WatchlistBloc(
+              watchlistRepository: context.read<WatchlistRepository>(),
+            )..add(LoadWatchlists()),
+          ),
+          BlocProvider(
+            create: (context) => WatchlistCubit(
+              context.read<WatchlistRepository>(),
+              context.read<WatchlistBloc>(),
+            ),
           ),
         ],
         child: BlocBuilder<AppBloc, AppState>(

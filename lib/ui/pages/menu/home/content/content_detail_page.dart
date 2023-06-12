@@ -7,10 +7,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
 import 'package:presmaflix/app/bloc/video/video_bloc.dart';
+import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
+import 'package:presmaflix/app/cubits/watchlist/watchlist_cubit.dart'
+    as watchlist_cubit;
 import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/models/video/video.dart';
+// import 'package:presmaflix/app/models/watchlist/watchlist.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
 // import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
@@ -273,6 +279,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
   }
 
   Widget _actionsBtn(BuildContext context, {bool isShimmer = false}) {
+    final user = context.select((AppBloc bloc) => bloc.state.user);
     if (!isShimmer) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -281,19 +288,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
           children: [
             Row(
               children: [
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.bookmark,
-                  ),
-                  label: const Text('Daftarku'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent,
-                    side: const BorderSide(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
+                _WatchlistBtn(widget: widget, user: user),
                 const SizedBox(
                   width: 15,
                 ),
@@ -1144,6 +1139,109 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _WatchlistBtn extends StatelessWidget {
+  const _WatchlistBtn({
+    required this.widget,
+    required this.user,
+  });
+
+  final ContentDetailPage widget;
+  final User user;
+
+  @override
+  Widget build(BuildContext context) {
+    // return BlocBuilder<WatchlistBloc, WatchlistState>(
+    //   buildWhen: (previous, current) => previous != current,
+    //   bloc: context.read<WatchlistBloc>()
+    //     ..add(LoadIsWatchlistExists(widget.content.id, user.id)),
+    //   builder: (context, state) {
+    //     if (state is IsWatchlistExistsLoaded) {
+    //       return state.isExists
+    //           ? ElevatedButton.icon(
+    //               onPressed: null,
+    //               icon: const Icon(
+    //                 Icons.bookmark_added,
+    //               ),
+    //               label: const Text('Daftarku'),
+    //               style: ElevatedButton.styleFrom(
+    //                 backgroundColor: Colors.transparent,
+    //                 disabledForegroundColor: Colors.blue,
+    //                 side: const BorderSide(
+    //                   color: Colors.blue,
+    //                 ),
+    //               ),
+    //             )
+    //           : ElevatedButton.icon(
+    //               onPressed: () {
+    //                 context
+    //                     .read<watchlist_cubit.WatchlistCubit>()
+    //                     .isWatchlistExists(
+    //                         contentId: widget.content.id, userId: user.id);
+    //               },
+    //               icon: const Icon(
+    //                 Icons.bookmark,
+    //               ),
+    //               label: const Text('Daftarku'),
+    //               style: ElevatedButton.styleFrom(
+    //                 backgroundColor: Colors.transparent,
+    //                 side: const BorderSide(
+    //                   color: Colors.white,
+    //                 ),
+    //               ),
+    //             );
+    //     }
+    //     return ElevatedButton.icon(
+    //       onPressed: () {
+    //         context.read<watchlist_cubit.WatchlistCubit>().isWatchlistExists(
+    //             contentId: widget.content.id, userId: user.id);
+    //       },
+    //       icon: const Icon(
+    //         Icons.bookmark,
+    //       ),
+    //       label: const Text('Daftarku'),
+    //       style: ElevatedButton.styleFrom(
+    //         backgroundColor: Colors.transparent,
+    //         side: const BorderSide(
+    //           color: Colors.white,
+    //         ),
+    //       ),
+    //     );
+    //     // return ElevatedButton.icon(
+    //     //     onPressed: null,
+    //     //     icon: const Icon(
+    //     //       Icons.bookmark_added,
+    //     //     ),
+    //     //     label: const Text('Daftarku'),
+    //     //     style: ElevatedButton.styleFrom(
+    //     //       backgroundColor: Colors.transparent,
+    //     //       disabledForegroundColor: Colors.blue,
+    //     //       side: const BorderSide(
+    //     //         color: Colors.blue,
+    //     //       ),
+    //     //     ),
+    //     //   );
+    //   },
+    // );
+    return ElevatedButton.icon(
+      onPressed: () {
+        context
+            .read<watchlist_cubit.WatchlistCubit>()
+            .isWatchlistExists(contentId: widget.content.id, userId: user.id);
+      },
+      icon: const Icon(
+        Icons.bookmark,
+      ),
+      label: const Text('Daftarku'),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.transparent,
+        side: const BorderSide(
+          color: Colors.white,
+        ),
       ),
     );
   }

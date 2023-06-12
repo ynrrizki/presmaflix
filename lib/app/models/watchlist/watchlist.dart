@@ -21,6 +21,18 @@ class Watchlist extends Equatable {
     );
   }
 
+  Watchlist copyWith({
+    String? id,
+    String? contentId,
+    String? userId,
+  }) {
+    return Watchlist(
+      id: id ?? this.id,
+      contentId: contentId ?? this.contentId,
+      userId: userId ?? this.userId,
+    );
+  }
+
   @override
   List<Object?> get props => [id, contentId, userId];
 }

@@ -44,6 +44,7 @@ dependencies:
   flutter_icons_null_safety: ^1.1.0
   flutter_multi_select_items: ^0.4.2
   flutter_rating_bar: ^4.0.1
+  flutter_slidable: ^3.0.0
   flutter_staggered_animations: ^1.1.1
   google_fonts: ^4.0.3
   google_sign_in: ^6.1.2
@@ -51,6 +52,7 @@ dependencies:
   persistent_bottom_nav_bar_v2: ^4.2.8
   pod_player: ^0.1.4
   shimmer: ^2.0.0
+  zoom_tap_animation: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
