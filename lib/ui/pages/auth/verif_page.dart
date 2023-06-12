@@ -15,32 +15,13 @@ class _VerifPageState extends State<VerifPage> {
   bool isAlreadySend = false;
   late Timer timer;
   Timer? cooldown;
-  late Duration alreadysendtimer;
-  late String formatedtimer;
+  late Duration alreadySendTimer;
+  late String formattedTimer;
 
   @override
   void initState() {
-    alreadysendtimer = const Duration(seconds: 30);
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      updateFormattedTimer();
-      checkEmailVerified();
-    });
-    formatedtimer = DateFormat("mm:ss").format(
-      DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds),
-    );
-    setState(() {
-      isAlreadySend = true;
-    });
-    if (FirebaseAuth.instance.currentUser!.emailVerified) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/home',
-        (Route<dynamic> route) => false,
-      );
-    } else {
-      sendVerification();
-    }
     super.initState();
+    checkEmailVerified();
   }
 
   @override
@@ -50,11 +31,19 @@ class _VerifPageState extends State<VerifPage> {
     super.dispose();
   }
 
+  void startTimer() {
+    alreadySendTimer = const Duration(seconds: 30);
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      updateFormattedTimer();
+      checkEmailVerified();
+    });
+  }
+
   void updateFormattedTimer() {
     setState(() {
-      alreadysendtimer -= const Duration(seconds: 1);
-      formatedtimer = DateFormat("mm:ss").format(
-        DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds),
+      alreadySendTimer -= const Duration(seconds: 1);
+      formattedTimer = DateFormat("mm:ss").format(
+        DateTime.fromMillisecondsSinceEpoch(alreadySendTimer.inMilliseconds),
       );
     });
   }
@@ -63,19 +52,23 @@ class _VerifPageState extends State<VerifPage> {
     final User user = FirebaseAuth.instance.currentUser!;
     user.reload();
     if (user.emailVerified) {
-      timer.cancel();
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/home',
-        (Route<dynamic> route) => false,
+        (route) => false,
       );
+    } else {
+      startTimer();
+      sendVerification();
     }
   }
 
   void sendAgainCooldown() {
     cooldown = Timer(const Duration(seconds: 30), () {
-      setState(() {
-        isAlreadySend = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        setState(() {
+          isAlreadySend = false;
+        });
       });
     });
   }
@@ -108,8 +101,8 @@ class _VerifPageState extends State<VerifPage> {
             )
           else
             Center(
-              child: Text(formatedtimer),
-            )
+              child: Text(formattedTimer),
+            ),
         ],
       ),
     );

@@ -1,6 +1,10 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/models/rating/rating.dart';
+// import 'package:presmaflix/app/repositories/firestore/repositories.dart';
 // import 'package:presmaflix/app/models/content/content.dart';
 
 class RatingRepository {
@@ -31,5 +35,19 @@ class RatingRepository {
         return 0;
       }
     });
+  }
+
+  Future<Rating> addRating(Rating rating) async {
+    final docRef = _firebaseFirestore.collection('ratings').doc(rating.id);
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      await docRef.update(rating.toDocument());
+    } else {
+      await docRef.set(rating.toDocument());
+    }
+
+    final updatedSnapshot = await docRef.get();
+    return Rating.fromSnapshot(updatedSnapshot);
   }
 }

@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => SearchBloc(
               contentBloc: context.read<ContentBloc>(),
-              ratingBloc: context.read<RatingBloc>(),
+              // ratingBloc: context.read<RatingBloc>(),
             )..add(LoadSearch()),
           ),
           BlocProvider(

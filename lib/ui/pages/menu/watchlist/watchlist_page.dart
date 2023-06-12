@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/bloc/blocs.dart';
 import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
 import 'package:presmaflix/app/models/content/content.dart';
-import 'package:presmaflix/app/models/watchlist/watchlist.dart';
+// import 'package:presmaflix/app/models/watchlist/watchlist.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
@@ -24,6 +24,7 @@ class WatchListPage extends StatefulWidget {
 class _WatchListPageState extends State<WatchListPage> {
   @override
   Widget build(BuildContext context) {
+    final user = context.select((AppBloc bloc) => bloc.state.user);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -42,14 +43,17 @@ class _WatchListPageState extends State<WatchListPage> {
           elevation: 0.5,
         ),
         body: BlocBuilder<WatchlistBloc, WatchlistState>(
-          buildWhen: (previous, current) => previous != current,
           bloc: context.read<WatchlistBloc>()..add(LoadWatchlists()),
+          buildWhen: (previous, current) => current is WatchlistLoaded,
           builder: (context, state) {
             if (state is WatchlistLoaded) {
-              return ListView.builder(
-                itemCount: state.watchlists.length,
-                itemBuilder: (context, index) {
-                  Watchlist watchlist = state.watchlists[index];
+              state.watchlists;
+              return ListView(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                children: state.watchlists
+                    .where((watchlist) => watchlist.userId == user.id)
+                    .map((watchlist) {
                   return BlocBuilder<ContentBloc, ContentState>(
                     bloc: context.read<ContentBloc>()..add(LoadContents()),
                     builder: (context, state) {
@@ -60,17 +64,11 @@ class _WatchListPageState extends State<WatchListPage> {
                             .toList();
                         if (filteredContents.isNotEmpty) {
                           Content content = filteredContents.first;
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.of(context, rootNavigator: true)
-                                  .pushNamed(
-                                '/content-detail',
-                                arguments:
-                                    ContentDetailArguments(content: content),
-                              );
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 0),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: AnimatedContainer(
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.fastOutSlowIn,
                               child: _CardContent(
                                 content: content,
                               ),
@@ -85,7 +83,7 @@ class _WatchListPageState extends State<WatchListPage> {
                       );
                     },
                   );
-                },
+                }).toList(),
               );
             }
             return Center(
@@ -158,11 +156,20 @@ class _CardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ZoomTapAnimation(
+      onTap: () {
+        Navigator.of(context, rootNavigator: true).pushNamed(
+          '/content-detail',
+          arguments: ContentDetailArguments(content: content),
+        );
+      },
       child: Slidable(
         child: Align(
           alignment: Alignment.bottomLeft,
           child: Card(
             clipBehavior: Clip.antiAliasWithSaveLayer,
+            color: const Color.fromARGB(255, 32, 32, 32),
+            shadowColor: const Color.fromARGB(255, 61, 61, 61),
+            elevation: 5,
             child: Slidable(
               key: const ValueKey(0),
               endActionPane: ActionPane(
@@ -189,20 +196,26 @@ class _CardContent extends StatelessWidget {
                 ],
               ),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                child: Row(
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     PosterWidget(
                       content: content,
                       isThumbnail: true,
-                      height: 100,
+                      height: 150,
                       width: 170,
                       isRedirect: false,
                     ),
-                    const SizedBox(width: 17),
-                    Expanded(
+                    const SizedBox(height: 17),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                        right: 10,
+                        top: 0,
+                        bottom: 25,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -226,14 +239,14 @@ class _CardContent extends StatelessWidget {
                                   "Slide to expand",
                                   textAlign: TextAlign.start,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: Color.fromARGB(255, 180, 180, 180),
                                     fontSize: 16,
                                   ),
                                 ),
                                 SizedBox(width: 10),
                                 Icon(
                                   Icons.swipe_left,
-                                  color: Colors.white,
+                                  color: Color.fromARGB(255, 180, 180, 180),
                                   size: 16,
                                 ),
                               ],

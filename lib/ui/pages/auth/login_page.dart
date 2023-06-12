@@ -49,18 +49,55 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status == LoginStatus.success) {
-            if (state.status != LoginStatus.verify) {
+            // Navigator.pushNamedAndRemoveUntil(
+            //   context,
+            //   '/verif',
+            //   (route) => false,
+            // );
+            if (state.status == LoginStatus.verify) {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/verif',
                 (route) => false,
               );
+              // Navigator.pushNamedAndRemoveUntil(
+              //   context,
+              //   '/home',
+              //   (route) => false,
+              // );
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => Container(
+              //         color: Colors.blue,
+              //         child: const Center(
+              //           child: Text('/home'),
+              //         ),
+              //       ),
+              //     ),
+              //     (route) => false);
             } else {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/home',
                 (route) => false,
               );
+              // Navigator.pushNamedAndRemoveUntil(
+              //   context,
+              //   '/verif',
+              //   (route) => false,
+              // );
+              // Navigator.pushAndRemoveUntil(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => Container(
+              //         color: Colors.green,
+              //         child: const Center(
+              //           child: Text('/verif'),
+              //         ),
+              //       ),
+              //     ),
+              //     (route) => false);
             }
           } else if (state.status == LoginStatus.error) {
             final snackBar = SnackBar(

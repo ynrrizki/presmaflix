@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:presmaflix/app/bloc/blocs.dart';
-import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
+// import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
 // import 'package:presmaflix/app/repositories/firestore/repositories.dart';
 import 'package:presmaflix/app/models/content/content.dart';
 part 'search_event.dart';
@@ -11,13 +11,15 @@ part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final ContentBloc _contentBloc;
-  final RatingBloc _ratingBloc;
+  // final RatingBloc _ratingBloc;
   StreamSubscription? _contentSubscription;
-  StreamSubscription? _ratingSubscription;
+  // StreamSubscription? _ratingSubscription;
 
-  SearchBloc({required ContentBloc contentBloc, required RatingBloc ratingBloc})
-      : _contentBloc = contentBloc,
-        _ratingBloc = ratingBloc,
+  SearchBloc({
+    required ContentBloc contentBloc,
+    // required RatingBloc ratingBloc,
+  })  : _contentBloc = contentBloc,
+        // _ratingBloc = ratingBloc,
         super(SearchLoading()) {
     // on<SearchEvent>((event, emit) {});
     on<LoadSearch>(_onLoadSearch);

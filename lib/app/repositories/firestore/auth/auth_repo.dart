@@ -22,7 +22,11 @@ class AuthRepository extends Repository {
 
   var currentUser = User.empty;
 
-  bool? get isVerify => _firebaseAuth.currentUser?.emailVerified;
+  bool? get isVerify {
+    final user = _firebaseAuth.currentUser!;
+    user.reload();
+    return user.emailVerified;
+  }
 
   // Mendapatkan stream dari perubahan pengguna saat ini
   @override

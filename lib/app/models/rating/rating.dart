@@ -27,12 +27,21 @@ class Rating extends Equatable {
     );
   }
 
+  Map<String, dynamic> toRating(String contentId, String email, num rating) {
+    return {
+      'contentId': contentId,
+      'name': name,
+      'email': email, 
+      'rating': rating,
+    };
+  }
+
   Map<String, dynamic> toDocument() {
     return {
       'id': id,
       'contentId': contentId,
-      'name': email,
-      'email': name,
+      'name': name,
+      'email': email,
       'rating': rating,
     };
   }

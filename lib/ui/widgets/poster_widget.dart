@@ -35,6 +35,7 @@ class PosterWidget extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(5),
             image: DecorationImage(
+              alignment: Alignment.topCenter,
               image: imageProvider,
               repeat: ImageRepeat.noRepeat,
               fit: BoxFit.cover,

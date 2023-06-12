@@ -14,6 +14,7 @@ import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
 import 'package:presmaflix/app/cubits/watchlist/watchlist_cubit.dart'
     as watchlist_cubit;
 import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/models/rating/rating.dart';
 import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/models/video/video.dart';
 // import 'package:presmaflix/app/models/watchlist/watchlist.dart';
@@ -293,7 +294,8 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   width: 15,
                 ),
                 ElevatedButton.icon(
-                  onPressed: () => _ratingModalBottomSheet(context),
+                  onPressed: () =>
+                      _ratingModal(context, content: widget.content),
                   icon: const Icon(
                     Icons.star,
                   ),
@@ -384,63 +386,102 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
     );
   }
 
-  Future<dynamic> _ratingModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
+  Future<dynamic> _ratingModal(BuildContext context,
+      {required Content content}) {
+    // final user = context.select((AppBloc bloc) => bloc.state.user);
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return SizedBox(
-          height: 400,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(
-                  width: 100,
-                  child: Divider(
-                    height: 5,
-                    thickness: 5,
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.star),
-                        title: const Text('Bintang 1'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.star),
-                        title: const Text('Bintang 2'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.star),
-                        title: const Text('Bintang 3'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.star),
-                        title: const Text('Bintang 4'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.star),
-                        title: const Text('Bintang 5'),
-                      ),
-                    ),
-                  ],
+        return AlertDialog(
+          title: const Text('Rate this Content'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                BlocBuilder<RatingBloc, RatingState>(
+                  bloc: context.read<RatingBloc>()..add(LoadRating(content.id)),
+                  builder: (context, state) {
+                    if (state is RatingLoaded) {
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          RatingBar(
+                            allowHalfRating: true,
+                            itemSize: 35,
+                            glow: false,
+                            ratingWidget: RatingWidget(
+                              full: const Icon(
+                                Icons.star,
+                                color: Colors.orange,
+                              ),
+                              half: const Icon(
+                                Icons.star_half,
+                                color: Colors.orange,
+                              ),
+                              empty: const Icon(
+                                Icons.star_border,
+                                color: Colors.orange,
+                              ),
+                            ),
+                            initialRating: 0.0,
+                            onRatingUpdate: (value) {
+                              // context.read<RatingBloc>().add(
+                              //       AddRating(
+                              //         rating: Rating(
+                              //           id: state.rating,
+                              //           contentId: widget.content.id,
+                              //           email: user.email!,
+                              //           name: user.name!,
+                              //           rating: value,
+                              //         ),
+                              //       ),
+                              //     );
+                            },
+                          ),
+                        ],
+                      );
+                    }
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // const SizedBox(height: 7.5),
+                        RatingBar(
+                          allowHalfRating: true,
+                          itemSize: 35,
+                          ignoreGestures: true,
+                          ratingWidget: RatingWidget(
+                            full: const Icon(
+                              Icons.star,
+                              color: Colors.orange,
+                            ),
+                            half: const Icon(
+                              Icons.star_half,
+                              color: Colors.orange,
+                            ),
+                            empty: const Icon(
+                              Icons.star_border,
+                              color: Colors.orange,
+                            ),
+                          ),
+                          initialRating: 0.0,
+                          onRatingUpdate: (value) {
+                            // context.read<RatingBloc>().add(
+                            //       AddRating(
+                            //         rating: Rating(
+                            //           id: '',
+                            //           contentId: widget.content.id,
+                            //           email: user.email!,
+                            //           name: user.name!,
+                            //           rating: value,
+                            //         ),
+                            //       ),
+                            //     );
+                          },
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -449,697 +490,761 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
       },
     );
   }
-
-  Future<dynamic> _moreModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 200,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(
-                  width: 100,
-                  child: Divider(
-                    height: 5,
-                    thickness: 5,
-                  ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.download),
-                        title: const Text('Download'),
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.share),
-                        title: const Text('Share'),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  // Future<dynamic> _downloadModalBottomSheet(BuildContext context) {
-  //   return showModalBottomSheet(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return SizedBox(
-  //         height: 350,
-  //         child: Stack(
+  // return showModalBottomSheet(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return SizedBox(
+  //       height: 400,
+  //       child: Padding(
+  //         padding: const EdgeInsets.symmetric(vertical: 10),
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
   //           children: [
-  //             const Align(
-  //               alignment: Alignment.topLeft,
-  //               child: Padding(
-  //                 padding: EdgeInsets.only(top: 25, left: 20),
-  //                 child: Text(
-  //                   "Unduh dengan kualitas",
-  //                   style: TextStyle(
-  //                     fontWeight: FontWeight.bold,
-  //                     fontSize: 20,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //             Align(
-  //               alignment: Alignment.topRight,
-  //               child: Padding(
-  //                 padding: const EdgeInsets.only(top: 10, right: 10),
-  //                 child: IconButton(
-  //                   icon: const Icon(Icons.close),
-  //                   onPressed: () {
-  //                     Navigator.of(context).pop();
-  //                   },
-  //                 ),
+  //             const SizedBox(
+  //               width: 100,
+  //               child: Divider(
+  //                 height: 5,
+  //                 thickness: 5,
   //               ),
   //             ),
   //             Column(
+  //               mainAxisAlignment: MainAxisAlignment.end,
   //               children: [
-  //                 // Button Kualitas 360p
-  //                 Align(
-  //                   alignment: Alignment.topCenter,
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.only(top: 75),
-  //                     child: SizedBox(
-  //                       height: 70,
-  //                       width: 600,
-  //                       child: ElevatedButton(
-  //                         onPressed: () {},
-  //                         style: ElevatedButton.styleFrom(
-  //                           backgroundColor: Colors.transparent,
-  //                           elevation: 0,
-  //                         ),
-  //                         child: Row(
-  //                           children: [
-  //                             Container(
-  //                               padding: const EdgeInsets.only(right: 10),
-  //                               child: const Text(
-  //                                 "Rendah",
-  //                                 style: TextStyle(
-  //                                   fontWeight: FontWeight.bold,
-  //                                   fontSize: 17,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                             const SizedBox(width: 235),
-  //                             const Text(
-  //                               "360p",
-  //                               style: TextStyle(
-  //                                 fontWeight: FontWeight.bold,
-  //                                 fontSize: 17,
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
+  //                 Card(
+  //                   child: ListTile(
+  //                     onTap: () {},
+  //                     leading: const Icon(Icons.star),
+  //                     title: const Text('Bintang 1'),
   //                   ),
   //                 ),
-  //                 const Divider(
-  //                   thickness: 1,
-  //                   indent: 20,
-  //                   endIndent: 20,
-  //                   color: Colors.grey,
-  //                 ),
-
-  //                 // Button Kualitas 480p
-  //                 Align(
-  //                   alignment: Alignment.topCenter,
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.only(top: 15),
-  //                     child: SizedBox(
-  //                       height: 70,
-  //                       width: 600,
-  //                       child: ElevatedButton(
-  //                         onPressed: () {},
-  //                         style: ElevatedButton.styleFrom(
-  //                           backgroundColor: Colors.transparent,
-  //                           elevation: 0,
-  //                         ),
-  //                         child: Row(
-  //                           children: [
-  //                             Container(
-  //                               padding: const EdgeInsets.only(right: 10),
-  //                               child: const Text(
-  //                                 "Sedang",
-  //                                 style: TextStyle(
-  //                                   fontWeight: FontWeight.bold,
-  //                                   fontSize: 17,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                             const SizedBox(width: 235),
-  //                             const Text(
-  //                               "480p",
-  //                               style: TextStyle(
-  //                                 fontWeight: FontWeight.bold,
-  //                                 fontSize: 17,
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
+  //                 Card(
+  //                   child: ListTile(
+  //                     onTap: () {},
+  //                     leading: const Icon(Icons.star),
+  //                     title: const Text('Bintang 2'),
   //                   ),
   //                 ),
-  //                 const Divider(
-  //                   thickness: 1,
-  //                   indent: 20,
-  //                   endIndent: 20,
-  //                   color: Colors.grey,
+  //                 Card(
+  //                   child: ListTile(
+  //                     onTap: () {},
+  //                     leading: const Icon(Icons.star),
+  //                     title: const Text('Bintang 3'),
+  //                   ),
   //                 ),
-
-  //                 // Button Kualitas 720p
-  //                 Align(
-  //                   alignment: Alignment.topCenter,
-  //                   child: Padding(
-  //                     padding: const EdgeInsets.only(top: 15),
-  //                     child: SizedBox(
-  //                       height: 70,
-  //                       width: 600,
-  //                       child: ElevatedButton(
-  //                         onPressed: () {},
-  //                         style: ElevatedButton.styleFrom(
-  //                           backgroundColor: Colors.transparent,
-  //                           elevation: 0,
-  //                         ),
-  //                         child: Row(
-  //                           children: [
-  //                             Container(
-  //                               padding: const EdgeInsets.only(right: 10),
-  //                               child: const Text(
-  //                                 "Tinggi",
-  //                                 style: TextStyle(
-  //                                   fontWeight: FontWeight.bold,
-  //                                   fontSize: 17,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                             const SizedBox(width: 235),
-  //                             const Text(
-  //                               "720p",
-  //                               style: TextStyle(
-  //                                 fontWeight: FontWeight.bold,
-  //                                 fontSize: 17,
-  //                               ),
-  //                             ),
-  //                           ],
-  //                         ),
-  //                       ),
-  //                     ),
+  //                 Card(
+  //                   child: ListTile(
+  //                     onTap: () {},
+  //                     leading: const Icon(Icons.star),
+  //                     title: const Text('Bintang 4'),
+  //                   ),
+  //                 ),
+  //                 Card(
+  //                   child: ListTile(
+  //                     onTap: () {},
+  //                     leading: const Icon(Icons.star),
+  //                     title: const Text('Bintang 5'),
   //                   ),
   //                 ),
   //               ],
   //             ),
   //           ],
   //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  Widget _directsAndCasts(String directors, String casts,
-      {bool isShimmer = false}) {
-    if (!isShimmer) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Wrap(
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Text(
-                  'Directs: ',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  directors,
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Text(
-                  'Casts: ',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                  ),
-                ),
-                Text(
-                  casts,
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
-    return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(123, 121, 121, 121),
-      highlightColor: const Color.fromARGB(255, 128, 128, 128),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Wrap(
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  height: 15,
-                  width: 50,
-                ),
-                const SizedBox(width: 5),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  height: 15,
-                  width: 50,
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              alignment: WrapAlignment.start,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  height: 15,
-                  width: 50,
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  height: 15,
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  height: 15,
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                  height: 15,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _description(String description, {bool isShimmer = false}) {
-    if (!isShimmer) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            Text(
-              description,
-              maxLines: 5,
-              overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w400,
-                color: Colors.grey,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-    return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(123, 121, 121, 121),
-      highlightColor: const Color.fromARGB(255, 128, 128, 128),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              height: 15,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              height: 15,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              height: 15,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              height: 15,
-              width: 200,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buttonPlay(BuildContext context,
-      {Video? video, bool isShimmer = false}) {
-    if (!isShimmer) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ElevatedButton(
-          onPressed: () => video != null
-              ? Navigator.of(context).pushNamed("/content-video",
-                  arguments: ContentVideoArguments(video: video))
-              : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.play_arrow,
-                ),
-                const SizedBox(width: 15),
-                Text(
-                  style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  'Play Now',
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-    return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(123, 121, 121, 121),
-      highlightColor: const Color.fromARGB(255, 128, 128, 128),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ElevatedButton(
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Theme.of(context).primaryColor,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.play_arrow,
-                ),
-                const SizedBox(width: 15),
-                Text(
-                  style: GoogleFonts.plusJakartaSans(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  'Play Now',
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _genre(String genre, {bool isShimmer = false}) {
-    if (!isShimmer) {
-      return SizedBox(
-        // color: Colors.amber,
-        width: double.infinity,
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 1.5,
-                  horizontal: 5,
-                ),
-                child: Text(
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 10,
-                  ),
-                  '13+',
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              genre,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            )
-          ],
-        ),
-      );
-    }
-    return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(123, 121, 121, 121),
-      highlightColor: const Color.fromARGB(255, 128, 128, 128),
-      child: SizedBox(
-        // color: Colors.amber,
-        width: double.infinity,
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[800],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 1.5,
-                  horizontal: 5,
-                ),
-                child: Text(
-                  style: GoogleFonts.plusJakartaSans(
-                    fontSize: 10,
-                  ),
-                  '13+',
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              height: 15,
-              width: 50,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              height: 15,
-              width: 50,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _title(String title, {bool isShimmer = false}) {
-    if (!isShimmer) {
-      return Text(
-        style: GoogleFonts.plusJakartaSans(
-          fontSize: 17,
-          fontWeight: FontWeight.bold,
-        ),
-        title,
-      );
-    }
-    return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(123, 121, 121, 121),
-      highlightColor: const Color.fromARGB(255, 128, 128, 128),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(1),
-        ),
-        height: 17,
-        width: 100,
-      ),
-    );
-  }
-
-  Widget _posterImage(Content content, {bool isShimmer = false}) {
-    if (!isShimmer) {
-      return Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(
-                  content.posterUrl,
-                ),
-                fit: BoxFit.cover,
-                opacity: 0.2,
-              ),
-            ),
-            height: 195,
-            child: ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.transparent),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 95),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: PosterWidget(
-                content: content,
-                height: 170,
-                width: 125,
-                isRedirect: false,
-              ),
-            ),
-          ),
-        ],
-      );
-    }
-    return Shimmer.fromColors(
-      baseColor: const Color.fromARGB(123, 121, 121, 121),
-      highlightColor: const Color.fromARGB(255, 128, 128, 128),
-      child: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: CachedNetworkImageProvider(
-                  content.posterUrl,
-                ),
-                fit: BoxFit.cover,
-                opacity: 0.2,
-              ),
-            ),
-            height: 195,
-            child: ClipRRect(
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.transparent),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 95),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: PosterWidget(
-                content: content,
-                height: 170,
-                width: 125,
-                isRedirect: false,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  //       ),
+  //     );
+  //   },
+  // );
 }
+
+Future<dynamic> _moreModalBottomSheet(BuildContext context) {
+  return showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return SizedBox(
+        height: 200,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const SizedBox(
+                width: 100,
+                child: Divider(
+                  height: 5,
+                  thickness: 5,
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Card(
+                    child: ListTile(
+                      onTap: () {},
+                      leading: const Icon(Icons.download),
+                      title: const Text('Download'),
+                    ),
+                  ),
+                  Card(
+                    child: ListTile(
+                      onTap: () {},
+                      leading: const Icon(Icons.share),
+                      title: const Text('Share'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+// Future<dynamic> _downloadModalBottomSheet(BuildContext context) {
+//   return showModalBottomSheet(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return SizedBox(
+//         height: 350,
+//         child: Stack(
+//           children: [
+//             const Align(
+//               alignment: Alignment.topLeft,
+//               child: Padding(
+//                 padding: EdgeInsets.only(top: 25, left: 20),
+//                 child: Text(
+//                   "Unduh dengan kualitas",
+//                   style: TextStyle(
+//                     fontWeight: FontWeight.bold,
+//                     fontSize: 20,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//             Align(
+//               alignment: Alignment.topRight,
+//               child: Padding(
+//                 padding: const EdgeInsets.only(top: 10, right: 10),
+//                 child: IconButton(
+//                   icon: const Icon(Icons.close),
+//                   onPressed: () {
+//                     Navigator.of(context).pop();
+//                   },
+//                 ),
+//               ),
+//             ),
+//             Column(
+//               children: [
+//                 // Button Kualitas 360p
+//                 Align(
+//                   alignment: Alignment.topCenter,
+//                   child: Padding(
+//                     padding: const EdgeInsets.only(top: 75),
+//                     child: SizedBox(
+//                       height: 70,
+//                       width: 600,
+//                       child: ElevatedButton(
+//                         onPressed: () {},
+//                         style: ElevatedButton.styleFrom(
+//                           backgroundColor: Colors.transparent,
+//                           elevation: 0,
+//                         ),
+//                         child: Row(
+//                           children: [
+//                             Container(
+//                               padding: const EdgeInsets.only(right: 10),
+//                               child: const Text(
+//                                 "Rendah",
+//                                 style: TextStyle(
+//                                   fontWeight: FontWeight.bold,
+//                                   fontSize: 17,
+//                                 ),
+//                               ),
+//                             ),
+//                             const SizedBox(width: 235),
+//                             const Text(
+//                               "360p",
+//                               style: TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 17,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const Divider(
+//                   thickness: 1,
+//                   indent: 20,
+//                   endIndent: 20,
+//                   color: Colors.grey,
+//                 ),
+
+//                 // Button Kualitas 480p
+//                 Align(
+//                   alignment: Alignment.topCenter,
+//                   child: Padding(
+//                     padding: const EdgeInsets.only(top: 15),
+//                     child: SizedBox(
+//                       height: 70,
+//                       width: 600,
+//                       child: ElevatedButton(
+//                         onPressed: () {},
+//                         style: ElevatedButton.styleFrom(
+//                           backgroundColor: Colors.transparent,
+//                           elevation: 0,
+//                         ),
+//                         child: Row(
+//                           children: [
+//                             Container(
+//                               padding: const EdgeInsets.only(right: 10),
+//                               child: const Text(
+//                                 "Sedang",
+//                                 style: TextStyle(
+//                                   fontWeight: FontWeight.bold,
+//                                   fontSize: 17,
+//                                 ),
+//                               ),
+//                             ),
+//                             const SizedBox(width: 235),
+//                             const Text(
+//                               "480p",
+//                               style: TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 17,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const Divider(
+//                   thickness: 1,
+//                   indent: 20,
+//                   endIndent: 20,
+//                   color: Colors.grey,
+//                 ),
+
+//                 // Button Kualitas 720p
+//                 Align(
+//                   alignment: Alignment.topCenter,
+//                   child: Padding(
+//                     padding: const EdgeInsets.only(top: 15),
+//                     child: SizedBox(
+//                       height: 70,
+//                       width: 600,
+//                       child: ElevatedButton(
+//                         onPressed: () {},
+//                         style: ElevatedButton.styleFrom(
+//                           backgroundColor: Colors.transparent,
+//                           elevation: 0,
+//                         ),
+//                         child: Row(
+//                           children: [
+//                             Container(
+//                               padding: const EdgeInsets.only(right: 10),
+//                               child: const Text(
+//                                 "Tinggi",
+//                                 style: TextStyle(
+//                                   fontWeight: FontWeight.bold,
+//                                   fontSize: 17,
+//                                 ),
+//                               ),
+//                             ),
+//                             const SizedBox(width: 235),
+//                             const Text(
+//                               "720p",
+//                               style: TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 17,
+//                               ),
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ],
+//         ),
+//       );
+//     },
+//   );
+// }
+
+Widget _directsAndCasts(String directors, String casts,
+    {bool isShimmer = false}) {
+  if (!isShimmer) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Directs: ',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                directors,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Text(
+                'Casts: ',
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+              ),
+              Text(
+                casts,
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  return Shimmer.fromColors(
+    baseColor: const Color.fromARGB(123, 121, 121, 121),
+    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                height: 15,
+                width: 50,
+              ),
+              const SizedBox(width: 5),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                height: 15,
+                width: 50,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                height: 15,
+                width: 50,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                height: 15,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                height: 15,
+              ),
+              const SizedBox(height: 20),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                height: 15,
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _description(String description, {bool isShimmer = false}) {
+  if (!isShimmer) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        children: [
+          Text(
+            description,
+            maxLines: 5,
+            overflow: TextOverflow.ellipsis,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w400,
+              color: Colors.grey,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  return Shimmer.fromColors(
+    baseColor: const Color.fromARGB(123, 121, 121, 121),
+    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            height: 15,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            height: 15,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            height: 15,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            height: 15,
+            width: 200,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buttonPlay(BuildContext context,
+    {Video? video, bool isShimmer = false}) {
+  if (!isShimmer) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton(
+        onPressed: () => video != null
+            ? Navigator.of(context).pushNamed("/content-video",
+                arguments: ContentVideoArguments(video: video))
+            : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.play_arrow,
+              ),
+              const SizedBox(width: 15),
+              Text(
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.bold,
+                ),
+                'Play Now',
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  return Shimmer.fromColors(
+    baseColor: const Color.fromARGB(123, 121, 121, 121),
+    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.play_arrow,
+              ),
+              const SizedBox(width: 15),
+              Text(
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.bold,
+                ),
+                'Play Now',
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+Widget _genre(String genre, {bool isShimmer = false}) {
+  if (!isShimmer) {
+    return SizedBox(
+      // color: Colors.amber,
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 1.5,
+                horizontal: 5,
+              ),
+              child: Text(
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 10,
+                ),
+                '13+',
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Text(
+            genre,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 12,
+              color: Colors.grey,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  return Shimmer.fromColors(
+    baseColor: const Color.fromARGB(123, 121, 121, 121),
+    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+    child: SizedBox(
+      // color: Colors.amber,
+      width: double.infinity,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 1.5,
+                horizontal: 5,
+              ),
+              child: Text(
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 10,
+                ),
+                '13+',
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            height: 15,
+            width: 50,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            height: 15,
+            width: 50,
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _title(String title, {bool isShimmer = false}) {
+  if (!isShimmer) {
+    return Text(
+      style: GoogleFonts.plusJakartaSans(
+        fontSize: 17,
+        fontWeight: FontWeight.bold,
+      ),
+      title,
+    );
+  }
+  return Shimmer.fromColors(
+    baseColor: const Color.fromARGB(123, 121, 121, 121),
+    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(1),
+      ),
+      height: 17,
+      width: 100,
+    ),
+  );
+}
+
+Widget _posterImage(Content content, {bool isShimmer = false}) {
+  if (!isShimmer) {
+    return Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(
+                content.posterUrl,
+              ),
+              fit: BoxFit.cover,
+              opacity: 0.2,
+            ),
+          ),
+          height: 195,
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
+              child: Container(
+                decoration: const BoxDecoration(color: Colors.transparent),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 95),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: PosterWidget(
+              content: content,
+              height: 170,
+              width: 125,
+              isRedirect: false,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  return Shimmer.fromColors(
+    baseColor: const Color.fromARGB(123, 121, 121, 121),
+    highlightColor: const Color.fromARGB(255, 128, 128, 128),
+    child: Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(
+                content.posterUrl,
+              ),
+              fit: BoxFit.cover,
+              opacity: 0.2,
+            ),
+          ),
+          height: 195,
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
+              child: Container(
+                decoration: const BoxDecoration(color: Colors.transparent),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 95),
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: PosterWidget(
+              content: content,
+              height: 170,
+              width: 125,
+              isRedirect: false,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+// }
 
 class _WatchlistBtn extends StatelessWidget {
   const _WatchlistBtn({
@@ -1152,95 +1257,95 @@ class _WatchlistBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return BlocBuilder<WatchlistBloc, WatchlistState>(
-    //   buildWhen: (previous, current) => previous != current,
-    //   bloc: context.read<WatchlistBloc>()
-    //     ..add(LoadIsWatchlistExists(widget.content.id, user.id)),
-    //   builder: (context, state) {
-    //     if (state is IsWatchlistExistsLoaded) {
-    //       return state.isExists
-    //           ? ElevatedButton.icon(
-    //               onPressed: null,
-    //               icon: const Icon(
-    //                 Icons.bookmark_added,
-    //               ),
-    //               label: const Text('Daftarku'),
-    //               style: ElevatedButton.styleFrom(
-    //                 backgroundColor: Colors.transparent,
-    //                 disabledForegroundColor: Colors.blue,
-    //                 side: const BorderSide(
-    //                   color: Colors.blue,
-    //                 ),
-    //               ),
-    //             )
-    //           : ElevatedButton.icon(
-    //               onPressed: () {
-    //                 context
-    //                     .read<watchlist_cubit.WatchlistCubit>()
-    //                     .isWatchlistExists(
-    //                         contentId: widget.content.id, userId: user.id);
-    //               },
-    //               icon: const Icon(
-    //                 Icons.bookmark,
-    //               ),
-    //               label: const Text('Daftarku'),
-    //               style: ElevatedButton.styleFrom(
-    //                 backgroundColor: Colors.transparent,
-    //                 side: const BorderSide(
-    //                   color: Colors.white,
-    //                 ),
-    //               ),
-    //             );
-    //     }
-    //     return ElevatedButton.icon(
-    //       onPressed: () {
-    //         context.read<watchlist_cubit.WatchlistCubit>().isWatchlistExists(
-    //             contentId: widget.content.id, userId: user.id);
-    //       },
-    //       icon: const Icon(
-    //         Icons.bookmark,
-    //       ),
-    //       label: const Text('Daftarku'),
-    //       style: ElevatedButton.styleFrom(
-    //         backgroundColor: Colors.transparent,
-    //         side: const BorderSide(
-    //           color: Colors.white,
-    //         ),
-    //       ),
-    //     );
-    //     // return ElevatedButton.icon(
-    //     //     onPressed: null,
-    //     //     icon: const Icon(
-    //     //       Icons.bookmark_added,
-    //     //     ),
-    //     //     label: const Text('Daftarku'),
-    //     //     style: ElevatedButton.styleFrom(
-    //     //       backgroundColor: Colors.transparent,
-    //     //       disabledForegroundColor: Colors.blue,
-    //     //       side: const BorderSide(
-    //     //         color: Colors.blue,
-    //     //       ),
-    //     //     ),
-    //     //   );
-    //   },
-    // );
-    return ElevatedButton.icon(
-      onPressed: () {
-        context
-            .read<watchlist_cubit.WatchlistCubit>()
-            .isWatchlistExists(contentId: widget.content.id, userId: user.id);
+    return BlocBuilder<WatchlistBloc, WatchlistState>(
+      buildWhen: (previous, current) => current is IsWatchlistExistsLoaded,
+      bloc: context.read<WatchlistBloc>()
+        ..add(LoadIsWatchlistExists(widget.content.id, user.id)),
+      builder: (context, state) {
+        if (state is IsWatchlistExistsLoaded) {
+          return state.isExists
+              ? ElevatedButton.icon(
+                  onPressed: null,
+                  icon: const Icon(
+                    Icons.bookmark_added,
+                  ),
+                  label: const Text('Daftarku'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    disabledForegroundColor: Colors.blue,
+                    side: const BorderSide(
+                      color: Colors.blue,
+                    ),
+                  ),
+                )
+              : ElevatedButton.icon(
+                  onPressed: () {
+                    context
+                        .read<watchlist_cubit.WatchlistCubit>()
+                        .isWatchlistExists(
+                            contentId: widget.content.id, userId: user.id);
+                  },
+                  icon: const Icon(
+                    Icons.bookmark,
+                  ),
+                  label: const Text('Daftarku'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    side: const BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+        }
+        return ElevatedButton.icon(
+          onPressed: () {
+            context.read<watchlist_cubit.WatchlistCubit>().isWatchlistExists(
+                contentId: widget.content.id, userId: user.id);
+          },
+          icon: const Icon(
+            Icons.bookmark,
+          ),
+          label: const Text('Daftarku'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            side: const BorderSide(
+              color: Colors.white,
+            ),
+          ),
+        );
+        // return ElevatedButton.icon(
+        //     onPressed: null,
+        //     icon: const Icon(
+        //       Icons.bookmark_added,
+        //     ),
+        //     label: const Text('Daftarku'),
+        //     style: ElevatedButton.styleFrom(
+        //       backgroundColor: Colors.transparent,
+        //       disabledForegroundColor: Colors.blue,
+        //       side: const BorderSide(
+        //         color: Colors.blue,
+        //       ),
+        //     ),
+        //   );
       },
-      icon: const Icon(
-        Icons.bookmark,
-      ),
-      label: const Text('Daftarku'),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.transparent,
-        side: const BorderSide(
-          color: Colors.white,
-        ),
-      ),
     );
+    // return ElevatedButton.icon(
+    //   onPressed: () {
+    //     context
+    //         .read<watchlist_cubit.WatchlistCubit>()
+    //         .isWatchlistExists(contentId: widget.content.id, userId: user.id);
+    //   },
+    //   icon: const Icon(
+    //     Icons.bookmark,
+    //   ),
+    //   label: const Text('Daftarku'),
+    //   style: ElevatedButton.styleFrom(
+    //     backgroundColor: Colors.transparent,
+    //     side: const BorderSide(
+    //       color: Colors.white,
+    //     ),
+    //   ),
+    // );
   }
 }
 
@@ -1253,9 +1358,59 @@ class _RatingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RatingBloc, double>(
+    return BlocBuilder<RatingBloc, RatingState>(
       bloc: context.read<RatingBloc>()..add(LoadRating(content.id)),
       builder: (context, state) {
+        if (state is RatingLoaded) {
+          return Column(
+            children: [
+              Chip(
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0),
+                elevation: 0,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                labelPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(
+                    color: Colors.orange,
+                    style: BorderStyle.none,
+                  ),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                label: Text(
+                  state.rating.toString(),
+                  style: GoogleFonts.poppins(
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              // const SizedBox(height: 7.5),
+              RatingBar(
+                allowHalfRating: true,
+                itemSize: 17,
+                ignoreGestures: true,
+                ratingWidget: RatingWidget(
+                  full: const Icon(
+                    Icons.star,
+                    color: Colors.orange,
+                  ),
+                  half: const Icon(
+                    Icons.star_half,
+                    color: Colors.orange,
+                  ),
+                  empty: const Icon(
+                    Icons.star_border,
+                    color: Colors.orange,
+                  ),
+                ),
+                initialRating: state.rating,
+                onRatingUpdate: (value) {},
+              ),
+            ],
+          );
+        }
         return Column(
           children: [
             Chip(
@@ -1272,7 +1427,7 @@ class _RatingWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               label: Text(
-                state.toString(),
+                0.0.toString(),
                 style: GoogleFonts.poppins(
                   color: Colors.orange,
                   fontWeight: FontWeight.bold,
@@ -1299,7 +1454,7 @@ class _RatingWidget extends StatelessWidget {
                   color: Colors.orange,
                 ),
               ),
-              initialRating: state,
+              initialRating: 0.0,
               onRatingUpdate: (value) {},
             ),
           ],

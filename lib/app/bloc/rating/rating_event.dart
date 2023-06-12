@@ -22,3 +22,13 @@ class UpdateRating extends RatingEvent {
   @override
   List<Object> get props => [rating];
 }
+
+class AddRating extends RatingEvent {
+  final Rating rating;
+  const AddRating({
+    required this.rating,
+  });
+
+  @override
+  List<Object> get props => [rating];
+}

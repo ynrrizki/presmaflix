@@ -62,189 +62,236 @@ class ContentVideoPageState extends State<ContentVideoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          ClipRect(
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: PodVideoPlayer(
-                alwaysShowProgressBar: false,
-                overlayBuilder: (OverLayOptions options) => CustomOverlay(
-                  options: options,
-                  controller: videoController,
-                  video: widget.video,
-                ),
-                controller: videoController,
-                videoThumbnail: DecorationImage(
-                  image: NetworkImage(
-                    widget.video.thumbnailUrl.toString(),
+          Align(
+            alignment: Alignment.topCenter,
+            child: ListView(
+              children: [
+                ClipRect(
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: PodVideoPlayer(
+                      alwaysShowProgressBar: false,
+                      overlayBuilder: (OverLayOptions options) => CustomOverlay(
+                        options: options,
+                        controller: videoController,
+                        video: widget.video,
+                      ),
+                      controller: videoController,
+                      videoThumbnail: DecorationImage(
+                        image: NetworkImage(
+                          widget.video.thumbnailUrl.toString(),
+                        ),
+                      ),
+                      matchFrameAspectRatioToVideo: true,
+                      matchVideoAspectRatioToFrame: true,
+                    ),
                   ),
                 ),
-                matchFrameAspectRatioToVideo: true,
-                matchVideoAspectRatioToFrame: true,
-              ),
+                Column(
+                  children: [
+                    const SizedBox(height: 4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: Text(
+                              widget.video.title.toString(),
+                              softWrap: true,
+                            ),
+                          ),
+                        ),
+                        IconButton.filled(
+                          onPressed: () {},
+                          icon: const Icon(Icons.share),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        widget.video.description.toString(),
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    // const Divider(
+                    //   thickness: 2,
+                    //   color: Color.fromARGB(255, 49, 49, 49),
+                    // ),
+                  ],
+                ),
+              ],
             ),
           ),
-          Flexible(
-            flex: 2,
-            child: NotificationListener<OverscrollIndicatorNotification>(
-              onNotification: (overscroll) {
-                overscroll.disallowIndicator();
-                return true;
-              },
-              child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('review')
-                      .where('videoId', isEqualTo: widget.video.id)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    print(snapshot.data?.docs.length);
-                    return ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(
-                        thickness: 2,
-                        color: Color.fromARGB(255, 49, 49, 49),
+          DraggableScrollableSheet(
+              initialChildSize: 0.3,
+              minChildSize: 0.3,
+              maxChildSize: 0.75,
+              builder: (context, scrollController) {
+                return Container(
+                  padding: const EdgeInsets.only(
+                    top: 25,
+                    bottom: 85,
+                    left: 15,
+                    right: 15,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 6,
+                        offset: const Offset(0, 0),
                       ),
-                      itemCount: (snapshot.data?.docs.length ?? 0) + 1,
-                      itemBuilder: ((context, index) {
-                        if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
-                          if (index == 0) {
-                            return Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 8),
-                                      child: Flexible(
-                                        child: SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.8,
-                                          child: Text(
-                                            widget.video.title.toString(),
-                                            softWrap: true,
-                                          ),
-                                        ),
-                                      ),
+                    ],
+                  ),
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          width: 100,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 88, 88, 88),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('review')
+                              .where('videoId', isEqualTo: widget.video.id)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.data!.docs.isNotEmpty) {
+                              return CustomScrollView(
+                                controller: scrollController,
+                                slivers: [
+                                  SliverList.separated(
+                                    separatorBuilder: (context, index) =>
+                                        const Divider(
+                                      thickness: 2,
+                                      color: Color.fromARGB(255, 49, 49, 49),
                                     ),
-                                    IconButton.filled(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.share),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Text(
-                                    widget.video.description.toString(),
-                                    style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.grey,
-                                    ),
+                                    itemCount: snapshot.data?.docs.length ?? 0,
+                                    itemBuilder: (context, index) {
+                                      final doc = snapshot.data!.docs[index];
+                                      return commentWidget(
+                                        doc,
+                                        context,
+                                        commentController,
+                                        toggleEditing,
+                                        doc.id,
+                                        setCommentId,
+                                      );
+                                    },
                                   ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            final commentIndex = index - 1;
-                            if (commentIndex < snapshot.data!.docs.length) {
-                              return commentWidget(
-                                snapshot.data!.docs[commentIndex],
-                                context,
-                                commentController,
-                                toggleEditing,
-                                snapshot.data!.docs[commentIndex].id,
-                                setCommentId,
+                                ],
                               );
+                            } else {
+                              return const Center(
+                                  child: Text('Not Comment Yet'));
                             }
-                          }
-                        } else if (snapshot.hasError) {
-                          print(
-                              'Snapshot Error : ${snapshot.error.toString()}');
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const SizedBox(
-                            child: Text('Loading...'),
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              }),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.black,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 1,
+                      blurRadius: 6,
+                      offset: const Offset(0, 0),
+                    ),
+                  ],
+                ),
+                child: TextField(
+                  controller: commentController,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.only(
+                      top: 15,
+                      bottom: 15,
+                      left: 13,
+                      right: 13,
+                    ),
+                    hintText: 'Tambahkan Komentar...',
+                    hintStyle: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey,
+                    ),
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        if (commentController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Komentar Tidak Boleh Kosong',
+                                style: GoogleFonts.montserrat(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
                           );
                         }
-                        return const SizedBox();
-                      }),
-                    );
-                  }),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.black,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 1,
-                    blurRadius: 6,
-                    offset: const Offset(0, 0),
-                  ),
-                ],
-              ),
-              child: TextField(
-                controller: commentController,
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 13),
-                  hintText: 'Tambahkan Komentar...',
-                  hintStyle: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.grey,
-                  ),
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      if (commentController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              'Komentar Tidak Boleh Kosong',
-                              style: GoogleFonts.montserrat(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 15,
-                              ),
-                            ),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
-                      if (isEditing == false) {
-                        FirebaseFirestore.instance.collection('review').add({
-                          'videoId': widget.video.id,
-                          'name': await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(FirebaseAuth.instance.currentUser!.uid)
-                              .get()
-                              .then((value) => value.data()!['name']),
-                          'email': FirebaseAuth.instance.currentUser!.email,
-                          'comment': commentController.text,
-                          'createdAt': DateTime.now(),
-                        }).then((value) => commentController.clear());
-                      } else {
-                        FirebaseFirestore.instance
-                            .collection('review')
-                            .doc(commentId)
-                            .update({
-                              'comment': commentController.text,
-                            })
-                            .then((value) => commentController.clear())
-                            .then(
-                              (value) => setState(() {
-                                isEditing = false;
-                              }),
-                            );
-                      }
-                    },
-                    icon: const Icon(Icons.send),
+                        if (isEditing == false) {
+                          FirebaseFirestore.instance.collection('review').add({
+                            'videoId': widget.video.id,
+                            'name': await FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .get()
+                                .then((value) => value.data()!['name']),
+                            'email': FirebaseAuth.instance.currentUser!.email,
+                            'comment': commentController.text,
+                            'createdAt': DateTime.now(),
+                          }).then((value) => commentController.clear());
+                        } else {
+                          FirebaseFirestore.instance
+                              .collection('review')
+                              .doc(commentId)
+                              .update({
+                                'comment': commentController.text,
+                              })
+                              .then((value) => commentController.clear())
+                              .then(
+                                (value) => setState(() {
+                                  isEditing = false;
+                                }),
+                              );
+                        }
+                      },
+                      icon: const Icon(Icons.send),
+                    ),
                   ),
                 ),
               ),
@@ -267,7 +314,7 @@ Widget commentWidget(
   return Container(
     constraints: const BoxConstraints(minHeight: 0, maxHeight: double.infinity),
     child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 0),
       child: Container(
         decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.5),
