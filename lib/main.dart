@@ -2,27 +2,17 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:presmaflix/app/bloc/app/app_bloc.dart';
-import 'package:presmaflix/app/bloc/content/content_bloc.dart';
-import 'package:presmaflix/app/bloc/user/user_bloc.dart';
-import 'package:presmaflix/app/bloc/video/video_bloc.dart';
-import 'package:presmaflix/app/cubits/auth/auth_cubit.dart';
-import 'package:presmaflix/app/cubits/bottomNavigation/bottom_navigation_cubit.dart';
-import 'package:presmaflix/app/cubits/login/login_cubit.dart';
-import 'package:presmaflix/app/cubits/logout/logout_cubit.dart';
-import 'package:presmaflix/app/cubits/signup/signup_cubit.dart';
-import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
-import 'package:presmaflix/app/repositories/firestore/content/content_repository.dart';
-import 'package:presmaflix/app/repositories/firestore/user/user_repo.dart';
-import 'package:presmaflix/app/repositories/firestore/video/video_repository.dart';
-import 'package:presmaflix/bloc_observer.dart';
+import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
+import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
 import 'firebase_options.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'app/bloc/blocs.dart';
+import 'app/cubits/cubits.dart';
+import 'app/repositories/firestore/repositories.dart';
 import 'package:presmaflix/config/routing/routes.dart';
 import 'package:presmaflix/config/themes.dart';
 
 Future<void> main() async {
-  Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -50,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider(
           create: (context) => VideoRepository(),
+        ),
+        RepositoryProvider(
+          create: (context) => RatingRepository(),
         ),
       ],
       child: MultiBlocProvider(
@@ -100,6 +93,17 @@ class MyApp extends StatelessWidget {
               videoRepository: context.read<VideoRepository>(),
             )..add(LoadVideos()),
           ),
+          BlocProvider(
+            create: (context) => RatingBloc(
+              ratingRepository: context.read<RatingRepository>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => SearchBloc(
+              contentBloc: context.read<ContentBloc>(),
+              ratingBloc: context.read<RatingBloc>(),
+            )..add(LoadSearch()),
+          ),
         ],
         child: BlocBuilder<AppBloc, AppState>(
           builder: (context, state) {
@@ -115,18 +119,6 @@ class MyApp extends StatelessWidget {
                 onGenerateRoute: router.onRoute,
               );
             }
-            // else if (state.status == AppStatus.unauthenticated) {
-            //   log('appState: $state', name: 'main.dart');
-            //   router.appState = state;
-            //   return MaterialApp(
-            //     debugShowCheckedModeBanner: false,
-            //     title: 'Presmaflix',
-            //     theme: PresmaflixThemes.darkTheme,
-            //     onGenerateRoute: router.onRoute,
-            //   );
-            // }
-            // router.appStatus =
-            //     context.select((AppBloc bloc) => bloc.state.status);
             log('app status: ${router.state}', name: 'main.dart');
             return MaterialApp(
               debugShowCheckedModeBanner: false,

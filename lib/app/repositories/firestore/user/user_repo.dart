@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:presmaflix/app/models/user.dart';
+import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/repositories/firestore/user/repository.dart';
 
 class UserRepository extends Repository {

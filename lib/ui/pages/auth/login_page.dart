@@ -49,11 +49,19 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocListener<LoginCubit, LoginState>(
         listener: (context, state) {
           if (state.status == LoginStatus.success) {
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              '/home',
-              (route) => false,
-            );
+            if (state.status != LoginStatus.verify) {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/verif',
+                (route) => false,
+              );
+            } else {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/home',
+                (route) => false,
+              );
+            }
           } else if (state.status == LoginStatus.error) {
             final snackBar = SnackBar(
               content: Text(

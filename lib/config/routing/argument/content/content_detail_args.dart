@@ -1,4 +1,4 @@
-import 'package:presmaflix/app/models/content.dart';
+import 'package:presmaflix/app/models/content/content.dart';
 
 class ContentDetailArguments {
   ContentDetailArguments({

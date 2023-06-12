@@ -3,8 +3,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/models/video/video.dart';
 import 'package:presmaflix/app/repositories/firestore/video/video_repository.dart';
 
 part 'video_event.dart';

@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:pod_player/pod_player.dart';
-import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/app/models/video/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:presmaflix/config/themes.dart';
 
 class ContentVideoPage extends StatefulWidget {
   const ContentVideoPage({super.key, required this.video});
@@ -22,6 +24,8 @@ class ContentVideoPageState extends State<ContentVideoPage> {
   late final PodPlayerController videoController;
   List<Video> videos = Video.videos;
   bool isFullScreen = true;
+  bool isEditing = false;
+  String commentId = '';
 
   @override
   void initState() {
@@ -43,212 +47,324 @@ class ContentVideoPageState extends State<ContentVideoPage> {
     super.dispose();
   }
 
+  void toggleEditing() {
+    setState(() {
+      isEditing = true;
+    });
+  }
+
+  void setCommentId(String id) {
+    setState(() {
+      commentId = id;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    //if (videos[0].type == 'full-length') {
     return Scaffold(
       body: Column(
         children: [
-          AspectRatio(
-            aspectRatio: 16 / 9,
-            child: PodVideoPlayer(
-              alwaysShowProgressBar: false,
-              overlayBuilder: (OverLayOptions options) => CustomOverlay(
-                options: options,
-                controller: videoController,
-                video: widget.video,
-              ),
-              controller: videoController,
-              videoThumbnail: DecorationImage(
-                image: NetworkImage(
-                  widget.video.thumbnailUrl.toString(),
+          ClipRect(
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: PodVideoPlayer(
+                alwaysShowProgressBar: false,
+                overlayBuilder: (OverLayOptions options) => CustomOverlay(
+                  options: options,
+                  controller: videoController,
+                  video: widget.video,
                 ),
+                controller: videoController,
+                videoThumbnail: DecorationImage(
+                  image: NetworkImage(
+                    widget.video.thumbnailUrl.toString(),
+                  ),
+                ),
+                matchFrameAspectRatioToVideo: true,
+                matchVideoAspectRatioToFrame: true,
               ),
-              matchFrameAspectRatioToVideo: true,
-              matchVideoAspectRatioToFrame: true,
             ),
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(widget.video.title.toString()),
-              ),
-              IconButton.filled(
-                onPressed: () {},
-                icon: const Icon(Icons.share),
-              )
-            ],
-          ),
-          const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(widget.video.description.toString(),
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
-                )),
-          ),
-          const Divider(
-            thickness: 2,
-            color: Color.fromARGB(255, 49, 49, 49),
-          ),
-          Expanded(
+          Flexible(
+            flex: 2,
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (overscroll) {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: Stack(
-                children: [
-                  StreamBuilder(
-                      stream: FirebaseFirestore.instance
-                          .collection('review')
-                          .snapshots(),
-                      builder:
-                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        return ListView(
-                          padding: const EdgeInsets.all(8),
-                          children: snapshot.data?.docs
-                                  .where((video) =>
-                                      (video.data()
-                                          as Map<String, dynamic>)['videoId'] ==
-                                      widget.video.id)
-                                  .map((doc) => commentWidget(doc))
-                                  .toList() ??
-                              [],
-                        );
-                      }),
-                  const SizedBox(height: 8),
-                  Positioned(
-                    bottom: 16,
-                    left: 8,
-                    right: 8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.black,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 6,
-                              offset: const Offset(0, 0),
-                            ),
-                          ],
-                        ),
-                        child: TextField(
-                          controller: commentController,
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 10,
-                            ),
-                            hintText: 'Tambahkan Komentar...',
-                            hintStyle: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
-                            ),
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                FirebaseFirestore.instance
-                                    .collection('review')
-                                    .add({
-                                  'videoId': widget.video.id,
-                                  'name': 'Yanuar Rizki',
-                                  'email': 'yanuarrizki165@gmail.com',
-                                  'comment': commentController.text,
-                                  'createdAt': DateTime.now(),
-                                }).then((value) => commentController.clear());
-                              },
-                              icon: const Icon(Icons.send),
-                            ),
-                          ),
-                        ),
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('review')
+                      .where('videoId', isEqualTo: widget.video.id)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    print(snapshot.data?.docs.length);
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 49, 49, 49),
                       ),
-                    ),
+                      itemCount: (snapshot.data?.docs.length ?? 0) + 1,
+                      itemBuilder: ((context, index) {
+                        if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Flexible(
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          child: Text(
+                                            widget.video.title.toString(),
+                                            softWrap: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton.filled(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.share),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Text(
+                                    widget.video.description.toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            final commentIndex = index - 1;
+                            if (commentIndex < snapshot.data!.docs.length) {
+                              return commentWidget(
+                                snapshot.data!.docs[commentIndex],
+                                context,
+                                commentController,
+                                toggleEditing,
+                                snapshot.data!.docs[commentIndex].id,
+                                setCommentId,
+                              );
+                            }
+                          }
+                        } else if (snapshot.hasError) {
+                          print(
+                              'Snapshot Error : ${snapshot.error.toString()}');
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SizedBox(
+                            child: Text('Loading...'),
+                          );
+                        }
+                        return const SizedBox();
+                      }),
+                    );
+                  }),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: Colors.black,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(0, 0),
                   ),
                 ],
+              ),
+              child: TextField(
+                controller: commentController,
+                decoration: InputDecoration(
+                  contentPadding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 13),
+                  hintText: 'Tambahkan Komentar...',
+                  hintStyle: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      if (commentController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Komentar Tidak Boleh Kosong',
+                              style: GoogleFonts.montserrat(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 15,
+                              ),
+                            ),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                      if (isEditing == false) {
+                        FirebaseFirestore.instance.collection('review').add({
+                          'videoId': widget.video.id,
+                          'name': await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .get()
+                              .then((value) => value.data()!['name']),
+                          'email': FirebaseAuth.instance.currentUser!.email,
+                          'comment': commentController.text,
+                          'createdAt': DateTime.now(),
+                        }).then((value) => commentController.clear());
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('review')
+                            .doc(commentId)
+                            .update({
+                              'comment': commentController.text,
+                            })
+                            .then((value) => commentController.clear())
+                            .then(
+                              (value) => setState(() {
+                                isEditing = false;
+                              }),
+                            );
+                      }
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                ),
               ),
             ),
           ),
         ],
       ),
     );
-    // }
-    // return Scaffold(
-    //   body: Column(
-    //     children: [
-    //       AspectRatio(
-    //         aspectRatio: 16 / 9,
-    //         child: PodVideoPlayer(
-    //           overlayBuilder: (OverLayOptions options) => CustomOverlay(
-    //             options: options,
-    //             controller: videoController,
-    //             video: widget.video,
-    //           ),
-    //           matchFrameAspectRatioToVideo: true,
-    //           matchVideoAspectRatioToFrame: true,
-    //           videoTitle: Padding(
-    //             padding: kIsWeb
-    //                 ? const EdgeInsets.symmetric(vertical: 25, horizontal: 15)
-    //                 : const EdgeInsets.only(left: 15),
-    //             child: Text(
-    //               widget.video.title.toString(),
-    //               style: const TextStyle(
-    //                 color: Colors.white,
-    //                 fontSize: 18,
-    //               ),
-    //               maxLines: 1,
-    //               overflow: TextOverflow.ellipsis,
-    //             ),
-    //           ),
-    //           controller: videoController,
-    //           videoThumbnail: DecorationImage(
-    //             image: NetworkImage(
-    //               widget.video.thumbnailUrl.toString(),
-    //             ),
-    //           ),
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
 
-Widget commentWidget(DocumentSnapshot docs) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-    child: Container(
-      decoration: BoxDecoration(
+Widget commentWidget(
+  DocumentSnapshot docs,
+  BuildContext context,
+  TextEditingController commentController,
+  VoidCallback toggleEditing,
+  String commentId,
+  Function(String) updateCommentId,
+) {
+  return Container(
+    constraints: const BoxConstraints(minHeight: 0, maxHeight: double.infinity),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Container(
+        decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(8)),
-      padding: const EdgeInsets.all(14.0),
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            docs['name'],
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(14.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  docs['name'],
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  docs['comment'],
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            docs['comment'],
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.w400,
-              color: Colors.grey,
-            ),
-          ),
-        ],
+            const Spacer(),
+            if (FirebaseAuth.instance.currentUser!.email == docs['email'])
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Options'),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              GestureDetector(
+                                child: const Text('Edit'),
+                                onTap: () {
+                                  FirebaseFirestore.instance
+                                      .collection('review')
+                                      .doc(docs.id)
+                                      .get()
+                                      .then((value) {
+                                        updateCommentId(docs.id);
+                                        commentController.text =
+                                            value.data()!['comment'];
+                                      })
+                                      .then((value) => toggleEditing())
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                              ),
+                              const Padding(padding: EdgeInsets.all(8)),
+                              GestureDetector(
+                                child: const Text('Hapus'),
+                                onTap: () {
+                                  FirebaseFirestore.instance
+                                      .collection('review')
+                                      .doc(docs.id)
+                                      .delete()
+                                      .then(
+                                        (value) => ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "Komentar Berhasil Dihapus",
+                                              style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        ),
+                                      )
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.more_vert),
+              ),
+          ],
+        ),
       ),
     ),
   );
@@ -375,8 +491,10 @@ class _CustomOverlayState extends State<CustomOverlay> {
     return Stack(
       children: [
         if (widget.options.podVideoState == PodVideoState.loading) ...[
-          const Center(
-            child: CircularProgressIndicator(),
+          Center(
+            child: CircularProgressIndicator(
+              color: kPrimaryColor,
+            ),
           ),
         ],
         if (isOverlayVisible ||
@@ -400,7 +518,10 @@ class _CustomOverlayState extends State<CustomOverlay> {
           Positioned(
             top: 10,
             left: 10,
-            child: Text(widget.video.title.toString()),
+            child: Text(
+              widget.video.title.toString(),
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
           if (widget.options.podVideoState == PodVideoState.playing)
             buildPlayingOverlay(),

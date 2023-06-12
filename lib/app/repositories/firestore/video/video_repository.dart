@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:presmaflix/app/models/content.dart';
-import 'package:presmaflix/app/models/video.dart';
+import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/app/models/video/video.dart';
 
 class VideoRepository {
   final List<Video> _videos;

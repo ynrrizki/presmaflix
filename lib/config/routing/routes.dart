@@ -57,6 +57,10 @@ class AppRouter {
         return CupertinoPageRoute(
           builder: (context) => const BottomNavigation(),
         );
+      case "/verif":
+        return CupertinoPageRoute(
+          builder: (context) => const VerifPage(),
+        );
       case "/content-detail":
         final args = settings.arguments as ContentDetailArguments;
         return CupertinoPageRoute(

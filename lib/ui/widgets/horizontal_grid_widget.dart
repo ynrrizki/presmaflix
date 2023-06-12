@@ -7,7 +7,7 @@ import 'package:presmaflix/config/routing/argument/content/content_all_args.dart
 import 'package:presmaflix/ui/widgets/poster_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../app/models/content.dart';
+import '../../app/models/content/content.dart';
 
 class HorizontalGridWidget extends StatelessWidget {
   const HorizontalGridWidget({

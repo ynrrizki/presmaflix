@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/bloc/user/user_bloc.dart';
 import 'package:presmaflix/app/cubits/logout/logout_cubit.dart';
-import 'package:presmaflix/app/models/user.dart';
+import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/config/themes.dart';
 
 class MorePage extends StatelessWidget {
@@ -73,7 +73,7 @@ class MorePage extends StatelessWidget {
                   Card(
                     color: Colors.black,
                     shadowColor: Colors.grey,
-                    elevation: 0.5,
+                    elevation: 0.2,
                     child: ListTile(
                       leading: const Icon(Icons.search_outlined),
                       title: const Text('Search'),
@@ -87,7 +87,7 @@ class MorePage extends StatelessWidget {
                   Card(
                     color: Colors.black,
                     shadowColor: Colors.grey,
-                    elevation: 0.5,
+                    elevation: 0.2,
                     child: ListTile(
                       leading: const Icon(Icons.notifications_active_outlined),
                       title: const Text('Notifications'),
@@ -98,7 +98,7 @@ class MorePage extends StatelessWidget {
                   Card(
                     color: Colors.black,
                     shadowColor: Colors.grey,
-                    elevation: 0.5,
+                    elevation: 0.2,
                     child: ListTile(
                       leading: const Icon(Icons.settings_outlined),
                       title: const Text('Settings'),

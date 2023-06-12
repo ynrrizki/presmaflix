@@ -1,5 +1,5 @@
 // import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:presmaflix/app/models/user.dart';
+import 'package:presmaflix/app/models/user/user.dart';
 
 abstract class Repository {
   Stream<User> get user;
