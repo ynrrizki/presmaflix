@@ -220,8 +220,14 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                             .collection('review')
                             .doc(commentId)
                             .update({
-                          'comment': commentController.text,
-                        }).then((value) => commentController.clear());
+                              'comment': commentController.text,
+                            })
+                            .then((value) => commentController.clear())
+                            .then(
+                              (value) => setState(() {
+                                isEditing = false;
+                              }),
+                            );
                       }
                     },
                     icon: const Icon(Icons.send),
@@ -237,109 +243,114 @@ class ContentVideoPageState extends State<ContentVideoPage> {
 }
 
 Widget commentWidget(
-    DocumentSnapshot docs,
-    BuildContext context,
-    TextEditingController commentController,
-    VoidCallback toggleEditing,
-    String commentId,
-    Function(String) updateCommentId) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 12.0),
-    child: Container(
-      decoration: BoxDecoration(
+  DocumentSnapshot docs,
+  BuildContext context,
+  TextEditingController commentController,
+  VoidCallback toggleEditing,
+  String commentId,
+  Function(String) updateCommentId,
+) {
+  return Container(
+    constraints: const BoxConstraints(minHeight: 0, maxHeight: double.infinity),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Container(
+        decoration: BoxDecoration(
           color: Colors.black.withOpacity(0.5),
-          borderRadius: BorderRadius.circular(8)),
-      padding: const EdgeInsets.all(14.0),
-      margin: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                docs['name'],
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        padding: const EdgeInsets.all(14.0),
+        margin: const EdgeInsets.symmetric(vertical: 4.0),
+        child: Row(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  docs['name'],
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                docs['comment'],
-                style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400,
-                  color: Colors.grey,
+                const SizedBox(height: 4),
+                Text(
+                  docs['comment'],
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.grey,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          if (FirebaseAuth.instance.currentUser!.email == docs['email'])
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Options'),
-                      content: SingleChildScrollView(
-                        child: ListBody(
-                          children: <Widget>[
-                            GestureDetector(
-                              child: const Text('Edit'),
-                              onTap: () {
-                                FirebaseFirestore.instance
-                                    .collection('review')
-                                    .doc(docs.id)
-                                    .get()
-                                    .then((value) {
-                                      updateCommentId(docs.id);
-                                      commentController.text =
-                                          value.data()!['comment'];
-                                    })
-                                    .then((value) => toggleEditing())
-                                    .then(
-                                        (value) => Navigator.of(context).pop());
-                              },
-                            ),
-                            const Padding(padding: EdgeInsets.all(8)),
-                            GestureDetector(
-                              child: const Text('Hapus'),
-                              onTap: () {
-                                FirebaseFirestore.instance
-                                    .collection('review')
-                                    .doc(docs.id)
-                                    .delete()
-                                    .then(
-                                      (value) => ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            "Komentar Berhasil Dihapus",
-                                            style: GoogleFonts.montserrat(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 15,
+              ],
+            ),
+            const Spacer(),
+            if (FirebaseAuth.instance.currentUser!.email == docs['email'])
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Options'),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              GestureDetector(
+                                child: const Text('Edit'),
+                                onTap: () {
+                                  FirebaseFirestore.instance
+                                      .collection('review')
+                                      .doc(docs.id)
+                                      .get()
+                                      .then((value) {
+                                        updateCommentId(docs.id);
+                                        commentController.text =
+                                            value.data()!['comment'];
+                                      })
+                                      .then((value) => toggleEditing())
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                              ),
+                              const Padding(padding: EdgeInsets.all(8)),
+                              GestureDetector(
+                                child: const Text('Hapus'),
+                                onTap: () {
+                                  FirebaseFirestore.instance
+                                      .collection('review')
+                                      .doc(docs.id)
+                                      .delete()
+                                      .then(
+                                        (value) => ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "Komentar Berhasil Dihapus",
+                                              style: GoogleFonts.montserrat(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 15,
+                                              ),
                                             ),
+                                            backgroundColor: Colors.red,
                                           ),
-                                          backgroundColor: Colors.red,
                                         ),
-                                      ),
-                                    )
-                                    .then(
-                                        (value) => Navigator.of(context).pop());
-                              },
-                            ),
-                          ],
+                                      )
+                                      .then((value) =>
+                                          Navigator.of(context).pop());
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
-              icon: const Icon(Icons.more_vert),
-            )
-        ],
+                      );
+                    },
+                  );
+                },
+                icon: const Icon(Icons.more_vert),
+              ),
+          ],
+        ),
       ),
     ),
   );

@@ -14,6 +14,7 @@ class VerifPage extends StatefulWidget {
 class _VerifPageState extends State<VerifPage> {
   bool isAlreadySend = false;
   late Timer timer;
+  late Timer cooldown;
   late Duration alreadysendtimer;
   late String formatedtimer;
 
@@ -27,18 +28,16 @@ class _VerifPageState extends State<VerifPage> {
     formatedtimer = DateFormat("mm:ss").format(
       DateTime.fromMillisecondsSinceEpoch(alreadysendtimer.inMilliseconds),
     );
-
-    FirebaseAuth.instance.currentUser!.sendEmailVerification();
     setState(() {
       isAlreadySend = true;
     });
-    sendAgainCooldown();
     super.initState();
   }
 
   @override
   void dispose() {
     timer.cancel();
+    cooldown.cancel();
     super.dispose();
   }
 
@@ -65,7 +64,7 @@ class _VerifPageState extends State<VerifPage> {
   }
 
   void sendAgainCooldown() {
-    Timer(const Duration(seconds: 30), () {
+    cooldown = Timer(const Duration(seconds: 30), () {
       setState(() {
         isAlreadySend = false;
       });
