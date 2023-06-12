@@ -326,7 +326,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 backgroundColor: Colors.transparent,
                 side: const BorderSide(color: Colors.white),
               ),
-              child: const Icon(Icons.more_vert),
+              child: const Icon(Icons.more_horiz),
             )
           ],
         ),
@@ -413,35 +413,35 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.download),
+                        leading: const Icon(Icons.star),
                         title: const Text('Bintang 1'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.share),
+                        leading: const Icon(Icons.star),
                         title: const Text('Bintang 2'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.share),
+                        leading: const Icon(Icons.star),
                         title: const Text('Bintang 3'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.share),
+                        leading: const Icon(Icons.star),
                         title: const Text('Bintang 4'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(Icons.share),
+                        leading: const Icon(Icons.star),
                         title: const Text('Bintang 5'),
                       ),
                     ),
@@ -478,10 +478,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   children: [
                     Card(
                       child: ListTile(
-                        onTap: () {
-                          Navigator.pop(context);
-                          _downloadModalBottomSheet(context);
-                        },
+                        onTap: () {},
                         leading: const Icon(Icons.download),
                         title: const Text('Download'),
                       ),
@@ -503,183 +500,183 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
     );
   }
 
-  Future<dynamic> _downloadModalBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SizedBox(
-          height: 350,
-          child: Stack(
-            children: [
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 25, left: 20),
-                  child: Text(
-                    "Unduh dengan kualitas",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10, right: 10),
-                  child: IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  // Button Kualitas 360p
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 75),
-                      child: SizedBox(
-                        height: 70,
-                        width: 600,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: const Text(
-                                  "Rendah",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 235),
-                              const Text(
-                                "360p",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.grey,
-                  ),
+  // Future<dynamic> _downloadModalBottomSheet(BuildContext context) {
+  //   return showModalBottomSheet(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return SizedBox(
+  //         height: 350,
+  //         child: Stack(
+  //           children: [
+  //             const Align(
+  //               alignment: Alignment.topLeft,
+  //               child: Padding(
+  //                 padding: EdgeInsets.only(top: 25, left: 20),
+  //                 child: Text(
+  //                   "Unduh dengan kualitas",
+  //                   style: TextStyle(
+  //                     fontWeight: FontWeight.bold,
+  //                     fontSize: 20,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //             Align(
+  //               alignment: Alignment.topRight,
+  //               child: Padding(
+  //                 padding: const EdgeInsets.only(top: 10, right: 10),
+  //                 child: IconButton(
+  //                   icon: const Icon(Icons.close),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                 ),
+  //               ),
+  //             ),
+  //             Column(
+  //               children: [
+  //                 // Button Kualitas 360p
+  //                 Align(
+  //                   alignment: Alignment.topCenter,
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.only(top: 75),
+  //                     child: SizedBox(
+  //                       height: 70,
+  //                       width: 600,
+  //                       child: ElevatedButton(
+  //                         onPressed: () {},
+  //                         style: ElevatedButton.styleFrom(
+  //                           backgroundColor: Colors.transparent,
+  //                           elevation: 0,
+  //                         ),
+  //                         child: Row(
+  //                           children: [
+  //                             Container(
+  //                               padding: const EdgeInsets.only(right: 10),
+  //                               child: const Text(
+  //                                 "Rendah",
+  //                                 style: TextStyle(
+  //                                   fontWeight: FontWeight.bold,
+  //                                   fontSize: 17,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                             const SizedBox(width: 235),
+  //                             const Text(
+  //                               "360p",
+  //                               style: TextStyle(
+  //                                 fontWeight: FontWeight.bold,
+  //                                 fontSize: 17,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const Divider(
+  //                   thickness: 1,
+  //                   indent: 20,
+  //                   endIndent: 20,
+  //                   color: Colors.grey,
+  //                 ),
 
-                  // Button Kualitas 480p
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        height: 70,
-                        width: 600,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: const Text(
-                                  "Sedang",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 235),
-                              const Text(
-                                "480p",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    indent: 20,
-                    endIndent: 20,
-                    color: Colors.grey,
-                  ),
+  //                 // Button Kualitas 480p
+  //                 Align(
+  //                   alignment: Alignment.topCenter,
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.only(top: 15),
+  //                     child: SizedBox(
+  //                       height: 70,
+  //                       width: 600,
+  //                       child: ElevatedButton(
+  //                         onPressed: () {},
+  //                         style: ElevatedButton.styleFrom(
+  //                           backgroundColor: Colors.transparent,
+  //                           elevation: 0,
+  //                         ),
+  //                         child: Row(
+  //                           children: [
+  //                             Container(
+  //                               padding: const EdgeInsets.only(right: 10),
+  //                               child: const Text(
+  //                                 "Sedang",
+  //                                 style: TextStyle(
+  //                                   fontWeight: FontWeight.bold,
+  //                                   fontSize: 17,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                             const SizedBox(width: 235),
+  //                             const Text(
+  //                               "480p",
+  //                               style: TextStyle(
+  //                                 fontWeight: FontWeight.bold,
+  //                                 fontSize: 17,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 const Divider(
+  //                   thickness: 1,
+  //                   indent: 20,
+  //                   endIndent: 20,
+  //                   color: Colors.grey,
+  //                 ),
 
-                  // Button Kualitas 720p
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: SizedBox(
-                        height: 70,
-                        width: 600,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: const Text(
-                                  "Tinggi",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 235),
-                              const Text(
-                                "720p",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  //                 // Button Kualitas 720p
+  //                 Align(
+  //                   alignment: Alignment.topCenter,
+  //                   child: Padding(
+  //                     padding: const EdgeInsets.only(top: 15),
+  //                     child: SizedBox(
+  //                       height: 70,
+  //                       width: 600,
+  //                       child: ElevatedButton(
+  //                         onPressed: () {},
+  //                         style: ElevatedButton.styleFrom(
+  //                           backgroundColor: Colors.transparent,
+  //                           elevation: 0,
+  //                         ),
+  //                         child: Row(
+  //                           children: [
+  //                             Container(
+  //                               padding: const EdgeInsets.only(right: 10),
+  //                               child: const Text(
+  //                                 "Tinggi",
+  //                                 style: TextStyle(
+  //                                   fontWeight: FontWeight.bold,
+  //                                   fontSize: 17,
+  //                                 ),
+  //                               ),
+  //                             ),
+  //                             const SizedBox(width: 235),
+  //                             const Text(
+  //                               "720p",
+  //                               style: TextStyle(
+  //                                 fontWeight: FontWeight.bold,
+  //                                 fontSize: 17,
+  //                               ),
+  //                             ),
+  //                           ],
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ],
+  //             ),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _directsAndCasts(String directors, String casts,
       {bool isShimmer = false}) {
