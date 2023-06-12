@@ -14,7 +14,7 @@ class VerifPage extends StatefulWidget {
 class _VerifPageState extends State<VerifPage> {
   bool isAlreadySend = false;
   late Timer timer;
-  late Timer cooldown;
+  Timer? cooldown;
   late Duration alreadysendtimer;
   late String formatedtimer;
 
@@ -31,13 +31,22 @@ class _VerifPageState extends State<VerifPage> {
     setState(() {
       isAlreadySend = true;
     });
+    if (FirebaseAuth.instance.currentUser!.emailVerified) {
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/home',
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      sendVerification();
+    }
     super.initState();
   }
 
   @override
   void dispose() {
     timer.cancel();
-    cooldown.cancel();
+    cooldown?.cancel();
     super.dispose();
   }
 

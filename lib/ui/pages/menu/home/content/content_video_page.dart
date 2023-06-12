@@ -85,80 +85,94 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               ),
             ),
           ),
-          Expanded(
+          Flexible(
+            flex: 2,
             child: NotificationListener<OverscrollIndicatorNotification>(
               onNotification: (overscroll) {
                 overscroll.disallowIndicator();
                 return true;
               },
-              child: CustomScrollView(
-                slivers: [
-                  SliverToBoxAdapter(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Flexible(
-                                child: SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.8,
+              child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection('review')
+                      .where('videoId', isEqualTo: widget.video.id)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    print(snapshot.data?.docs.length);
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 49, 49, 49),
+                      ),
+                      itemCount: (snapshot.data?.docs.length ?? 0) + 1,
+                      itemBuilder: ((context, index) {
+                        if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+                          if (index == 0) {
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8),
+                                      child: Flexible(
+                                        child: SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.8,
+                                          child: Text(
+                                            widget.video.title.toString(),
+                                            softWrap: true,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    IconButton.filled(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.share),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
                                   child: Text(
-                                    widget.video.title.toString(),
-                                    softWrap: true,
+                                    widget.video.description.toString(),
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            IconButton.filled(
-                              onPressed: () {},
-                              icon: const Icon(Icons.share),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            widget.video.description.toString(),
-                            style: GoogleFonts.poppins(
-                              fontWeight: FontWeight.w400,
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                        const Divider(
-                          thickness: 2,
-                          color: Color.fromARGB(255, 49, 49, 49),
-                        ),
-                      ],
-                    ),
-                  ),
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('review')
-                        .where('videoId', isEqualTo: widget.video.id)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      return SliverList.separated(
-                        separatorBuilder: (context, index) => const Divider(
-                          thickness: 2,
-                          color: Color.fromARGB(255, 49, 49, 49),
-                        ),
-                        itemCount: snapshot.data?.docs.length ?? 0,
-                        itemBuilder: (context, index) {
-                          final doc = snapshot.data!.docs[index];
-                          return commentWidget(doc, context, commentController,
-                              toggleEditing, doc.id, setCommentId);
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
+                              ],
+                            );
+                          } else {
+                            final commentIndex = index - 1;
+                            if (commentIndex < snapshot.data!.docs.length) {
+                              return commentWidget(
+                                snapshot.data!.docs[commentIndex],
+                                context,
+                                commentController,
+                                toggleEditing,
+                                snapshot.data!.docs[commentIndex].id,
+                                setCommentId,
+                              );
+                            }
+                          }
+                        } else if (snapshot.hasError) {
+                          print(
+                              'Snapshot Error : ${snapshot.error.toString()}');
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const SizedBox(
+                            child: Text('Loading...'),
+                          );
+                        }
+                        return const SizedBox();
+                      }),
+                    );
+                  }),
             ),
           ),
           Padding(
