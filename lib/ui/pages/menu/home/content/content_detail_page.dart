@@ -39,7 +39,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
   List<Video>? videos = Video.videos;
   List<Content> contents = Content.contents;
   List<String> tabTypes = [];
-  int tabCount = 1;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<VideoBloc, VideoState>(
@@ -53,7 +52,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
         }
         if (state is VideoLoaded) {
           videos = state.videos;
-          tabCount = _generateTab(state.videos, tabTypes).length + 1;
           return Scaffold(
             extendBodyBehindAppBar: true,
             extendBody: true,
@@ -117,7 +115,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   ),
                 ],
               ),
-              tabCount: tabCount,
+              tabCount: _generateTab(state.videos, tabTypes).length + 1,
               tabs: [
                 ..._generateTab(videos!, tabTypes),
                 const Tab(text: 'Similar'),
@@ -294,8 +292,11 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   width: 15,
                 ),
                 ElevatedButton.icon(
-                  onPressed: () =>
-                      _ratingModal(context, content: widget.content),
+                  onPressed: () => _ratingModal(
+                    context,
+                    content: widget.content,
+                    user: user,
+                  ),
                   icon: const Icon(
                     Icons.star,
                   ),
@@ -387,13 +388,12 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
   }
 
   Future<dynamic> _ratingModal(BuildContext context,
-      {required Content content}) {
-    // final user = context.select((AppBloc bloc) => bloc.state.user);
+      {required Content content, required User user}) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Rate this Content'),
+          title: const Text('Rate this Content', textAlign: TextAlign.center),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -402,8 +402,8 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   builder: (context, state) {
                     if (state is RatingLoaded) {
                       return Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           RatingBar(
                             allowHalfRating: true,
@@ -423,19 +423,18 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                                 color: Colors.orange,
                               ),
                             ),
-                            initialRating: 0.0,
+                            initialRating: state.rating,
                             onRatingUpdate: (value) {
-                              // context.read<RatingBloc>().add(
-                              //       AddRating(
-                              //         rating: Rating(
-                              //           id: state.rating,
-                              //           contentId: widget.content.id,
-                              //           email: user.email!,
-                              //           name: user.name!,
-                              //           rating: value,
-                              //         ),
-                              //       ),
-                              //     );
+                              context.read<RatingBloc>().add(
+                                    AddRating(
+                                      rating: Rating(
+                                        id: user.id,
+                                        contentId: widget.content.id,
+                                        email: user.email!,
+                                        rating: value,
+                                      ),
+                                    ),
+                                  );
                             },
                           ),
                         ],
@@ -466,17 +465,16 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                           ),
                           initialRating: 0.0,
                           onRatingUpdate: (value) {
-                            // context.read<RatingBloc>().add(
-                            //       AddRating(
-                            //         rating: Rating(
-                            //           id: '',
-                            //           contentId: widget.content.id,
-                            //           email: user.email!,
-                            //           name: user.name!,
-                            //           rating: value,
-                            //         ),
-                            //       ),
-                            //     );
+                            context.read<RatingBloc>().add(
+                                  AddRating(
+                                    rating: Rating(
+                                      id: user.id,
+                                      contentId: widget.content.id,
+                                      email: user.email!,
+                                      rating: value,
+                                    ),
+                                  ),
+                                );
                           },
                         ),
                       ],

@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:presmaflix/app/cubits/bottomNavigation/bottom_navigation_cubit.dart';
+import 'package:presmaflix/ui/pages/menu/download/download_page.dart';
 import 'package:presmaflix/ui/pages/pages.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -22,7 +23,7 @@ class BottomNavigation extends StatelessWidget {
     List<Widget> buildScreens() {
       return const [
         HomePage(),
-        Scaffold(),
+        DownloadPage(),
         WatchListPage(),
         MorePage(),
       ];

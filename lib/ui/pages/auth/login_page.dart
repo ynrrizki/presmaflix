@@ -60,44 +60,12 @@ class _LoginFormState extends State<LoginForm> {
                 '/verif',
                 (route) => false,
               );
-              // Navigator.pushNamedAndRemoveUntil(
-              //   context,
-              //   '/home',
-              //   (route) => false,
-              // );
-              // Navigator.pushAndRemoveUntil(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => Container(
-              //         color: Colors.blue,
-              //         child: const Center(
-              //           child: Text('/home'),
-              //         ),
-              //       ),
-              //     ),
-              //     (route) => false);
             } else {
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/home',
                 (route) => false,
               );
-              // Navigator.pushNamedAndRemoveUntil(
-              //   context,
-              //   '/verif',
-              //   (route) => false,
-              // );
-              // Navigator.pushAndRemoveUntil(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => Container(
-              //         color: Colors.green,
-              //         child: const Center(
-              //           child: Text('/verif'),
-              //         ),
-              //       ),
-              //     ),
-              //     (route) => false);
             }
           } else if (state.status == LoginStatus.error) {
             final snackBar = SnackBar(
@@ -141,6 +109,8 @@ class _LoginFormState extends State<LoginForm> {
             _PasswordInput(),
             const SizedBox(height: 50),
             _LoginButton(),
+            const SizedBox(height: 25),
+            _SignInGoogleButton(),
             const SizedBox(height: 50),
             Center(
               child: Row(
@@ -169,46 +139,57 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 
+class _SignInGoogleButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<LoginCubit>().logInWithGoogle();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: kPrimaryColor,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+          side: BorderSide(
+            color: kPrimaryColor,
+          ),
+        ),
+      ),
+      child: const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(Icons.g_mobiledata_rounded),
+              Text('Sign In with Google'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginCubit, LoginState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return state.status == LoginStatus.submitting
-            ? ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                ),
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            : ElevatedButton(
-                onPressed: () {
-                  context.read<LoginCubit>().logInWithCredentials();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                ),
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Text('Login'),
-                  ),
-                ),
-              );
+    return ElevatedButton(
+      onPressed: () {
+        context.read<LoginCubit>().logInWithCredentials();
       },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: kPrimaryColor,
+      ),
+      child: const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text('Login'),
+        ),
+      ),
     );
   }
 }

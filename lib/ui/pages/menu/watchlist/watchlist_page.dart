@@ -47,43 +47,77 @@ class _WatchListPageState extends State<WatchListPage> {
           buildWhen: (previous, current) => current is WatchlistLoaded,
           builder: (context, state) {
             if (state is WatchlistLoaded) {
-              state.watchlists;
-              return ListView(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                children: state.watchlists
-                    .where((watchlist) => watchlist.userId == user.id)
-                    .map((watchlist) {
-                  return BlocBuilder<ContentBloc, ContentState>(
-                    bloc: context.read<ContentBloc>()..add(LoadContents()),
-                    builder: (context, state) {
-                      if (state is ContentLoaded) {
-                        List<Content> filteredContents = state.contents
-                            .where(
-                                (content) => content.id == watchlist.contentId)
-                            .toList();
-                        if (filteredContents.isNotEmpty) {
-                          Content content = filteredContents.first;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: AnimatedContainer(
-                              duration: const Duration(seconds: 2),
-                              curve: Curves.fastOutSlowIn,
-                              child: _CardContent(
-                                content: content,
+              if (state.watchlists
+                  .where((watchlist) => watchlist.userId == user.id)
+                  .isNotEmpty) {
+                return ListView(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  children: state.watchlists
+                      .where((watchlist) => watchlist.userId == user.id)
+                      .map((watchlist) {
+                    return BlocBuilder<ContentBloc, ContentState>(
+                      bloc: context.read<ContentBloc>()..add(LoadContents()),
+                      builder: (context, state) {
+                        if (state is ContentLoaded) {
+                          List<Content> filteredContents = state.contents
+                              .where((content) =>
+                                  content.id == watchlist.contentId)
+                              .toList();
+                          if (filteredContents.isNotEmpty) {
+                            Content content = filteredContents.first;
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: AnimatedContainer(
+                                duration: const Duration(seconds: 2),
+                                curve: Curves.fastOutSlowIn,
+                                child: _CardContent(
+                                  content: content,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          }
                         }
-                      }
-                      return Center(
-                        child: CircularProgressIndicator(
-                          color: kPrimaryColor,
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: kPrimaryColor,
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                );
+              }
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.my_library_books_outlined,
+                      size: 50,
+                    ),
+                    const SizedBox(height: 15),
+                    Text(
+                      'Your list is empty',
+                      style: GoogleFonts.montserrat(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        "Add any content you like to the list so it's easier for you to find and watch it",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14,
+                          color: const Color.fromARGB(255, 180, 180, 180),
                         ),
-                      );
-                    },
-                  );
-                }).toList(),
+                      ),
+                    ),
+                  ],
+                ),
               );
             }
             return Center(

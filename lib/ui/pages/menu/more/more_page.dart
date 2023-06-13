@@ -140,9 +140,11 @@ class _AccountCard extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
                 onTap: () {},
                 leading: CircleAvatar(
-                  radius: 40,
+                  radius: 25.0,
                   backgroundImage: CachedNetworkImageProvider(
-                    'https://ui-avatars.com/api/?name=${state.user.name}',
+                    state.user.avatar ??
+                        'https://ui-avatars.com/api/?name=${state.user.name}',
+                    scale: 2,
                   ),
                 ),
                 title: Text('${state.user.name}'),

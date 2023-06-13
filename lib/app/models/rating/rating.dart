@@ -4,14 +4,12 @@ import 'package:equatable/equatable.dart';
 class Rating extends Equatable {
   final String id;
   final String contentId;
-  final String name;
   final String email;
   final double rating;
 
   const Rating({
     required this.id,
     required this.contentId,
-    required this.name,
     required this.email,
     required this.rating,
   });
@@ -21,17 +19,16 @@ class Rating extends Equatable {
     return Rating(
       id: data.id,
       contentId: data['contentId'],
-      name: data['name'],
       email: data['email'],
       rating: data['rating'],
     );
   }
 
-  Map<String, dynamic> toRating(String contentId, String email, num rating) {
+  Map<String, dynamic> toRating(String contentId, String email, double rating) {
     return {
+      'id': id,
       'contentId': contentId,
-      'name': name,
-      'email': email, 
+      'email': email,
       'rating': rating,
     };
   }
@@ -40,20 +37,18 @@ class Rating extends Equatable {
     return {
       'id': id,
       'contentId': contentId,
-      'name': name,
       'email': email,
       'rating': rating,
     };
   }
 
   @override
-  List<Object?> get props => [id, contentId, name, email, rating];
+  List<Object?> get props => [id, contentId, email, rating];
 
   static List<Rating> ratings = [
     const Rating(
       id: '1',
       contentId: '1',
-      name: 'Yanuar Rizki',
       email: 'yanuarrizki165@gmail.com',
       rating: 1.5,
     ),

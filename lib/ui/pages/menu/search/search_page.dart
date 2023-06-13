@@ -302,7 +302,6 @@ class IdleSearch extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   childAspectRatio: (9.5) / (3.6),
-                  // childAspectRatio: 3.55,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
                   crossAxisCount: 2,
@@ -325,28 +324,28 @@ class IdleSearch extends StatelessWidget {
                       child: ListTile(
                         onTap: () {},
                         leading: const Icon(Icons.emoji_emotions_outlined),
-                        title: const Text('Commedy'),
+                        title: const Text('Comedy'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(CupertinoIcons.flame),
+                        leading: const Icon(Icons.local_movies_outlined),
                         title: const Text('Horror'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(CupertinoIcons.flame),
-                        title: const Text('Fiksi'),
+                        leading: const Icon(Icons.science_outlined),
+                        title: const Text('Fiction'),
                       ),
                     ),
                     Card(
                       child: ListTile(
                         onTap: () {},
-                        leading: const Icon(CupertinoIcons.flame),
-                        title: const Text('Misteri'),
+                        leading: const Icon(Icons.search_outlined),
+                        title: const Text('Mystery'),
                       ),
                     ),
                   ],
