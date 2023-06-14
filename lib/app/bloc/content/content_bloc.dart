@@ -44,4 +44,10 @@ class ContentBloc extends Bloc<ContentEvent, ContentState> {
     emit(ContentLoading());
     emit(ContentLoaded(contents: event.contents));
   }
+
+  @override
+  Future<void> close() async {
+    _contentSubscription?.cancel();
+    super.close;
+  }
 }

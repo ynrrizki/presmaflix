@@ -15,9 +15,26 @@ class LoadRating extends RatingEvent {
   List<Object> get props => [contentId];
 }
 
+class LoadRatingByUser extends RatingEvent {
+  final String contentId;
+  final String userId;
+  const LoadRatingByUser(this.userId, this.contentId);
+
+  @override
+  List<Object> get props => [userId, contentId];
+}
+
 class UpdateRating extends RatingEvent {
   final double rating;
   const UpdateRating(this.rating);
+
+  @override
+  List<Object> get props => [rating];
+}
+
+class UpdateRatingByUser extends RatingEvent {
+  final Rating rating;
+  const UpdateRatingByUser(this.rating);
 
   @override
   List<Object> get props => [rating];

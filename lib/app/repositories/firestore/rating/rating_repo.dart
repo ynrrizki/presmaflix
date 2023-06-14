@@ -37,13 +37,31 @@ class RatingRepository {
     });
   }
 
+  Stream<Rating> getRatingByUser(String userId, String contentId) {
+    log('query rating by user', name: 'getRatingByContent');
+    return _firebaseFirestore
+        .collection('ratings')
+        .where('userId', isEqualTo: userId)
+        .where('contentId', isEqualTo: contentId)
+        .snapshots()
+        .map((querySnapshot) {
+      if (querySnapshot.docs.isNotEmpty) {
+        return Rating.fromSnapshot(querySnapshot.docs.first);
+      } else {
+        return const Rating(rating: 0.0);
+      }
+    });
+  }
+
   Future<Rating> addRating(Rating rating) async {
     final docRef = _firebaseFirestore.collection('ratings').doc(rating.id);
     final snapshot = await docRef.get();
 
     if (snapshot.exists) {
+      log('Data Rating ini Di Update', name: 'addRating');
       await docRef.update(rating.toDocument());
     } else {
+      log('Data Rating ini Di Set', name: 'addRating');
       await docRef.set(rating.toDocument());
     }
 

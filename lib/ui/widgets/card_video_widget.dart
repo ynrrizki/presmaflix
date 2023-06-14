@@ -15,7 +15,7 @@ class CardVideoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(
+      onTap: () => Navigator.of(context).pushReplacementNamed(
         "/content-video",
         arguments: ContentVideoArguments(video: video),
       ),

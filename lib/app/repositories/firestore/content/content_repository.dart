@@ -28,7 +28,7 @@ class ContentRepository {
           (snapshot) => snapshot.docs
               .map(
                 (docs) => Content.fromSnapshot(docs),
-              )
+            )
               .toList(),
         );
   }

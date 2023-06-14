@@ -11,7 +11,7 @@ class DownloadPage extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           title: Text(
-            'Downloadd',
+            'Download',
             style: GoogleFonts.montserrat(
               color: Colors.white,
               fontWeight: FontWeight.w700,

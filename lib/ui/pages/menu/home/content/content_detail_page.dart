@@ -1,4 +1,5 @@
 // import 'dart:developer';
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,9 +8,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:presmaflix/app/bloc/app/app_bloc.dart';
+// import 'package:presmaflix/app/bloc/app/app_bloc.dart';
+import 'package:presmaflix/app/bloc/blocs.dart';
 import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
-import 'package:presmaflix/app/bloc/video/video_bloc.dart';
+// import 'package:presmaflix/app/bloc/video/video_bloc.dart';
 import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
 import 'package:presmaflix/app/cubits/watchlist/watchlist_cubit.dart'
     as watchlist_cubit;
@@ -19,6 +21,7 @@ import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/models/video/video.dart';
 // import 'package:presmaflix/app/models/watchlist/watchlist.dart';
 import 'package:presmaflix/config/routing/argument/arguments.dart';
+import 'package:presmaflix/config/themes.dart';
 // import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:shimmer/shimmer.dart';
@@ -36,12 +39,22 @@ class ContentDetailPage extends StatefulWidget {
 }
 
 class _ContentDetailPageState extends State<ContentDetailPage> {
-  List<Video>? videos = Video.videos;
-  List<Content> contents = Content.contents;
+  List<Video> videos = [];
+  List<Content> contents = [];
   List<String> tabTypes = [];
+  bool isFirstLoad = true;
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<VideoBloc, VideoState>(
+    return BlocConsumer<VideoBloc, VideoState>(
+      listener: (context, state) {
+        if (state is VideoLoaded && isFirstLoad) {
+          setState(() {});
+          isFirstLoad = false;
+          videos = state.videos;
+        }
+      },
+      listenWhen: (previous, current) => current is VideoLoaded,
+      buildWhen: (previous, current) => current != previous,
       bloc: context.read<VideoBloc>()
         ..add(
           LoadVideosByContent(widget.content),
@@ -49,9 +62,12 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
       builder: (context, state) {
         if (state is VideoLoading) {
           return _skleton(context);
-        }
-        if (state is VideoLoaded) {
-          videos = state.videos;
+        } else if (state is VideoLoaded) {
+          // videos = state.videos;
+          log((_generateTab(videos, tabTypes).length).toString(),
+              name: 'generateTabe.length');
+          log((_generateTab(videos, tabTypes).length + 1).toString(),
+              name: 'generateTabe.length + 1');
           return Scaffold(
             extendBodyBehindAppBar: true,
             extendBody: true,
@@ -89,7 +105,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   ),
                   _buttonPlay(
                     context,
-                    video: videos!
+                    video: state.videos
                         .where((video) => video.type == 'full-length')
                         .single,
                   ),
@@ -115,15 +131,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   ),
                 ],
               ),
-              tabCount: _generateTab(state.videos, tabTypes).length + 1,
-              tabs: [
-                ..._generateTab(videos!, tabTypes),
-                const Tab(text: 'Similar'),
-              ],
-              tabBarViews: [
-                ..._generateTabView(videos!, tabTypes),
-                _tabSimilar(contents),
-              ],
+              tabCount: _generateTab(videos, tabTypes).length + 1,
+              tabs: _generateTabs(videos, tabTypes),
+              tabBarViews: _generateTabViews(videos, tabTypes),
             ),
           );
         }
@@ -152,8 +162,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             ),
             _buttonPlay(
               context,
-              video:
-                  videos?.where((video) => video.type == 'full-length').first,
+              video: videos.isEmpty
+                  ? null
+                  : videos.where((video) => video.type == 'full-length').single,
               isShimmer: true,
             ),
             const SizedBox(
@@ -179,32 +190,57 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
     );
   }
 
-  Padding _tabSimilar(List<Content> contents) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
-      child: GridView.builder(
-        padding: const EdgeInsets.symmetric(vertical: 0),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          childAspectRatio: 0.7,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 7,
-        ),
-        itemCount: contents.length,
-        itemBuilder: (context, index) => AnimationConfiguration.staggeredGrid(
-          position: index,
-          columnCount: contents.length,
-          delay: const Duration(milliseconds: 200),
-          child: ScaleAnimation(
-            child: FadeInAnimation(
-              child: PosterWidget(
-                content: contents[index],
+  Widget _tabSimilar(List<Content> contents) {
+    return BlocBuilder<ContentBloc, ContentState>(
+      builder: (context, state) {
+        if (state is ContentLoaded) {
+          contents = state.contents;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 25),
+            child: GridView.builder(
+              padding: const EdgeInsets.symmetric(vertical: 0),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 7,
+              ),
+              itemCount: contents.length,
+              itemBuilder: (context, index) =>
+                  AnimationConfiguration.staggeredGrid(
+                position: index,
+                columnCount: contents.length,
+                delay: const Duration(milliseconds: 200),
+                child: ScaleAnimation(
+                  child: FadeInAnimation(
+                    child: PosterWidget(
+                      content: contents[index],
+                    ),
+                  ),
+                ),
               ),
             ),
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(
+            color: kPrimaryColor,
           ),
-        ),
-      ),
+        );
+      },
     );
+  }
+
+  List<Tab> _generateTabs(List<Video> videos, List<String> tabTypes) {
+    final List<Tab> tabs = _generateTab(videos, tabTypes);
+    tabs.add(const Tab(text: 'Similar'));
+    return tabs;
+  }
+
+  List<Widget> _generateTabViews(List<Video> videos, List<String> tabTypes) {
+    final List<Widget> tabViews = _generateTabView(videos, tabTypes);
+    tabViews.add(_tabSimilar(contents));
+    return tabViews;
   }
 
   List<Widget> _generateTabView(List<Video> videos, List<String> tabTypes) {
@@ -242,7 +278,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                             child: CardVideoWidget(
                               video: video,
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 20, horizontal: 16),
+                                vertical: 20,
+                                horizontal: 16,
+                              ),
                             ),
                           ),
                         ),
@@ -310,14 +348,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 ),
               ],
             ),
-            // ElevatedButton(
-            //   onPressed: () => _downloadModalBottomSheet(context),
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Colors.transparent,
-            //     side: const BorderSide(color: Colors.white),
-            //   ),
-            //   child: const Icon(Icons.file_download_outlined),
-            // )
             ElevatedButton(
               onPressed: () => _moreModalBottomSheet(context),
               style: ElevatedButton.styleFrom(
@@ -345,7 +375,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                   icon: const Icon(
                     Icons.bookmark,
                   ),
-                  label: const Text('Daftarku'),
+                  label: const Text('My List'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),
@@ -398,9 +428,12 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             child: ListBody(
               children: <Widget>[
                 BlocBuilder<RatingBloc, RatingState>(
-                  bloc: context.read<RatingBloc>()..add(LoadRating(content.id)),
+                  bloc: context.read<RatingBloc>()
+                    ..add(LoadRatingByUser(user.id, content.id)),
+                  buildWhen: (previous, current) =>
+                      current is RatingByUserLoaded,
                   builder: (context, state) {
-                    if (state is RatingLoaded) {
+                    if (state is RatingByUserLoaded) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -423,13 +456,14 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                                 color: Colors.orange,
                               ),
                             ),
-                            initialRating: state.rating,
+                            initialRating: state.rating.rating ?? 0.0,
                             onRatingUpdate: (value) {
                               context.read<RatingBloc>().add(
                                     AddRating(
-                                      rating: Rating(
-                                        id: user.id,
+                                      rating: const Rating().copyWith(
+                                        id: state.rating.id,
                                         contentId: widget.content.id,
+                                        userId: user.id,
                                         email: user.email!,
                                         rating: value,
                                       ),
@@ -441,8 +475,8 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                       );
                     }
                     return Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // const SizedBox(height: 7.5),
                         RatingBar(
@@ -467,10 +501,9 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                           onRatingUpdate: (value) {
                             context.read<RatingBloc>().add(
                                   AddRating(
-                                    rating: Rating(
-                                      id: user.id,
+                                    rating: const Rating().copyWith(
                                       contentId: widget.content.id,
-                                      email: user.email!,
+                                      email: user.email,
                                       rating: value,
                                     ),
                                   ),
@@ -488,69 +521,6 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
       },
     );
   }
-  // return showModalBottomSheet(
-  //   context: context,
-  //   builder: (BuildContext context) {
-  //     return SizedBox(
-  //       height: 400,
-  //       child: Padding(
-  //         padding: const EdgeInsets.symmetric(vertical: 10),
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             const SizedBox(
-  //               width: 100,
-  //               child: Divider(
-  //                 height: 5,
-  //                 thickness: 5,
-  //               ),
-  //             ),
-  //             Column(
-  //               mainAxisAlignment: MainAxisAlignment.end,
-  //               children: [
-  //                 Card(
-  //                   child: ListTile(
-  //                     onTap: () {},
-  //                     leading: const Icon(Icons.star),
-  //                     title: const Text('Bintang 1'),
-  //                   ),
-  //                 ),
-  //                 Card(
-  //                   child: ListTile(
-  //                     onTap: () {},
-  //                     leading: const Icon(Icons.star),
-  //                     title: const Text('Bintang 2'),
-  //                   ),
-  //                 ),
-  //                 Card(
-  //                   child: ListTile(
-  //                     onTap: () {},
-  //                     leading: const Icon(Icons.star),
-  //                     title: const Text('Bintang 3'),
-  //                   ),
-  //                 ),
-  //                 Card(
-  //                   child: ListTile(
-  //                     onTap: () {},
-  //                     leading: const Icon(Icons.star),
-  //                     title: const Text('Bintang 4'),
-  //                   ),
-  //                 ),
-  //                 Card(
-  //                   child: ListTile(
-  //                     onTap: () {},
-  //                     leading: const Icon(Icons.star),
-  //                     title: const Text('Bintang 5'),
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     );
-  //   },
-  // );
 }
 
 Future<dynamic> _moreModalBottomSheet(BuildContext context) {
@@ -597,184 +567,6 @@ Future<dynamic> _moreModalBottomSheet(BuildContext context) {
     },
   );
 }
-
-// Future<dynamic> _downloadModalBottomSheet(BuildContext context) {
-//   return showModalBottomSheet(
-//     context: context,
-//     builder: (BuildContext context) {
-//       return SizedBox(
-//         height: 350,
-//         child: Stack(
-//           children: [
-//             const Align(
-//               alignment: Alignment.topLeft,
-//               child: Padding(
-//                 padding: EdgeInsets.only(top: 25, left: 20),
-//                 child: Text(
-//                   "Unduh dengan kualitas",
-//                   style: TextStyle(
-//                     fontWeight: FontWeight.bold,
-//                     fontSize: 20,
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             Align(
-//               alignment: Alignment.topRight,
-//               child: Padding(
-//                 padding: const EdgeInsets.only(top: 10, right: 10),
-//                 child: IconButton(
-//                   icon: const Icon(Icons.close),
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                 ),
-//               ),
-//             ),
-//             Column(
-//               children: [
-//                 // Button Kualitas 360p
-//                 Align(
-//                   alignment: Alignment.topCenter,
-//                   child: Padding(
-//                     padding: const EdgeInsets.only(top: 75),
-//                     child: SizedBox(
-//                       height: 70,
-//                       width: 600,
-//                       child: ElevatedButton(
-//                         onPressed: () {},
-//                         style: ElevatedButton.styleFrom(
-//                           backgroundColor: Colors.transparent,
-//                           elevation: 0,
-//                         ),
-//                         child: Row(
-//                           children: [
-//                             Container(
-//                               padding: const EdgeInsets.only(right: 10),
-//                               child: const Text(
-//                                 "Rendah",
-//                                 style: TextStyle(
-//                                   fontWeight: FontWeight.bold,
-//                                   fontSize: 17,
-//                                 ),
-//                               ),
-//                             ),
-//                             const SizedBox(width: 235),
-//                             const Text(
-//                               "360p",
-//                               style: TextStyle(
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 17,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 const Divider(
-//                   thickness: 1,
-//                   indent: 20,
-//                   endIndent: 20,
-//                   color: Colors.grey,
-//                 ),
-
-//                 // Button Kualitas 480p
-//                 Align(
-//                   alignment: Alignment.topCenter,
-//                   child: Padding(
-//                     padding: const EdgeInsets.only(top: 15),
-//                     child: SizedBox(
-//                       height: 70,
-//                       width: 600,
-//                       child: ElevatedButton(
-//                         onPressed: () {},
-//                         style: ElevatedButton.styleFrom(
-//                           backgroundColor: Colors.transparent,
-//                           elevation: 0,
-//                         ),
-//                         child: Row(
-//                           children: [
-//                             Container(
-//                               padding: const EdgeInsets.only(right: 10),
-//                               child: const Text(
-//                                 "Sedang",
-//                                 style: TextStyle(
-//                                   fontWeight: FontWeight.bold,
-//                                   fontSize: 17,
-//                                 ),
-//                               ),
-//                             ),
-//                             const SizedBox(width: 235),
-//                             const Text(
-//                               "480p",
-//                               style: TextStyle(
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 17,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 const Divider(
-//                   thickness: 1,
-//                   indent: 20,
-//                   endIndent: 20,
-//                   color: Colors.grey,
-//                 ),
-
-//                 // Button Kualitas 720p
-//                 Align(
-//                   alignment: Alignment.topCenter,
-//                   child: Padding(
-//                     padding: const EdgeInsets.only(top: 15),
-//                     child: SizedBox(
-//                       height: 70,
-//                       width: 600,
-//                       child: ElevatedButton(
-//                         onPressed: () {},
-//                         style: ElevatedButton.styleFrom(
-//                           backgroundColor: Colors.transparent,
-//                           elevation: 0,
-//                         ),
-//                         child: Row(
-//                           children: [
-//                             Container(
-//                               padding: const EdgeInsets.only(right: 10),
-//                               child: const Text(
-//                                 "Tinggi",
-//                                 style: TextStyle(
-//                                   fontWeight: FontWeight.bold,
-//                                   fontSize: 17,
-//                                 ),
-//                               ),
-//                             ),
-//                             const SizedBox(width: 235),
-//                             const Text(
-//                               "720p",
-//                               style: TextStyle(
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 17,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ],
-//         ),
-//       );
-//     },
-//   );
-// }
 
 Widget _directsAndCasts(String directors, String casts,
     {bool isShimmer = false}) {
@@ -1242,7 +1034,6 @@ Widget _posterImage(Content content, {bool isShimmer = false}) {
     ),
   );
 }
-// }
 
 class _WatchlistBtn extends StatelessWidget {
   const _WatchlistBtn({
@@ -1267,7 +1058,7 @@ class _WatchlistBtn extends StatelessWidget {
                   icon: const Icon(
                     Icons.bookmark_added,
                   ),
-                  label: const Text('Daftarku'),
+                  label: const Text('My List'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     disabledForegroundColor: Colors.blue,
@@ -1286,7 +1077,7 @@ class _WatchlistBtn extends StatelessWidget {
                   icon: const Icon(
                     Icons.bookmark,
                   ),
-                  label: const Text('Daftarku'),
+                  label: const Text('My List'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     side: const BorderSide(
@@ -1303,7 +1094,7 @@ class _WatchlistBtn extends StatelessWidget {
           icon: const Icon(
             Icons.bookmark,
           ),
-          label: const Text('Daftarku'),
+          label: const Text('My List'),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             side: const BorderSide(
@@ -1311,39 +1102,8 @@ class _WatchlistBtn extends StatelessWidget {
             ),
           ),
         );
-        // return ElevatedButton.icon(
-        //     onPressed: null,
-        //     icon: const Icon(
-        //       Icons.bookmark_added,
-        //     ),
-        //     label: const Text('Daftarku'),
-        //     style: ElevatedButton.styleFrom(
-        //       backgroundColor: Colors.transparent,
-        //       disabledForegroundColor: Colors.blue,
-        //       side: const BorderSide(
-        //         color: Colors.blue,
-        //       ),
-        //     ),
-        //   );
       },
     );
-    // return ElevatedButton.icon(
-    //   onPressed: () {
-    //     context
-    //         .read<watchlist_cubit.WatchlistCubit>()
-    //         .isWatchlistExists(contentId: widget.content.id, userId: user.id);
-    //   },
-    //   icon: const Icon(
-    //     Icons.bookmark,
-    //   ),
-    //   label: const Text('Daftarku'),
-    //   style: ElevatedButton.styleFrom(
-    //     backgroundColor: Colors.transparent,
-    //     side: const BorderSide(
-    //       color: Colors.white,
-    //     ),
-    //   ),
-    // );
   }
 }
 
@@ -1358,6 +1118,7 @@ class _RatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<RatingBloc, RatingState>(
       bloc: context.read<RatingBloc>()..add(LoadRating(content.id)),
+      buildWhen: (previous, current) => current is RatingLoaded,
       builder: (context, state) {
         if (state is RatingLoaded) {
           return Column(

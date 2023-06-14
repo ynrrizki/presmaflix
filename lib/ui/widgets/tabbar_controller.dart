@@ -21,13 +21,25 @@ class TabBarController extends StatefulWidget {
 }
 
 class _TabBarControllerState extends State<TabBarController>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
   @override
+  void didUpdateWidget(TabBarController oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.tabCount != oldWidget.tabCount) {
+      // Jika jumlah tab berubah, kita perlu mengupdate TabController
+      setState(() {
+        _tabController = TabController(length: widget.tabCount, vsync: this);
+      });
+    }
+  }
+
+  @override
   void initState() {
-    log("${widget.tabCount}");
+    log("${widget.tabCount}", name: 'tabCount tabbar_controller');
     _tabController = TabController(length: widget.tabCount, vsync: this);
+    // _tabController = TabController(length: 0, vsync: this);
     super.initState();
   }
 
@@ -46,26 +58,29 @@ class _TabBarControllerState extends State<TabBarController>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.header,
-              Container(
-                color: Colors.grey[900],
-                child: TabBar(
-                  // indicatorWeight: widget.tabCount > 1 ? 1.0 : 2.0,
-                  indicatorSize: widget.tabCount < 2
-                      ? TabBarIndicatorSize.label
-                      : TabBarIndicatorSize.tab,
-                  controller: _tabController,
-                  indicatorColor: Theme.of(context).primaryColor,
-                  tabs: widget.tabs,
-                ),
-              ),
+              _tabController.length == 0
+                  ? Container()
+                  : Container(
+                      color: Colors.grey[900],
+                      child: TabBar(
+                        indicatorSize: widget.tabCount < 2
+                            ? TabBarIndicatorSize.label
+                            : TabBarIndicatorSize.tab,
+                        controller: _tabController,
+                        indicatorColor: Theme.of(context).primaryColor,
+                        tabs: widget.tabs,
+                      ),
+                    ),
             ],
           ),
         ),
       ],
-      body: TabBarView(
-        controller: _tabController,
-        children: widget.tabBarViews,
-      ),
+      body: _tabController.length == 0
+          ? Container()
+          : TabBarView(
+              controller: _tabController,
+              children: widget.tabBarViews,
+            ),
     );
   }
 }

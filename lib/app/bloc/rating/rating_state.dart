@@ -18,13 +18,13 @@ class RatingLoaded extends RatingState {
   List<Object> get props => [rating];
 }
 
-class RatingByUserLoading extends RatingState {}
-
 class RatingByUserLoaded extends RatingState {
-  final double rating;
+  final Rating rating;
 
   const RatingByUserLoaded({required this.rating});
 
   @override
   List<Object> get props => [rating];
 }
+
+class RatingByUserInitial extends RatingState {}

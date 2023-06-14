@@ -55,4 +55,10 @@ class VideoBloc extends Bloc<VideoEvent, VideoState> {
     emit(VideoLoading());
     emit(VideoLoaded(videos: event.videos));
   }
+
+  @override
+  Future<void> close() async {
+    _videoSubscription?.cancel();
+    super.close;
+  }
 }

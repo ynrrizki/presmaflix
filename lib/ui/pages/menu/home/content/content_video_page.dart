@@ -579,20 +579,21 @@ class _CustomOverlayState extends State<CustomOverlay> {
           Row(
             children: [
               InkWell(
-                  onTap: showOverlay,
-                  onDoubleTap: () =>
-                      widget.controller.doubleTapVideoBackward(5),
-                  child: Container(
-                    color: Colors.transparent,
-                    width: MediaQuery.of(context).size.width / 2,
-                  )),
+                onTap: showOverlay,
+                onDoubleTap: () => widget.controller.doubleTapVideoBackward(5),
+                child: Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width / 2,
+                ),
+              ),
               InkWell(
-                  onTap: showOverlay,
-                  onDoubleTap: () => widget.controller.doubleTapVideoForward(5),
-                  child: Container(
-                    color: Colors.transparent,
-                    width: MediaQuery.of(context).size.width / 2,
-                  )),
+                onTap: showOverlay,
+                onDoubleTap: () => widget.controller.doubleTapVideoForward(5),
+                child: Container(
+                  color: Colors.transparent,
+                  width: MediaQuery.of(context).size.width / 2,
+                ),
+              ),
             ],
           ),
         ],

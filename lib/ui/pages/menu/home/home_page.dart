@@ -5,10 +5,11 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/bloc/content/content_bloc.dart';
 import 'package:presmaflix/app/models/content/content.dart';
+import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -72,42 +73,45 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             );
+          } else if (state is ContentLoading) {
+            return Container();
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.inbox,
+                    size: 50,
+                  ),
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      'Sorry, the home page content is currently unavailable',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      "We apologize for the inconvenience. Please try again later.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: const Color.fromARGB(255, 180, 180, 180),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
           }
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.inbox,
-                  size: 50,
-                ),
-                const SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    'Sorry, the home page content is currently unavailable',
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.montserrat(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Text(
-                    "We apologize for the inconvenience. Please try again later.",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: const Color.fromARGB(255, 180, 180, 180),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
         },
       ),
     );
@@ -115,13 +119,20 @@ class HomePage extends StatelessWidget {
 
   Widget _banner() {
     return BlocBuilder<ContentBloc, ContentState>(
-      builder: (context, state) => state is ContentLoaded
-          ? BannerWidget(
-              contents: state.contents
-                  .where((content) => content.isFeatured)
-                  .toList(),
-            )
-          : const BannerWidget(contents: []),
+      builder: (context, state) {
+        if (state is ContentLoaded) {
+          return BannerWidget(
+            contents:
+                state.contents.where((content) => content.isFeatured).toList(),
+          );
+        } else if (state is ContentLoading) {
+          return CircularProgressIndicator(
+            color: kPrimaryColor,
+          );
+        } else {
+          return const BannerWidget(contents: []);
+        }
+      },
     );
   }
 
@@ -130,14 +141,20 @@ class HomePage extends StatelessWidget {
     required String type,
   }) {
     return BlocBuilder<ContentBloc, ContentState>(
-      builder: (context, state) => state is ContentLoaded
-          ? HorizontalGridWidget(
-              title: title,
-              contents: state.contents
-                  .where((content) => content.type == type)
-                  .toList(),
-            )
-          : const SkletonHorizontalGridWidget(),
+      builder: (context, state) {
+        if (state is ContentLoaded) {
+          return HorizontalGridWidget(
+            title: title,
+            contents: state.contents
+                .where((content) => content.type == type)
+                .toList(),
+          );
+        } else if (state is ContentLoading) {
+          return const SkletonHorizontalGridWidget();
+        } else {
+          return const SkletonHorizontalGridWidget();
+        }
+      },
     );
   }
 }

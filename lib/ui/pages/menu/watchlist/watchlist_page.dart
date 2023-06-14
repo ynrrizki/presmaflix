@@ -139,47 +139,6 @@ class _WatchListPageState extends State<WatchListPage> {
   }
 }
 
-// class WatchListBody extends StatefulWidget {
-//   const WatchListBody({super.key, this.watchlists = const <Watchlist>[]});
-
-//   final List<Watchlist> watchlists;
-
-//   @override
-//   State<WatchListBody> createState() => _WatchListBodyState();
-// }
-
-// class _WatchListBodyState extends State<WatchListBody> {
-//   List<Content> contents = [];
-//   List<bool> selectedItems = [];
-//   bool isLongPress = false;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     selectedItems = List.generate(widget.watchlists.length, (index) => false);
-//   }
-
-//   bool get hasSelectedItems {
-//     return selectedItems.any((item) => item);
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocBuilder<ContentBloc, ContentState>(
-//       builder: (context, state) {
-//         if (state is ContentLoaded) {
-//           contents = state.contents;
-//         }
-//         return ListView(
-//           padding: const EdgeInsets.symmetric(vertical: 0),
-//           itemCount: widget.watchlists.length,
-//           itemBuilder: (context, index) => ,
-//         );
-//       },
-//     );
-//   }
-// }
-
 class _CardContent extends StatelessWidget {
   final Content content;
 
@@ -207,7 +166,7 @@ class _CardContent extends StatelessWidget {
             child: Slidable(
               key: const ValueKey(0),
               endActionPane: ActionPane(
-                motion: const ScrollMotion(),
+                motion: const StretchMotion(),
                 children: [
                   SlidableAction(
                     onPressed: (context) {},

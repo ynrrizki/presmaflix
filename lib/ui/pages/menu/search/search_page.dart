@@ -57,7 +57,7 @@ class _SearchPageState extends State<SearchPage> {
         elevation: 0,
         centerTitle: true,
         title: SearchFieldWidget(
-          hintText: 'Judul',
+          hintText: 'Title',
           searchController: searchController,
           onChanged: (value) {
             // context
@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
                 Navigator.pop(context);
               },
               child: const Text(
-                'Batalkan',
+                'Cancel',
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w700,

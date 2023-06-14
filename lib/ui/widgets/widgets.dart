@@ -11,5 +11,4 @@ export 'poster_widget.dart';
 export 'search_field_widget.dart';
 export 'skleton_horizontal_grid_widget.dart';
 export 'tabbar_controller.dart';
-export 'tabbar_widget.dart';
 export 'text_field_widget.dart';
