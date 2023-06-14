@@ -535,42 +535,42 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
 Future<dynamic> _moreModalBottomSheet(BuildContext context) {
   return showModalBottomSheet(
     context: context,
+    showDragHandle: true,
+    constraints: const BoxConstraints(
+      maxHeight: 200,
+    ),
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(5),
+        topRight: Radius.circular(5),
+      ),
+    ),
     builder: (BuildContext context) {
-      return SizedBox(
-        height: 200,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(
-                width: 100,
-                child: Divider(
-                  height: 5,
-                  thickness: 5,
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Card(
+                  child: ListTile(
+                    onTap: () {},
+                    leading: const Icon(Icons.download),
+                    title: const Text('Download'),
+                  ),
                 ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Card(
-                    child: ListTile(
-                      onTap: () {},
-                      leading: const Icon(Icons.download),
-                      title: const Text('Download'),
-                    ),
+                Card(
+                  child: ListTile(
+                    onTap: () {},
+                    leading: const Icon(Icons.share),
+                    title: const Text('Share'),
                   ),
-                  Card(
-                    child: ListTile(
-                      onTap: () {},
-                      leading: const Icon(Icons.share),
-                      title: const Text('Share'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       );
     },

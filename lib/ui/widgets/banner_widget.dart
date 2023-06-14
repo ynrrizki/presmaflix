@@ -59,8 +59,9 @@ class _BannerWidgetState extends State<BannerWidget> {
                   ),
                 ],
                 options: CarouselOptions(
-                    viewportFraction: 1,
-                    scrollPhysics: const NeverScrollableScrollPhysics()),
+                  viewportFraction: 1,
+                  scrollPhysics: const NeverScrollableScrollPhysics(),
+                ),
               ),
         Container(
           decoration: BoxDecoration(
@@ -115,6 +116,7 @@ class HeroCarouselCard extends StatelessWidget {
       },
       child: CachedNetworkImage(
         imageUrl: content.thumbnailUrl,
+        fit: BoxFit.cover,
         progressIndicatorBuilder: (context, url, progress) =>
             Shimmer.fromColors(
           baseColor: const Color.fromARGB(123, 121, 121, 121),
