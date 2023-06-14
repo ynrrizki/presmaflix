@@ -29,6 +29,7 @@ class _TabBarControllerState extends State<TabBarController>
     super.didUpdateWidget(oldWidget);
     if (widget.tabCount != oldWidget.tabCount) {
       // Jika jumlah tab berubah, kita perlu mengupdate TabController
+      _tabController.dispose();
       setState(() {
         _tabController = TabController(length: widget.tabCount, vsync: this);
       });
@@ -52,35 +53,33 @@ class _TabBarControllerState extends State<TabBarController>
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
+      floatHeaderSlivers: true,
       headerSliverBuilder: (context, innerBoxIsScrolled) => [
         SliverToBoxAdapter(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               widget.header,
-              _tabController.length == 0
-                  ? Container()
-                  : Container(
-                      color: Colors.grey[900],
-                      child: TabBar(
-                        indicatorSize: widget.tabCount < 2
-                            ? TabBarIndicatorSize.label
-                            : TabBarIndicatorSize.tab,
-                        controller: _tabController,
-                        indicatorColor: Theme.of(context).primaryColor,
-                        tabs: widget.tabs,
-                      ),
-                    ),
+              Container(
+                color: Colors.grey[900],
+                child: TabBar(
+                  indicatorSize: widget.tabCount < 2
+                      ? TabBarIndicatorSize.label
+                      : TabBarIndicatorSize.tab,
+                  controller: _tabController,
+                  indicatorColor: Theme.of(context).primaryColor,
+                  tabs: widget.tabs,
+                ),
+              ),
             ],
           ),
         ),
       ],
-      body: _tabController.length == 0
-          ? Container()
-          : TabBarView(
-              controller: _tabController,
-              children: widget.tabBarViews,
-            ),
+      body: TabBarView(
+        physics: const BouncingScrollPhysics(),
+        controller: _tabController,
+        children: widget.tabBarViews,
+      ),
     );
   }
 }

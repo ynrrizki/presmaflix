@@ -214,6 +214,15 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 child: ScaleAnimation(
                   child: FadeInAnimation(
                     child: PosterWidget(
+                      onTap: () {
+                        Navigator.pushReplacementNamed(
+                          context,
+                          '/content-detail',
+                          arguments: ContentDetailArguments(
+                            content: contents[index],
+                          ),
+                        );
+                      },
                       content: contents[index],
                     ),
                   ),

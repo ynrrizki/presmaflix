@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 class PosterWidget extends StatelessWidget {
   const PosterWidget({
     super.key,
+    this.onTap,
     required this.content,
     this.isThumbnail = false,
     this.width,
@@ -21,6 +22,7 @@ class PosterWidget extends StatelessWidget {
   final double? height;
   final bool isRedirect;
   final EdgeInsetsGeometry? margin;
+  final GestureTapCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +46,13 @@ class PosterWidget extends StatelessWidget {
 
           return isRedirect
               ? GestureDetector(
-                  onTap: () {
-                    Navigator.of(context, rootNavigator: true).pushNamed(
-                      '/content-detail',
-                      arguments: ContentDetailArguments(content: content),
-                    );
-                  },
+                  onTap: onTap ??
+                      () {
+                        Navigator.of(context, rootNavigator: true).pushNamed(
+                          '/content-detail',
+                          arguments: ContentDetailArguments(content: content),
+                        );
+                      },
                   child: Container(
                     decoration: boxDecoration,
                   ),
