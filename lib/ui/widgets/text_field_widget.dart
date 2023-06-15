@@ -4,21 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 // ignore: must_be_immutable
 class TextFieldWidget extends StatefulWidget {
   final Text? label;
-
   bool? obscureText;
-
   final bool? autofocus;
-
   final String? Function(String? value)? validator;
-
   final TextEditingController? controller;
-
   final String? initialValue;
   final Function(String)? onChanged;
   bool? readOnly;
 
   TextFieldWidget({
-    super.key,
+    Key? key,
     this.controller,
     this.label,
     this.obscureText = false,
@@ -27,7 +22,7 @@ class TextFieldWidget extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.readOnly = false,
-  });
+  }) : super(key: key);
 
   @override
   State<TextFieldWidget> createState() => _TextFieldWidgetState();

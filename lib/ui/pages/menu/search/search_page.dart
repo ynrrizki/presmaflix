@@ -11,7 +11,7 @@ import 'package:presmaflix/app/bloc/blocs.dart';
 // import 'package:presmaflix/app/cubits/search/search_cubit.dart' as search_cubit;
 import 'package:presmaflix/app/models/content/content.dart';
 import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
-import 'package:presmaflix/config/routing/argument/arguments.dart';
+import 'package:presmaflix/routes/argument/arguments.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:shimmer/shimmer.dart';

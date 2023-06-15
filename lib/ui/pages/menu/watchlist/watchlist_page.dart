@@ -11,7 +11,7 @@ import 'package:presmaflix/app/models/content/content.dart';
 // import 'package:presmaflix/app/models/watchlist/watchlist.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
-import 'package:presmaflix/config/routing/argument/arguments.dart';
+import 'package:presmaflix/routes/argument/arguments.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class WatchListPage extends StatefulWidget {

@@ -9,7 +9,7 @@ import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key});
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {

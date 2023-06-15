@@ -20,7 +20,7 @@ import 'package:presmaflix/app/models/rating/rating.dart';
 import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/models/video/video.dart';
 // import 'package:presmaflix/app/models/watchlist/watchlist.dart';
-import 'package:presmaflix/config/routing/argument/arguments.dart';
+import 'package:presmaflix/routes/argument/arguments.dart';
 import 'package:presmaflix/config/themes.dart';
 // import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';

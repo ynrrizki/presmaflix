@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:presmaflix/app/models/content/content.dart';
-import 'package:presmaflix/config/routing/argument/content/content_detail_args.dart';
+import 'package:presmaflix/routes/argument/content/content_detail_args.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PosterWidget extends StatelessWidget {

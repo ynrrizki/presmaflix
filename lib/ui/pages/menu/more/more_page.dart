@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/bloc/user/user_bloc.dart';
@@ -47,7 +46,7 @@ class MorePage extends StatelessWidget {
               Navigator.of(
                 context,
                 rootNavigator: true,
-              ).pushNamed('/');
+              ).pushNamedAndRemoveUntil('/', (route) => false);
               log('logout nya sukes brow...');
             } else if (state.status == LogoutStatus.error) {
               final snackBar = SnackBar(
@@ -117,6 +116,7 @@ class MorePage extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _AccountCard extends StatelessWidget {
   const _AccountCard({
     required this.user,
@@ -126,11 +126,54 @@ class _AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UserBloc, UserState>(
-      bloc: context.read<UserBloc>()..add(LoadUserById(id: user.id)),
-      builder: (context, state) {
-        if (state is UserByIdLoaded) {
-          return Padding(
+    // return BlocBuilder<UserBloc, UserState>(
+    //   bloc: context.read<UserBloc>()..add(LoadUserById(id: user.id)),
+    //   builder: (context, state) {
+    //     if (state is UserByIdLoaded) {
+    //       return Padding(
+    //         padding: const EdgeInsets.all(8.0),
+    //         child: Card(
+    //           color: Theme.of(context).scaffoldBackgroundColor,
+    //           borderOnForeground: false,
+    //           child: ListTile(
+    //             contentPadding:
+    //                 const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+    //             onTap: () {},
+    //             leading: CircleAvatar(
+    //               radius: 25.0,
+    //               backgroundImage: CachedNetworkImageProvider(
+    //                 state.user.avatar ??
+    //                     'https://ui-avatars.com/api/?name=${state.user.name}',
+    //                 scale: 2,
+    //               ),
+    //             ),
+    //             title: Text('${state.user.name}'),
+    //             subtitle: Text('${state.user.email}'),
+    //           ),
+    //         ),
+    //       );
+    //     }
+    //     return Padding(
+    //       padding: const EdgeInsets.all(8.0),
+    //       child: Card(
+    //         color: Theme.of(context).scaffoldBackgroundColor,
+    //         borderOnForeground: false,
+    //         child: ListTile(
+    //           contentPadding:
+    //               const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+    //           onTap: () {},
+    //           title: const Center(
+    //             child: CircularProgressIndicator(
+    //               color: Colors.white,
+    //             ),
+    //           ),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
+    return user.isNotEmpty
+        ? Padding(
             padding: const EdgeInsets.all(8.0),
             child: Card(
               color: Theme.of(context).scaffoldBackgroundColor,
@@ -142,36 +185,33 @@ class _AccountCard extends StatelessWidget {
                 leading: CircleAvatar(
                   radius: 25.0,
                   backgroundImage: CachedNetworkImageProvider(
-                    state.user.avatar ??
-                        'https://ui-avatars.com/api/?name=${state.user.name}',
+                    user.avatar ??
+                        'https://ui-avatars.com/api/?name=${user.name}',
                     scale: 2,
                   ),
                 ),
-                title: Text('${state.user.name}'),
-                subtitle: Text('${state.user.email}'),
+                title: Text('${user.name}'),
+                subtitle: Text('${user.email}'),
               ),
             ),
-          );
-        }
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderOnForeground: false,
-            child: ListTile(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              onTap: () {},
-              title: const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
+          )
+        : Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              color: Theme.of(context).scaffoldBackgroundColor,
+              borderOnForeground: false,
+              child: ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                onTap: () {},
+                title: const Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      },
-    );
+          );
   }
 }
 

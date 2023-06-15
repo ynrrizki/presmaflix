@@ -19,7 +19,7 @@ class RegisterPage extends StatelessWidget {
         } else if (state.status == SignupStatus.error) {
           final snackBar = SnackBar(
             content: Text(
-              'Gagal Mendaftar',
+              state.info,
               style: GoogleFonts.montserrat(
                 color: Colors.white,
                 fontWeight: FontWeight.w700,

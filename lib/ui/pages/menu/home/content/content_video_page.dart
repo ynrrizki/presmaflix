@@ -12,7 +12,7 @@ import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/models/video/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:presmaflix/config/themes.dart';
-import 'package:presmaflix/ui/widgets/widgets.dart';
+// import 'package:presmaflix/ui/widgets/widgets.dart';
 // import 'package:presmaflix/config/themes.dart';
 
 class ContentVideoPage extends StatefulWidget {
@@ -75,11 +75,11 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               aspectRatio: 16 / 9,
               child: PodVideoPlayer(
                 alwaysShowProgressBar: false,
-                overlayBuilder: (OverLayOptions options) => CustomOverlay(
-                  options: options,
-                  controller: videoController,
-                  video: widget.video,
-                ),
+                // overlayBuilder: (OverLayOptions options) => CustomOverlay(
+                //   options: options,
+                //   controller: videoController,
+                //   video: widget.video,
+                // ),
                 controller: videoController,
                 videoThumbnail: DecorationImage(
                   image: NetworkImage(
