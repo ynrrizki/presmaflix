@@ -12,15 +12,15 @@ class LogoutCubit extends Cubit<LogoutState> {
   final AuthRepository _authRepository;
   // final AppBloc _appBloc;
   // LogoutCubit(this._authRepository, this._appBloc)
-  LogoutCubit(this._authRepository)
-      : super(LogoutState.initial());
+  LogoutCubit(this._authRepository) : super(LogoutState.initial());
 
   Future<void> logOut() async {
     if (state.status == LogoutStatus.enter) return;
     emit(state.copyWith(status: LogoutStatus.enter));
     try {
-      await _authRepository.signOut();
+      unawaited(_authRepository.signOut());
       emit(state.copyWith(status: LogoutStatus.success));
+      // await _authRepository.signOut();
       // _appBloc.add(AppUserChanged(_authRepository.currentUser));
     } on Exception {
       emit(state.copyWith(status: LogoutStatus.error));

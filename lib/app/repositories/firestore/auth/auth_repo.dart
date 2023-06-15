@@ -29,13 +29,35 @@ class AuthRepository extends Repository {
   }
 
   // Mendapatkan stream dari perubahan pengguna saat ini
+  // @override
+  // Stream<User> get user => _firebaseAuth.authStateChanges().map((firebaseUser) {
+  //       log('user: ${firebaseUser == null ? 'unauthenticated' : 'authenticated'}',
+  //           name: 'AuthRepository');
+  //       final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+  //       currentUser = user;
+  //       return user;
+  //     });
+
   @override
-  Stream<User> get user => _firebaseAuth.authStateChanges().map((firebaseUser) {
+  Stream<User> get user =>
+      _firebaseAuth.authStateChanges().asyncMap((firebaseUser) async {
         log('user: ${firebaseUser == null ? 'unauthenticated' : 'authenticated'}',
             name: 'AuthRepository');
-        final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
-        currentUser = user;
-        return user;
+
+        if (firebaseUser == null) {
+          currentUser = User.empty;
+        } else {
+          try {
+            final user = await _userRepository.getUserById(firebaseUser.uid);
+            currentUser = user;
+          } catch (e) {
+            signOut();
+            log('Error fetching user: $e', name: 'AuthRepository');
+            currentUser = User.empty;
+          }
+        }
+
+        return currentUser;
       });
 
   // Melakukan proses sign up dengan nama, email, dan password

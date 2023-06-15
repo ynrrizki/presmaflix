@@ -25,11 +25,13 @@ class ContentRepository {
     //   return log(event.docs.map((e) => e.data()).toList().toString());
     // });
     return _firebaseFirestore.collection('contents').snapshots().map(
-          (snapshot) => snapshot.docs
-              .map(
-                (docs) => Content.fromSnapshot(docs),
-            )
-              .toList(),
+          (snapshot) => snapshot.docs.map(
+            (docs) {
+              // log(docs.toString());
+              log(Content.fromSnapshot(docs).toString());
+              return Content.fromSnapshot(docs);
+            },
+          ).toList(),
         );
   }
 }

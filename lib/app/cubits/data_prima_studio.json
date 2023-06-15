@@ -1,0 +1,166 @@
+[
+    {
+        "contents": [
+            {
+                "id": "rdbiufxqU3xUCczho242",
+                "title": "HARAKA",
+                "type": "movie",
+                "genre": [
+                    "Semi Horror",
+                    "Suspend"
+                ],
+                "description": "Keluarga Henky yang suka membantu sesama manusia, sampai membiayai orang yang dibantunya. Akan tetapi dibalik baiknya keluarga ini, mereka tiba-tiba terkena malapateka. Kira-kira malapetaka apa yang terjadi? Siapakah dalang dibalik terjadinya malapetaka tersebut?",
+                "casts": [
+                    "Didit",
+                    "Anto",
+                    "Dadang"
+                ],
+                "directors": [
+                    "Cahyoko"
+                ],
+                "isFeatured": true,
+                "thumbnailUrl": "https://lh3.googleusercontent.com/fife/AAbDypCAiYxdXSDVd9KkSJXgAi8niR7QuNgkD9XWIcpYiO66pMvN6so9KBUVMM143LAFeV01BmYMn81d-PI_z0OyPLEUrmYOwZqQ89m0OOBuKRYefEErSxt2JCgsn1Tv4VN2F0JRrbJ7WPxNeePnnv_t9oXJcwunNG9RZ07eaWjvPO5jSYyyFq2uFFfcraR5TpbVJyaHKbxC6x0RXO8RDbeN83dFLOIuIzZwEKL8wf-MLY1EzioWGEMD7Se-WEaO688hmALoqia-b_Z9iuEinlZTGaH0uttCfVAEESWrUH2RnSavgkLY_I3BhxJ_QX7N7_bXlX4tEPe9Gc-HvkQTbeF8RgpwOYBHyw9U2hcq0UJ1J9Xwi_kcrHcY9dgp_5eHOpP-XnzBq54OL3c_KmCGcoTwYmZPaD1otTHnoyEXZka8afvPI85OvidFsKmhXMPkMakwRfKU9OskZ_Aq4g5QCAHHNVwNGwIvPWX28Lyo4QbIrgpVNlzDEd7759FMxIDKmLsI1EpzCESZcnqZSZz7YA95XDdRl8x7dDGUMkkJ7pZxyBAwoY89pjHKN7U5JeryIx72At2DhM1QYDX6k4b8DkZmUnS0ymyWdkV9qp-J7mJfjYsOxO7nrEwj1dQSbplKbnlB53xodXWqEf4kkWCW53bQSk6DT1S_dAOn5LbRL-nT6aUIWbK81WvH8kUawaJQw5VvofE1eDrIt2LWLTqvlH8t_JbP202IukAGFn06FlPLfzzzMdYhRXlQH5HVjQqL9KqHy3E4BnynAUqGV2Hxz50f-9fKMzS3GkcVVrx8HJ8a3ftbQH8ok5TLhNtBpNn5Msp1nwK14FuPcx9tmtOE3EjFd1LrHtSylu3KzqxEVR8djCViQJmcGgSxGwinMmLx3Nz1WfBDAXoitamJiZOEFSCsv40Kfd86FHK6KvF8lFsAB0GCkxxqjcBpG_lmiexGji_gKFx4M20FiKgvAwhpNyum9ekIh_nsi0EGxMb9ric9-9pU_RPdpabVMaB4Hk2OeSp_VaFR79ejJg7k070u9wZbXssxtLAE9_uuz_BJ-O7qrtAf_oorQxerd5DB1Dk5gzcLWqpkTIiPyy2yYXW3sdPev83kct4bjg-LVteSMSGt_1Wfas1h_gFpeqllxLJSi5aDuq6c8Ain3zkXd-7U-k7ubtSGIj_A_cxUdtSsDLDcj41WigaeXjfhp6Ifd99alq5EuS-CKa69E9knSigkIF4SwTRQQ_OCdCiG1nBdhz8XY9UrX1KQjtR2A92-XRbiaiaRYfqNiVmOe3oTlTQGXJ7guvms2xw4XhBHhxf0mAMgEhpiJRtLPXf3mXgGz26V5pDxFJLWHo-b83UUObLGpPBoHHDmOOMMhWKxmEgZxNdo3WvVxZ4aKgeI3wuHsP2PMkkcTvKH23ShmaFG_nfZpBCVps56HyHynzQiyXPzVr2WWJenbWM18ichxKn44XSHsdZTr5S6GSzuryFgNBWZVSEzvbDteS4jlX7UVzHho19NnSBGMg6WA3vJovtus-DddYV0tGZpVHeIYdg3v6Wf7kKnxsM737ey=w1920-h929",
+                "posterUrl": "https://lh3.googleusercontent.com/fife/AAbDypCAiYxdXSDVd9KkSJXgAi8niR7QuNgkD9XWIcpYiO66pMvN6so9KBUVMM143LAFeV01BmYMn81d-PI_z0OyPLEUrmYOwZqQ89m0OOBuKRYefEErSxt2JCgsn1Tv4VN2F0JRrbJ7WPxNeePnnv_t9oXJcwunNG9RZ07eaWjvPO5jSYyyFq2uFFfcraR5TpbVJyaHKbxC6x0RXO8RDbeN83dFLOIuIzZwEKL8wf-MLY1EzioWGEMD7Se-WEaO688hmALoqia-b_Z9iuEinlZTGaH0uttCfVAEESWrUH2RnSavgkLY_I3BhxJ_QX7N7_bXlX4tEPe9Gc-HvkQTbeF8RgpwOYBHyw9U2hcq0UJ1J9Xwi_kcrHcY9dgp_5eHOpP-XnzBq54OL3c_KmCGcoTwYmZPaD1otTHnoyEXZka8afvPI85OvidFsKmhXMPkMakwRfKU9OskZ_Aq4g5QCAHHNVwNGwIvPWX28Lyo4QbIrgpVNlzDEd7759FMxIDKmLsI1EpzCESZcnqZSZz7YA95XDdRl8x7dDGUMkkJ7pZxyBAwoY89pjHKN7U5JeryIx72At2DhM1QYDX6k4b8DkZmUnS0ymyWdkV9qp-J7mJfjYsOxO7nrEwj1dQSbplKbnlB53xodXWqEf4kkWCW53bQSk6DT1S_dAOn5LbRL-nT6aUIWbK81WvH8kUawaJQw5VvofE1eDrIt2LWLTqvlH8t_JbP202IukAGFn06FlPLfzzzMdYhRXlQH5HVjQqL9KqHy3E4BnynAUqGV2Hxz50f-9fKMzS3GkcVVrx8HJ8a3ftbQH8ok5TLhNtBpNn5Msp1nwK14FuPcx9tmtOE3EjFd1LrHtSylu3KzqxEVR8djCViQJmcGgSxGwinMmLx3Nz1WfBDAXoitamJiZOEFSCsv40Kfd86FHK6KvF8lFsAB0GCkxxqjcBpG_lmiexGji_gKFx4M20FiKgvAwhpNyum9ekIh_nsi0EGxMb9ric9-9pU_RPdpabVMaB4Hk2OeSp_VaFR79ejJg7k070u9wZbXssxtLAE9_uuz_BJ-O7qrtAf_oorQxerd5DB1Dk5gzcLWqpkTIiPyy2yYXW3sdPev83kct4bjg-LVteSMSGt_1Wfas1h_gFpeqllxLJSi5aDuq6c8Ain3zkXd-7U-k7ubtSGIj_A_cxUdtSsDLDcj41WigaeXjfhp6Ifd99alq5EuS-CKa69E9knSigkIF4SwTRQQ_OCdCiG1nBdhz8XY9UrX1KQjtR2A92-XRbiaiaRYfqNiVmOe3oTlTQGXJ7guvms2xw4XhBHhxf0mAMgEhpiJRtLPXf3mXgGz26V5pDxFJLWHo-b83UUObLGpPBoHHDmOOMMhWKxmEgZxNdo3WvVxZ4aKgeI3wuHsP2PMkkcTvKH23ShmaFG_nfZpBCVps56HyHynzQiyXPzVr2WWJenbWM18ichxKn44XSHsdZTr5S6GSzuryFgNBWZVSEzvbDteS4jlX7UVzHho19NnSBGMg6WA3vJovtus-DddYV0tGZpVHeIYdg3v6Wf7kKnxsM737ey=w1920-h929",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "gyDD31GPiGR6ceiBzHMT",
+                "title": "BALLANCE",
+                "type": "movie",
+                "genre": [
+                    "Drama",
+                    "Fantasi"
+                ],
+                "description": "Sherrin siswi SMA yang menemukan PSP mini miliknya saat kecil, yang dimana disaat memainkan PSP mini tersebut membawanya kepada konflik-konflik di dalam hidupnya. Akankah Sherrin berhasil menyelesaikan permainan tersebut?",
+                "casts": [
+                    "Dito",
+                    "Tisna",
+                    "Sumanto"
+                ],
+                "directors": [
+                    "Bacang"
+                ],
+                "isFeatured": true,
+                "thumbnailUrl": "https://lh3.googleusercontent.com/fife/AAbDypAwYCB06NMtEeytTOIRhmbIW7NVKBpSEG1IpV1L1sGMg8TJUTUurEU8z_A1BRiktS7cP7z9YcapEMM1CLRnfH8zmWj5YSaaPORVPiD4q99CjDG5eNpDupvekUpfar2B8cO8XGr-PSu7N4tP93MtjHAwU30Iu2bhLXo48IuhZvaQMxA9UM3EKSEu9HjORZbTYkxddhOKr34fehNK_hgnRJAMbzWB7q6tT-F6qbIxH5T5eMiXLSczeKWKcB8LQ-HF5PX8ke6RQ9JljQJfJvdW29uaYxrhr-Ny4KdiiNKB0LBuhs1bJ0CFJP1vc5rF9R1lCr8XpKxZSM7lsMA8BdgtQ7pz-WgL-2aU_qFvWC1YpcFsYvWMRyJdU3iD2r27Lge9ILFFbWq3d18vj9687i8ZzBdGZ0Gxjn4Id2nKvlmCGJcb_kA_7XB86bbyaRxmqNpGBb8KIgmmM6gRY23aV1ihmcANZnshr_jAsEf5QGXieFsJ9zrMr7ZqqqhsLJmjdSzhrh64nyEfCJrzKjyJkkBns3bAi1fUIuxKT63EIVb9N6et6KWaO5V98RWiaSie9lu8SXZAabaFhMUKi0Nmb_Q88xdOB2fFbHAerACrSrJMqWiuzcRj96fIiLCAVPAgemqXU0akQVGzXxaq7MdAlf0I95pVxHvkazhQKH85bVJ8Ff8ZDwaZOFgxZZ5ZFon4jtNm04b1jvJ2Oh8v4FxdZd2KMFzXGtj5HJz5DvazCiUfgQmOQmWC3zWckjoAsSJgPRs-ne-JyzKiQGNL5_oP81BR_juw3Pw0N59kdbu4zdL51J6t7gg2FYpP5LM3EzGl-lp1KOe59M7MrSxQfXyU_n83PMNoYOuSTQ-83Wr4YibPiWjd3RHaTW3b_M8wuM82pInTlGQGnavxss_xc3_8nkfnfPVGzWIbJunUVgSvqsH0bzfaDcHYxMZV8i_Tg7eZ1CRmdtJAqZ7A1wDmB5YAcV_G_yqtSXTVef7cijlZKqcYLy_c4UuHrBl0LHs8rYot_Dii0vHrO1ayOn0KrsuqAzmp9_KIowY4_9HyAGS6IDEIJ6wWQeKE5YRQros9q8rSRSwikXxRLm8tZPoKdKWyYsCrh7rIaXkij49U7JKRxXKsPgfFPRoeVnt8bmkO4cZm7ecO0LhSu-mH9sxSUv_B2hrJbWq6Q8h6d5F03RGrQx-15juYnw9QcORIg57Ae89htxX0wo0cZ_2Qz5c5yZs9RGal1WZ-DK7GAIYWjKug9C0iGPQpcMUhoB4-ULFCzq35ozPyJfIERqMxlp3RRTCNAwAGHhWnTN4xaYoDCqNMAe3OUgYD2C445_AgWyvo3S_fhZEg9-zfWqFIJbzghyfexPcvcuY9lKDs48oYHiFutzKKOQ6VleHH-rfpQZj89Mt3usb3CXNJP4-PNAoEYmZ-0Gxk00kOCcjmVTJkUfvhGTA4TeNXeOny_9hV1tYe_TomOeQhTRLTeIijfq8yBeAqZc8ucU8jyK1oWpQZi2sKZJ6Qu9Isf0QFhWmSELbSBghmCrWUU_4wr0CIWa4UM045IjVbqSaBQfge=w1920-h929",
+                "posterUrl": "https://lh3.googleusercontent.com/fife/AAbDypAwYCB06NMtEeytTOIRhmbIW7NVKBpSEG1IpV1L1sGMg8TJUTUurEU8z_A1BRiktS7cP7z9YcapEMM1CLRnfH8zmWj5YSaaPORVPiD4q99CjDG5eNpDupvekUpfar2B8cO8XGr-PSu7N4tP93MtjHAwU30Iu2bhLXo48IuhZvaQMxA9UM3EKSEu9HjORZbTYkxddhOKr34fehNK_hgnRJAMbzWB7q6tT-F6qbIxH5T5eMiXLSczeKWKcB8LQ-HF5PX8ke6RQ9JljQJfJvdW29uaYxrhr-Ny4KdiiNKB0LBuhs1bJ0CFJP1vc5rF9R1lCr8XpKxZSM7lsMA8BdgtQ7pz-WgL-2aU_qFvWC1YpcFsYvWMRyJdU3iD2r27Lge9ILFFbWq3d18vj9687i8ZzBdGZ0Gxjn4Id2nKvlmCGJcb_kA_7XB86bbyaRxmqNpGBb8KIgmmM6gRY23aV1ihmcANZnshr_jAsEf5QGXieFsJ9zrMr7ZqqqhsLJmjdSzhrh64nyEfCJrzKjyJkkBns3bAi1fUIuxKT63EIVb9N6et6KWaO5V98RWiaSie9lu8SXZAabaFhMUKi0Nmb_Q88xdOB2fFbHAerACrSrJMqWiuzcRj96fIiLCAVPAgemqXU0akQVGzXxaq7MdAlf0I95pVxHvkazhQKH85bVJ8Ff8ZDwaZOFgxZZ5ZFon4jtNm04b1jvJ2Oh8v4FxdZd2KMFzXGtj5HJz5DvazCiUfgQmOQmWC3zWckjoAsSJgPRs-ne-JyzKiQGNL5_oP81BR_juw3Pw0N59kdbu4zdL51J6t7gg2FYpP5LM3EzGl-lp1KOe59M7MrSxQfXyU_n83PMNoYOuSTQ-83Wr4YibPiWjd3RHaTW3b_M8wuM82pInTlGQGnavxss_xc3_8nkfnfPVGzWIbJunUVgSvqsH0bzfaDcHYxMZV8i_Tg7eZ1CRmdtJAqZ7A1wDmB5YAcV_G_yqtSXTVef7cijlZKqcYLy_c4UuHrBl0LHs8rYot_Dii0vHrO1ayOn0KrsuqAzmp9_KIowY4_9HyAGS6IDEIJ6wWQeKE5YRQros9q8rSRSwikXxRLm8tZPoKdKWyYsCrh7rIaXkij49U7JKRxXKsPgfFPRoeVnt8bmkO4cZm7ecO0LhSu-mH9sxSUv_B2hrJbWq6Q8h6d5F03RGrQx-15juYnw9QcORIg57Ae89htxX0wo0cZ_2Qz5c5yZs9RGal1WZ-DK7GAIYWjKug9C0iGPQpcMUhoB4-ULFCzq35ozPyJfIERqMxlp3RRTCNAwAGHhWnTN4xaYoDCqNMAe3OUgYD2C445_AgWyvo3S_fhZEg9-zfWqFIJbzghyfexPcvcuY9lKDs48oYHiFutzKKOQ6VleHH-rfpQZj89Mt3usb3CXNJP4-PNAoEYmZ-0Gxk00kOCcjmVTJkUfvhGTA4TeNXeOny_9hV1tYe_TomOeQhTRLTeIijfq8yBeAqZc8ucU8jyK1oWpQZi2sKZJ6Qu9Isf0QFhWmSELbSBghmCrWUU_4wr0CIWa4UM045IjVbqSaBQfge=w1920-h929",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "VLTFHCBzbqQykCn61C8L",
+                "title": "IMPOSSIBLE",
+                "type": "movie",
+                "genre": [
+                    "Drama",
+                    "Fantasi"
+                ],
+                "description": "Seorang gadis remaja yang bernama Kayla, memiliki prinsip yang dia pegang dengan erat, yaitu tidak akan melakukan hal yang romance. Akan tetapi Reyhan selaku teman kelas Kayla, yang selalu mendapatkan perilaku yang tidak enak dari Kayla. Bukan malah membenci melainkan tertarik terhadap Kayla. Akhirnya Reyhan melakukan beberapa hal agar kayla suka dengan Reyhan. Apakah Kayla akan luluh dengan Reyhan?",
+                "casts": [
+                    "Dito",
+                    "Tisna",
+                    "Sumanto"
+                ],
+                "directors": [
+                    "Bacang"
+                ],
+                "isFeatured": true,
+                "thumbnailUrl": "https://lh3.googleusercontent.com/fife/AAbDypAPTv3uo3AOpw4fOtF0S-O4EYBSA4_rToYGhVNYPr1z8-qayyT8W0lPRiIc8IQLAMWZQ_gyfG2Od-CpqpwhkPl0cS-MnZyS6EZbfdr1tKq7iZqc4MnfVB89PAjl5FAY0qPWBwLYeC3rjP8ujLv7vUixw49GXhL0M1ptmKG3Sh3CJ7LG-KvbkQFIqHH6y8cBkQ3VIB0cr7VaeSQabPCqK9_E6tpxIbeisnEu_yRiTpSgQgOOAAzdErDsmDPaCn3E1aoCPxxHCzLSmV2Mah9ot0qh_chkJ7gm7dFJE4ul-f_4DJQ-6hMJyoCwWsBWo5yOcAiYQBm6504xMop0kjKaAyS4XeEkXFzeTHQSCN39bEJ8G_Ew9v0rVtQOgndL2VuwgPFDdOJCxUcC25sjJuhwTSyBuiqk7Wgq6AQzDkMO0jeQRdF44r60tHs2v2zEsudWk8HzwKeGxtVSisLy-KRmxSv8hg_y64KDxnvwqJ-lhQNFRleSTXjLH4ZvMvaOanwU-Ks2DgbOXqJP5IiyskuDwntLboiuDarLFYtu-D5zr8seJWfZiGRYDBF6vQFJZH9BrmYCPVtqeKjwcmGEa636fzbTVjMTW9tkYA1j-9m9FyVXeaNj8PiovqricGSrIVq9no_s4lAQ1L21_C-KjOFjck5fijKGi8ThCP2NSNKbECZDGgrYZB4J_sDXGXl-NiIsmNzVshknYomJ3DHG24et41qF25JY2arsWEKX2Zi9TG91FVQywKpk4OHFKrMj08V47ge8t2O0GnhHN3Y1aSmPoSUoD4dfq_YqLfzxV-VAEebu8tZoNuc170NbYWfq_GXdW0d-L9mEHboBvL7uOcZ7kWFR1e8Oaz-tjsVn0060ezLSzwKzPqcTqRZdWHNHaxHSqol2TJOfIqE2P4yILhiuA_pFvjg30bhzfc4HWwk9-B1NiLrNrTmy4vwX-m8FfJDE2MgnrQkpK1SLdi4ZOYL0Fda2lz8Hl10ECeERdRoHYD_3K03xgT9Ct6mxAEpUuk-GwNV47Drpj8IFOSdZehZD2INToOV6K4Kn1mQm6yBfn3IFVcrWcepM6NBOOu_H2Wg9J0IKtkqvf-11ymB4K_wF6dHumar7A0Ng0q87juxy3HXFTRmsXDUp4b2lpIaU3nu3o7kQ2eUDCHAO-n8SSAGvD6P6DbZUSg6W7nqkjoElSe4fE3Yc8d6-yPqOsFll1lsK_KZ7FafZOffeLBXQHnFFZgpsaIEAxmVVq2saTc67WcycpDCxrRXb2MUUWZ32qwLJp3pDS8MBRkZNp2eviQy2vhCiq45cMXhtvEoe0Ciu2eaHsmqd-zkQ8agnwtpKY1lJlsCMzlUF0GLMMR4qaigz93vBt-y4fxfywbaWKrc8pA8J97TPxsGbwuPCXAtAZf8EejOfJCvLhTYgCH923tvJaP7CffwHXeaj8KzA8QAA2so_CSiqVTM9ACHJmBRsB2Ginz5hfvgTOPMhBu1SrDEVUyIscA2xMUAvAFx4t7J-tItlqJKvLBDGvZ1zs1g8uXfsYZawstqul9tFoZ4E3xB0fai0Gf2O=w2000-h4490",
+                "posterUrl": "https://lh3.googleusercontent.com/fife/AAbDypAPTv3uo3AOpw4fOtF0S-O4EYBSA4_rToYGhVNYPr1z8-qayyT8W0lPRiIc8IQLAMWZQ_gyfG2Od-CpqpwhkPl0cS-MnZyS6EZbfdr1tKq7iZqc4MnfVB89PAjl5FAY0qPWBwLYeC3rjP8ujLv7vUixw49GXhL0M1ptmKG3Sh3CJ7LG-KvbkQFIqHH6y8cBkQ3VIB0cr7VaeSQabPCqK9_E6tpxIbeisnEu_yRiTpSgQgOOAAzdErDsmDPaCn3E1aoCPxxHCzLSmV2Mah9ot0qh_chkJ7gm7dFJE4ul-f_4DJQ-6hMJyoCwWsBWo5yOcAiYQBm6504xMop0kjKaAyS4XeEkXFzeTHQSCN39bEJ8G_Ew9v0rVtQOgndL2VuwgPFDdOJCxUcC25sjJuhwTSyBuiqk7Wgq6AQzDkMO0jeQRdF44r60tHs2v2zEsudWk8HzwKeGxtVSisLy-KRmxSv8hg_y64KDxnvwqJ-lhQNFRleSTXjLH4ZvMvaOanwU-Ks2DgbOXqJP5IiyskuDwntLboiuDarLFYtu-D5zr8seJWfZiGRYDBF6vQFJZH9BrmYCPVtqeKjwcmGEa636fzbTVjMTW9tkYA1j-9m9FyVXeaNj8PiovqricGSrIVq9no_s4lAQ1L21_C-KjOFjck5fijKGi8ThCP2NSNKbECZDGgrYZB4J_sDXGXl-NiIsmNzVshknYomJ3DHG24et41qF25JY2arsWEKX2Zi9TG91FVQywKpk4OHFKrMj08V47ge8t2O0GnhHN3Y1aSmPoSUoD4dfq_YqLfzxV-VAEebu8tZoNuc170NbYWfq_GXdW0d-L9mEHboBvL7uOcZ7kWFR1e8Oaz-tjsVn0060ezLSzwKzPqcTqRZdWHNHaxHSqol2TJOfIqE2P4yILhiuA_pFvjg30bhzfc4HWwk9-B1NiLrNrTmy4vwX-m8FfJDE2MgnrQkpK1SLdi4ZOYL0Fda2lz8Hl10ECeERdRoHYD_3K03xgT9Ct6mxAEpUuk-GwNV47Drpj8IFOSdZehZD2INToOV6K4Kn1mQm6yBfn3IFVcrWcepM6NBOOu_H2Wg9J0IKtkqvf-11ymB4K_wF6dHumar7A0Ng0q87juxy3HXFTRmsXDUp4b2lpIaU3nu3o7kQ2eUDCHAO-n8SSAGvD6P6DbZUSg6W7nqkjoElSe4fE3Yc8d6-yPqOsFll1lsK_KZ7FafZOffeLBXQHnFFZgpsaIEAxmVVq2saTc67WcycpDCxrRXb2MUUWZ32qwLJp3pDS8MBRkZNp2eviQy2vhCiq45cMXhtvEoe0Ciu2eaHsmqd-zkQ8agnwtpKY1lJlsCMzlUF0GLMMR4qaigz93vBt-y4fxfywbaWKrc8pA8J97TPxsGbwuPCXAtAZf8EejOfJCvLhTYgCH923tvJaP7CffwHXeaj8KzA8QAA2so_CSiqVTM9ACHJmBRsB2Ginz5hfvgTOPMhBu1SrDEVUyIscA2xMUAvAFx4t7J-tItlqJKvLBDGvZ1zs1g8uXfsYZawstqul9tFoZ4E3xB0fai0Gf2O=w2000-h4490",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "Mq2tZjnZrDXlcvp8Fw8M",
+                "title": "SEPERTI TULANG",
+                "type": "movie",
+                "genre": [
+                    "Drama"
+                ],
+                "description": "Shafa sebagai seorang perawat sekaligus malaikat bagi ibunya, kasih sayang yang ibu berikan kepadanya membuat ia selalu ingin bersamanya. Akankah keinginan shafa bisa terwujud?",
+                "casts": [
+                    "Dito",
+                    "Tisna",
+                    "Sumanto"
+                ],
+                "directors": [
+                    "Miss Adel"
+                ],
+                "isFeatured": true,
+                "thumbnailUrl": "https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOSvOwLcdvumBDD3Pu_R5XQWEuYwR6Brm_gn0CqaG-rI-XluK5CifTKwBH_gyFNfeeHFqJP-Znn2TjPXhBTWrQydRt71=w1920-h929",
+                "posterUrl": "https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOSvOwLcdvumBDD3Pu_R5XQWEuYwR6Brm_gn0CqaG-rI-XluK5CifTKwBH_gyFNfeeHFqJP-Znn2TjPXhBTWrQydRt71=w1920-h929",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "0GIXXG26QLxzvHv97hXT",
+                "title": "LOST CONTROL",
+                "type": "movie",
+                "genre": [
+                    "Drama"
+                ],
+                "description": "Juan yang memiliki prestasi di bidang olahraga lari namun memiliki kelemahan di bidang akademis. Orangtuanya yang tidak mendukung apa yang telah dicapai oleh Juan membuat  Juan semakin lemah, ditambah masalah-masalah yang menghampiri kehidupan Juan. Apakah Juan dapat melewati semua masalahnya? dan apakah orangtua Juan akan mendukung semua prestasi Juan?",
+                "casts": [
+                    "Dito",
+                    "Tisna",
+                    "Sumanto"
+                ],
+                "directors": [
+                    "Miss Adel"
+                ],
+                "isFeatured": true,
+                "thumbnailUrl": "https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOS2HPCizC1F-Y9yYdy5uG1oipmo5cJ8yS1l0d11IsowucBRXQZTEY3ClPGKCTOZpEReW-n9ano2hw_Zp1rgqYerOUnZFg=w1920-h929",
+                "posterUrl": "https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOS2HPCizC1F-Y9yYdy5uG1oipmo5cJ8yS1l0d11IsowucBRXQZTEY3ClPGKCTOZpEReW-n9ano2hw_Zp1rgqYerOUnZFg=w1920-h929",
+                "createdAt": "timestamp"
+            }
+        ],
+        "videos": [
+            {
+                "id": "1",
+                "contentId": "rdbiufxqU3xUCczho242",
+                "type": "full-length",
+                "videoUrl": "https://youtu.be/5OA37uNYvz8",
+                "description": "Keluarga Henky yang suka membantu sesama manusia, sampai membiayai orang yang dibantunya. Akan tetapi dibalik baiknya keluarga ini, mereka tiba-tiba terkena malapateka. Kira-kira malapetaka apa yang terjadi? Siapakah dalang dibalik terjadinya malapetaka tersebut?",
+                "duration": "1 Menit",
+                "thumbnailUrl": "https://lh3.googleusercontent.com/fife/AAbDypAwYCB06NMtEeytTOIRhmbIW7NVKBpSEG1IpV1L1sGMg8TJUTUurEU8z_A1BRiktS7cP7z9YcapEMM1CLRnfH8zmWj5YSaaPORVPiD4q99CjDG5eNpDupvekUpfar2B8cO8XGr-PSu7N4tP93MtjHAwU30Iu2bhLXo48IuhZvaQMxA9UM3EKSEu9HjORZbTYkxddhOKr34fehNK_hgnRJAMbzWB7q6tT-F6qbIxH5T5eMiXLSczeKWKcB8LQ-HF5PX8ke6RQ9JljQJfJvdW29uaYxrhr-Ny4KdiiNKB0LBuhs1bJ0CFJP1vc5rF9R1lCr8XpKxZSM7lsMA8BdgtQ7pz-WgL-2aU_qFvWC1YpcFsYvWMRyJdU3iD2r27Lge9ILFFbWq3d18vj9687i8ZzBdGZ0Gxjn4Id2nKvlmCGJcb_kA_7XB86bbyaRxmqNpGBb8KIgmmM6gRY23aV1ihmcANZnshr_jAsEf5QGXieFsJ9zrMr7ZqqqhsLJmjdSzhrh64nyEfCJrzKjyJkkBns3bAi1fUIuxKT63EIVb9N6et6KWaO5V98RWiaSie9lu8SXZAabaFhMUKi0Nmb_Q88xdOB2fFbHAerACrSrJMqWiuzcRj96fIiLCAVPAgemqXU0akQVGzXxaq7MdAlf0I95pVxHvkazhQKH85bVJ8Ff8ZDwaZOFgxZZ5ZFon4jtNm04b1jvJ2Oh8v4FxdZd2KMFzXGtj5HJz5DvazCiUfgQmOQmWC3zWckjoAsSJgPRs-ne-JyzKiQGNL5_oP81BR_juw3Pw0N59kdbu4zdL51J6t7gg2FYpP5LM3EzGl-lp1KOe59M7MrSxQfXyU_n83PMNoYOuSTQ-83Wr4YibPiWjd3RHaTW3b_M8wuM82pInTlGQGnavxss_xc3_8nkfnfPVGzWIbJunUVgSvqsH0bzfaDcHYxMZV8i_Tg7eZ1CRmdtJAqZ7A1wDmB5YAcV_G_yqtSXTVef7cijlZKqcYLy_c4UuHrBl0LHs8rYot_Dii0vHrO1ayOn0KrsuqAzmp9_KIowY4_9HyAGS6IDEIJ6wWQeKE5YRQros9q8rSRSwikXxRLm8tZPoKdKWyYsCrh7rIaXkij49U7JKRxXKsPgfFPRoeVnt8bmkO4cZm7ecO0LhSu-mH9sxSUv_B2hrJbWq6Q8h6d5F03RGrQx-15juYnw9QcORIg57Ae89htxX0wo0cZ_2Qz5c5yZs9RGal1WZ-DK7GAIYWjKug9C0iGPQpcMUhoB4-ULFCzq35ozPyJfIERqMxlp3RRTCNAwAGHhWnTN4xaYoDCqNMAe3OUgYD2C445_AgWyvo3S_fhZEg9-zfWqFIJbzghyfexPcvcuY9lKDs48oYHiFutzKKOQ6VleHH-rfpQZj89Mt3usb3CXNJP4-PNAoEYmZ-0Gxk00kOCcjmVTJkUfvhGTA4TeNXeOny_9hV1tYe_TomOeQhTRLTeIijfq8yBeAqZc8ucU8jyK1oWpQZi2sKZJ6Qu9Isf0QFhWmSELbSBghmCrWUU_4wr0CIWa4UM045IjVbqSaBQfge=w1920-h929",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "2",
+                "contentId": "gyDD31GPiGR6ceiBzHMT",
+                "type": "full-length",
+                "videoUrl": "https://youtu.be/b1aXunjXUKE",
+                "thumbnailUrl": "https://lh3.googleusercontent.com/fife/AAbDypAwYCB06NMtEeytTOIRhmbIW7NVKBpSEG1IpV1L1sGMg8TJUTUurEU8z_A1BRiktS7cP7z9YcapEMM1CLRnfH8zmWj5YSaaPORVPiD4q99CjDG5eNpDupvekUpfar2B8cO8XGr-PSu7N4tP93MtjHAwU30Iu2bhLXo48IuhZvaQMxA9UM3EKSEu9HjORZbTYkxddhOKr34fehNK_hgnRJAMbzWB7q6tT-F6qbIxH5T5eMiXLSczeKWKcB8LQ-HF5PX8ke6RQ9JljQJfJvdW29uaYxrhr-Ny4KdiiNKB0LBuhs1bJ0CFJP1vc5rF9R1lCr8XpKxZSM7lsMA8BdgtQ7pz-WgL-2aU_qFvWC1YpcFsYvWMRyJdU3iD2r27Lge9ILFFbWq3d18vj9687i8ZzBdGZ0Gxjn4Id2nKvlmCGJcb_kA_7XB86bbyaRxmqNpGBb8KIgmmM6gRY23aV1ihmcANZnshr_jAsEf5QGXieFsJ9zrMr7ZqqqhsLJmjdSzhrh64nyEfCJrzKjyJkkBns3bAi1fUIuxKT63EIVb9N6et6KWaO5V98RWiaSie9lu8SXZAabaFhMUKi0Nmb_Q88xdOB2fFbHAerACrSrJMqWiuzcRj96fIiLCAVPAgemqXU0akQVGzXxaq7MdAlf0I95pVxHvkazhQKH85bVJ8Ff8ZDwaZOFgxZZ5ZFon4jtNm04b1jvJ2Oh8v4FxdZd2KMFzXGtj5HJz5DvazCiUfgQmOQmWC3zWckjoAsSJgPRs-ne-JyzKiQGNL5_oP81BR_juw3Pw0N59kdbu4zdL51J6t7gg2FYpP5LM3EzGl-lp1KOe59M7MrSxQfXyU_n83PMNoYOuSTQ-83Wr4YibPiWjd3RHaTW3b_M8wuM82pInTlGQGnavxss_xc3_8nkfnfPVGzWIbJunUVgSvqsH0bzfaDcHYxMZV8i_Tg7eZ1CRmdtJAqZ7A1wDmB5YAcV_G_yqtSXTVef7cijlZKqcYLy_c4UuHrBl0LHs8rYot_Dii0vHrO1ayOn0KrsuqAzmp9_KIowY4_9HyAGS6IDEIJ6wWQeKE5YRQros9q8rSRSwikXxRLm8tZPoKdKWyYsCrh7rIaXkij49U7JKRxXKsPgfFPRoeVnt8bmkO4cZm7ecO0LhSu-mH9sxSUv_B2hrJbWq6Q8h6d5F03RGrQx-15juYnw9QcORIg57Ae89htxX0wo0cZ_2Qz5c5yZs9RGal1WZ-DK7GAIYWjKug9C0iGPQpcMUhoB4-ULFCzq35ozPyJfIERqMxlp3RRTCNAwAGHhWnTN4xaYoDCqNMAe3OUgYD2C445_AgWyvo3S_fhZEg9-zfWqFIJbzghyfexPcvcuY9lKDs48oYHiFutzKKOQ6VleHH-rfpQZj89Mt3usb3CXNJP4-PNAoEYmZ-0Gxk00kOCcjmVTJkUfvhGTA4TeNXeOny_9hV1tYe_TomOeQhTRLTeIijfq8yBeAqZc8ucU8jyK1oWpQZi2sKZJ6Qu9Isf0QFhWmSELbSBghmCrWUU_4wr0CIWa4UM045IjVbqSaBQfge=w1920-h929",
+                "description": "Sherrin siswi SMA yang menemukan PSP mini miliknya saat kecil, yang dimana disaat memainkan PSP mini tersebut membawanya kepada konflik-konflik di dalam hidupnya. Akankah Sherrin berhasil menyelesaikan permainan tersebut?",
+                "duration": "1 Menit",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "3",
+                "contentId": "VLTFHCBzbqQykCn61C8L",
+                "type": "full-length",
+                "videoUrl": "https://youtu.be/XDy24JbuvDQ",
+                "thumbnailUrl": "https://lh3.googleusercontent.com/fife/AAbDypAwYCB06NMtEeytTOIRhmbIW7NVKBpSEG1IpV1L1sGMg8TJUTUurEU8z_A1BRiktS7cP7z9YcapEMM1CLRnfH8zmWj5YSaaPORVPiD4q99CjDG5eNpDupvekUpfar2B8cO8XGr-PSu7N4tP93MtjHAwU30Iu2bhLXo48IuhZvaQMxA9UM3EKSEu9HjORZbTYkxddhOKr34fehNK_hgnRJAMbzWB7q6tT-F6qbIxH5T5eMiXLSczeKWKcB8LQ-HF5PX8ke6RQ9JljQJfJvdW29uaYxrhr-Ny4KdiiNKB0LBuhs1bJ0CFJP1vc5rF9R1lCr8XpKxZSM7lsMA8BdgtQ7pz-WgL-2aU_qFvWC1YpcFsYvWMRyJdU3iD2r27Lge9ILFFbWq3d18vj9687i8ZzBdGZ0Gxjn4Id2nKvlmCGJcb_kA_7XB86bbyaRxmqNpGBb8KIgmmM6gRY23aV1ihmcANZnshr_jAsEf5QGXieFsJ9zrMr7ZqqqhsLJmjdSzhrh64nyEfCJrzKjyJkkBns3bAi1fUIuxKT63EIVb9N6et6KWaO5V98RWiaSie9lu8SXZAabaFhMUKi0Nmb_Q88xdOB2fFbHAerACrSrJMqWiuzcRj96fIiLCAVPAgemqXU0akQVGzXxaq7MdAlf0I95pVxHvkazhQKH85bVJ8Ff8ZDwaZOFgxZZ5ZFon4jtNm04b1jvJ2Oh8v4FxdZd2KMFzXGtj5HJz5DvazCiUfgQmOQmWC3zWckjoAsSJgPRs-ne-JyzKiQGNL5_oP81BR_juw3Pw0N59kdbu4zdL51J6t7gg2FYpP5LM3EzGl-lp1KOe59M7MrSxQfXyU_n83PMNoYOuSTQ-83Wr4YibPiWjd3RHaTW3b_M8wuM82pInTlGQGnavxss_xc3_8nkfnfPVGzWIbJunUVgSvqsH0bzfaDcHYxMZV8i_Tg7eZ1CRmdtJAqZ7A1wDmB5YAcV_G_yqtSXTVef7cijlZKqcYLy_c4UuHrBl0LHs8rYot_Dii0vHrO1ayOn0KrsuqAzmp9_KIowY4_9HyAGS6IDEIJ6wWQeKE5YRQros9q8rSRSwikXxRLm8tZPoKdKWyYsCrh7rIaXkij49U7JKRxXKsPgfFPRoeVnt8bmkO4cZm7ecO0LhSu-mH9sxSUv_B2hrJbWq6Q8h6d5F03RGrQx-15juYnw9QcORIg57Ae89htxX0wo0cZ_2Qz5c5yZs9RGal1WZ-DK7GAIYWjKug9C0iGPQpcMUhoB4-ULFCzq35ozPyJfIERqMxlp3RRTCNAwAGHhWnTN4xaYoDCqNMAe3OUgYD2C445_AgWyvo3S_fhZEg9-zfWqFIJbzghyfexPcvcuY9lKDs48oYHiFutzKKOQ6VleHH-rfpQZj89Mt3usb3CXNJP4-PNAoEYmZ-0Gxk00kOCcjmVTJkUfvhGTA4TeNXeOny_9hV1tYe_TomOeQhTRLTeIijfq8yBeAqZc8ucU8jyK1oWpQZi2sKZJ6Qu9Isf0QFhWmSELbSBghmCrWUU_4wr0CIWa4UM045IjVbqSaBQfge=w1920-h929",
+                "description": "Seorang gadis remaja yang bernama Kayla, memiliki prinsip yang dia pegang dengan erat, yaitu tidak akan melakukan hal yang romance. Akan tetapi Reyhan selaku teman kelas Kayla, yang selalu mendapatkan perilaku yang tidak enak dari Kayla. Bukan malah membenci melainkan tertarik terhadap Kayla. Akhirnya Reyhan melakukan beberapa hal agar kayla suka dengan Reyhan. Apakah Kayla akan luluh dengan Reyhan?",
+                "duration": "1 Menit",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "4",
+                "contentId": "Mq2tZjnZrDXlcvp8Fw8M",
+                "type": "full-length",
+                "videoUrl": "https://youtu.be/VX5ZQWBBcNU",
+                "thumbnailUrl": "https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOSvOwLcdvumBDD3Pu_R5XQWEuYwR6Brm_gn0CqaG-rI-XluK5CifTKwBH_gyFNfeeHFqJP-Znn2TjPXhBTWrQydRt71=w1920-h929",
+                "description": "Shafa sebagai seorang perawat sekaligus malaikat bagi ibunya, kasih sayang yang ibu berikan kepadanya membuat ia selalu ingin bersamanya. Akankah keinginan shafa bisa terwujud?",
+                "duration": "1 Menit",
+                "createdAt": "timestamp"
+            },
+            {
+                "id": "5",
+                "contentId": "0GIXXG26QLxzvHv97hXT",
+                "type": "full-length",
+                "videoUrl": "https://youtu.be/bqsY1jDkQzk",
+                "thumbnailUrl": "https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEOS2HPCizC1F-Y9yYdy5uG1oipmo5cJ8yS1l0d11IsowucBRXQZTEY3ClPGKCTOZpEReW-n9ano2hw_Zp1rgqYerOUnZFg=w1920-h929",
+                "description": "Juan yang memiliki prestasi di bidang olahraga lari namun memiliki kelemahan di bidang akademis. Orangtuanya yang tidak mendukung apa yang telah dicapai oleh Juan membuat  Juan semakin lemah, ditambah masalah-masalah yang menghampiri kehidupan Juan. Apakah Juan dapat melewati semua masalahnya? dan apakah orangtua Juan akan mendukung semua prestasi Juan?",
+                "duration": "1 Menit",
+                "createdAt": "timestamp"
+            }
+        ]
+    }
+]

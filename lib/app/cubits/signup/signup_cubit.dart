@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/services.dart';
 import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 part 'signup_state.dart';
 
@@ -46,8 +48,12 @@ class SignupCubit extends Cubit<SignupState> {
         password: state.password,
       );
       emit(state.copyWith(status: SignupStatus.success));
-    } on Exception {
-      emit(state.copyWith(status: SignupStatus.error));
+    } catch (e) {
+      String errorMessage = 'Terjadi kesalahan saat mendaftar.';
+      if (e is auth.FirebaseException) {
+        errorMessage = '${e.message}';
+      }
+      emit(state.copyWith(info: errorMessage, status: SignupStatus.error));
     }
   }
 }
