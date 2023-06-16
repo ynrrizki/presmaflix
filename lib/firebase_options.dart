@@ -66,8 +66,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '923273589990',
     projectId: 'presmaflix',
     storageBucket: 'presmaflix.appspot.com',
-    iosClientId: '923273589990-hmls550h1ku7ofk8n1606sjo8b0oc638.apps.googleusercontent.com',
-    iosBundleId: 'com.example.presmaflix',
+    iosClientId:
+        '923273589990-hmls550h1ku7ofk8n1606sjo8b0oc638.apps.googleusercontent.com',
+    iosBundleId: 'com.smkprestasiprima.presmaflix',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -76,7 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '923273589990',
     projectId: 'presmaflix',
     storageBucket: 'presmaflix.appspot.com',
-    iosClientId: '923273589990-hmls550h1ku7ofk8n1606sjo8b0oc638.apps.googleusercontent.com',
-    iosBundleId: 'com.example.presmaflix',
+    iosClientId:
+        '923273589990-hmls550h1ku7ofk8n1606sjo8b0oc638.apps.googleusercontent.com',
+    iosBundleId: 'com.smkprestasiprima.presmaflix',
   );
 }

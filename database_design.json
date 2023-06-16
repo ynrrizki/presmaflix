@@ -20,16 +20,10 @@
                 "createdAt": "timestamp"
             }
         ],
-        "media": [
-            {
-                "id": "objectId",
-                "contentId": "objectId"
-            }
-        ],
         "videos": [
             {
                 "id": "objectId",
-                "mediaId": "objectId",
+                "contentId": "objectId",
                 "type": "full-length",
                 "video": "string",
                 "duration": "string",
@@ -37,7 +31,7 @@
             },
             {
                 "id": "objectId",
-                "mediaId": "objectId",
+                "contentId": "objectId",
                 "type": "Episodes",
                 "video": "string",
                 "thumbnailUrl": "string",
@@ -47,7 +41,7 @@
             },
             {
                 "id": "objectId",
-                "mediaId": "objectId",
+                "contentId": "objectId",
                 "type": "Trailer",
                 "video": "string",
                 "thumbnailUrl": "string",
@@ -57,7 +51,7 @@
             },
             {
                 "id": "objectId",
-                "mediaId": "objectId",
+                "contentId": "objectId",
                 "type": "Extras",
                 "video": "string",
                 "thumbnailUrl": "string",

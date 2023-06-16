@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'app/bloc/blocs.dart';
 import 'app/cubits/cubits.dart';
 import 'app/repositories/firestore/repositories.dart';
-import 'package:presmaflix/config/routing/routes.dart';
+import 'package:presmaflix/routes/routes.dart';
 import 'package:presmaflix/config/themes.dart';
 
 Future<void> main() async {
@@ -71,7 +71,6 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (context) => LogoutCubit(
               context.read<AuthRepository>(),
-              // context.read<AppBloc>(),
             ),
           ),
           BlocProvider(
@@ -127,14 +126,7 @@ class MyApp extends StatelessWidget {
             final router = AppRouter();
             log(state.status.toString(), name: 'main.dart');
             if (state.status == AppStatus.authenticated) {
-              log('appState: $state', name: 'main.dart');
               router.appState = state;
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Presmaflix',
-                theme: PresmaflixThemes.darkTheme,
-                onGenerateRoute: router.onRoute,
-              );
             }
             log('app status: ${router.state}', name: 'main.dart');
             return MaterialApp(

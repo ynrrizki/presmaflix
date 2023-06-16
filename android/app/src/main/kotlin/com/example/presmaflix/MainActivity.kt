@@ -1,4 +1,4 @@
-package com.example.presmaflix
+package com.smkprestasiprima.presmaflix
 
 import io.flutter.embedding.android.FlutterActivity
 
