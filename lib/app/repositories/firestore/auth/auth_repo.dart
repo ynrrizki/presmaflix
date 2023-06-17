@@ -111,7 +111,7 @@ class AuthRepository extends Repository {
 
   // Melakukan proses sign in dengan akun Google
   @override
-  Future<User> signInWithGoogle() async {
+  Future<User> signInWithGoogle({bool destroy = false}) async {
     try {
       // Melakukan sign in dengan akun Google
       final account = await _googleSignIn.signIn();

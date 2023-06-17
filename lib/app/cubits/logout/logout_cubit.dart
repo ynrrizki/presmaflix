@@ -20,8 +20,6 @@ class LogoutCubit extends Cubit<LogoutState> {
     try {
       unawaited(_authRepository.signOut());
       emit(state.copyWith(status: LogoutStatus.success));
-      // await _authRepository.signOut();
-      // _appBloc.add(AppUserChanged(_authRepository.currentUser));
     } on Exception {
       emit(state.copyWith(status: LogoutStatus.error));
     }

@@ -20,15 +20,9 @@ class ContentRepository {
 
   Stream<List<Content>> getAllContents() {
     log('When add getAllContents', name: 'ContentRepository');
-    // _firebaseFirestore.collection('contents').snapshots().listen((event) {
-    //   log('When add getAllContents', name: 'ContentRepository');
-    //   return log(event.docs.map((e) => e.data()).toList().toString());
-    // });
     return _firebaseFirestore.collection('contents').snapshots().map(
           (snapshot) => snapshot.docs.map(
             (docs) {
-              // log(docs.toString());
-              log(Content.fromSnapshot(docs).toString());
               return Content.fromSnapshot(docs);
             },
           ).toList(),

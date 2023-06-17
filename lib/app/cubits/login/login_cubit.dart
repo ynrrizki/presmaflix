@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 part 'login_state.dart';
 
@@ -39,17 +40,23 @@ class LoginCubit extends Cubit<LoginState> {
         password: state.password,
       );
       emit(state.copyWith(status: LoginStatus.success));
+      emit(state.copyWith(
+        email: '',
+        password: '',
+        status: LoginStatus.initial,
+      ));
       log('${_authRepository.isVerify!}', name: 'LoginCubit');
-      // jika dia tidak terverif
       if (_authRepository.isVerify!) {
-        // kita tampilkan status verif
         emit(state.copyWith(status: LoginStatus.verify));
       } else {
         emit(state.copyWith(status: LoginStatus.notVerify));
       }
-      // _appBloc.add(AppUserChanged(_authRepository.currentUser));
-    } on Exception {
-      emit(state.copyWith(status: LoginStatus.error));
+    } catch (e) {
+      String errorMessage = 'Terjadi kesalahan saat mendaftar.';
+      if (e is auth.FirebaseException) {
+        errorMessage = '${e.message}';
+      }
+      emit(state.copyWith(info: errorMessage, status: LoginStatus.error));
     }
   }
 
