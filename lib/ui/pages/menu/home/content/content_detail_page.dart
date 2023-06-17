@@ -4,14 +4,15 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/bloc/blocs.dart';
 import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
-// import 'package:presmaflix/app/bloc/video/video_bloc.dart';
 import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
 import 'package:presmaflix/app/cubits/watchlist/watchlist_cubit.dart'
     as watchlist_cubit;
@@ -19,10 +20,9 @@ import 'package:presmaflix/app/models/content/content.dart';
 import 'package:presmaflix/app/models/rating/rating.dart';
 import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/models/video/video.dart';
-// import 'package:presmaflix/app/models/watchlist/watchlist.dart';
 import 'package:presmaflix/routes/argument/arguments.dart';
 import 'package:presmaflix/config/themes.dart';
-// import 'package:presmaflix/config/themes.dart';
+import 'package:presmaflix/ui/pages/menu/watchlist/watchlist_page.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -467,6 +467,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                             ),
                             initialRating: state.rating.rating ?? 0.0,
                             onRatingUpdate: (value) {
+                              HapticFeedback.vibrate();
                               context.read<RatingBloc>().add(
                                     AddRating(
                                       rating: const Rating().copyWith(
@@ -508,6 +509,7 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                           ),
                           initialRating: 0.0,
                           onRatingUpdate: (value) {
+                            HapticFeedback.vibrate();
                             context.read<RatingBloc>().add(
                                   AddRating(
                                     rating: const Rating().copyWith(
@@ -1063,7 +1065,29 @@ class _WatchlistBtn extends StatelessWidget {
         if (state is IsWatchlistExistsLoaded) {
           return state.isExists
               ? ElevatedButton.icon(
-                  onPressed: null,
+                  onPressed: () {
+                    context
+                        .read<WatchlistBloc>()
+                        .add(DeleteWatchlistByContentId(widget.content.id));
+                    HapticFeedback.vibrate();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 15),
+                        action: SnackBarAction(
+                          onPressed: () {},
+                          label: 'Okay',
+                        ),
+                        content: Text(
+                          "Content Removed from My List",
+                          style: const TextStyle().copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                  },
                   icon: const Icon(
                     Icons.bookmark_added,
                   ),
@@ -1082,6 +1106,29 @@ class _WatchlistBtn extends StatelessWidget {
                         .read<watchlist_cubit.WatchlistCubit>()
                         .isWatchlistExists(
                             contentId: widget.content.id, userId: user.id);
+                    HapticFeedback.vibrate();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 15),
+                        action: SnackBarAction(
+                            label: 'View',
+                            onPressed: () {
+                              Navigator.of(
+                                context,
+                              ).pushReplacementNamed(
+                                '/watchlist',
+                              );
+                            }),
+                        content: Text(
+                          "Content Added to My List",
+                          style: const TextStyle().copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                   },
                   icon: const Icon(
                     Icons.bookmark,
@@ -1099,6 +1146,28 @@ class _WatchlistBtn extends StatelessWidget {
           onPressed: () {
             context.read<watchlist_cubit.WatchlistCubit>().isWatchlistExists(
                 contentId: widget.content.id, userId: user.id);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                action: SnackBarAction(
+                    label: 'View',
+                    onPressed: () {
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(
+                        '/watchlist',
+                      );
+                    }),
+                content: Text(
+                  "Content Added to My List",
+                  style: const TextStyle().copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
           },
           icon: const Icon(
             Icons.bookmark,

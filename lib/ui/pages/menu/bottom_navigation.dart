@@ -9,12 +9,12 @@ import 'package:presmaflix/ui/pages/pages.dart';
 import 'package:badges/badges.dart' as badges;
 
 class BottomNavigation extends StatelessWidget {
-  const BottomNavigation({super.key});
-
+  const BottomNavigation({super.key, this.index = 0});
+  final int index;
   @override
   Widget build(BuildContext context) {
     PersistentTabController controller =
-        PersistentTabController(initialIndex: 0);
+        PersistentTabController(initialIndex: index);
 
     DateTime preBackpress = DateTime.now();
 

@@ -1,14 +1,11 @@
-// import 'package:cached_network_image/cached_network_image.dart';
-// import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/bloc/blocs.dart';
 import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
 import 'package:presmaflix/app/models/content/content.dart';
-// import 'package:presmaflix/app/models/watchlist/watchlist.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:presmaflix/routes/argument/arguments.dart';
@@ -116,6 +113,13 @@ class _WatchListPageState extends State<WatchListPage> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 15),
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context, rootNavigator: true)
+                              .pushReplacementNamed('/home');
+                        },
+                        child: const Text('Find Content'))
                   ],
                 ),
               );
@@ -180,6 +184,7 @@ class _CardContent extends StatelessWidget {
                       context
                           .read<WatchlistBloc>()
                           .add(DeleteWatchlistByContentId(content.id));
+                      HapticFeedback.vibrate();
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,

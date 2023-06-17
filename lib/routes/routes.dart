@@ -31,7 +31,11 @@ class AppRouter {
         );
       case "/home":
         return CupertinoPageRoute(
-          builder: (context) => const BottomNavigation(),
+          builder: (context) => const BottomNavigation(index: 0),
+        );
+      case "/watchlist":
+        return CupertinoPageRoute(
+          builder: (context) => const BottomNavigation(index: 2),
         );
       case "/verif":
         return CupertinoPageRoute(

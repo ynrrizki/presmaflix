@@ -53,7 +53,15 @@ class RatingRepository {
     });
   }
 
-  Future<Rating> addRating(Rating rating) async {
+  Future<dynamic> addRating(Rating rating) async {
+    if (rating.rating == 0) {
+      // Menghapus data jika nilai rating adalah 0
+      final docRef = _firebaseFirestore.collection('ratings').doc(rating.id);
+      await docRef.delete();
+      log('Data Rating ini Dihapus', name: 'addRating');
+      return null; // Mengembalikan null karena data telah dihapus
+    }
+
     final docRef = _firebaseFirestore.collection('ratings').doc(rating.id);
     final snapshot = await docRef.get();
 
