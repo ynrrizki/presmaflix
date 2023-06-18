@@ -16,6 +16,14 @@ class LoadUserById extends UserEvent {
   List<Object> get props => [id];
 }
 
+class LoadUserByEmail extends UserEvent {
+  final String email;
+  const LoadUserByEmail({required this.email});
+
+  @override
+  List<Object> get props => [email];
+}
+
 class UpdateUser extends UserEvent {
   const UpdateUser(this.user);
 

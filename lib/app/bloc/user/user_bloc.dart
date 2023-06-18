@@ -16,6 +16,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       : _userRepository = userRepository,
         super(UserLoading()) {
     on<LoadUserById>(_onLoadUserById);
+    on<LoadUserByEmail>(_onLoadUserByEmail);
     on<UpdateUser>(_onUpdateUser);
 
     on<EditUser>((event, emit) async {
@@ -26,6 +27,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   void _onLoadUserById(LoadUserById event, Emitter<UserState> emit) {
     _userSubscription?.cancel();
     _userSubscription = _userRepository.getUser(uid: event.id).listen((user) {
+      return add(UpdateUser(user));
+    });
+  }
+
+  void _onLoadUserByEmail(LoadUserByEmail event, Emitter<UserState> emit) {
+    _userSubscription?.cancel();
+    _userSubscription =
+        _userRepository.getUserByEmail(email: event.email).listen((user) {
       return add(UpdateUser(user));
     });
   }

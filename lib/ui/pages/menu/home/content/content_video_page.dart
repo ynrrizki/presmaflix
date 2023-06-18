@@ -9,6 +9,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:pod_player/pod_player.dart';
 import 'package:presmaflix/app/bloc/app/app_bloc.dart';
+import 'package:presmaflix/app/bloc/blocs.dart';
+import 'package:presmaflix/app/bloc/review/review_bloc.dart';
+import 'package:presmaflix/app/models/review/review.dart';
 import 'package:presmaflix/app/models/video/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:presmaflix/config/themes.dart';
@@ -75,11 +78,6 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               aspectRatio: 16 / 9,
               child: PodVideoPlayer(
                 alwaysShowProgressBar: false,
-                // overlayBuilder: (OverLayOptions options) => CustomOverlay(
-                //   options: options,
-                //   controller: videoController,
-                //   video: widget.video,
-                // ),
                 controller: videoController,
                 videoThumbnail: DecorationImage(
                   image: NetworkImage(
@@ -152,7 +150,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                       controller: TextEditingController(),
                       decoration: const InputDecoration(
                         contentPadding: EdgeInsets.all(8),
-                        hintText: 'Your Comment',
+                        hintText: 'Add a comment',
                         enabled: false,
                         constraints: BoxConstraints(
                           maxHeight: 35,
@@ -167,8 +165,6 @@ class ContentVideoPageState extends State<ContentVideoPage> {
               ),
             ),
           ),
-          // _commentColumn(context),
-          // _fieldComment(context),
         ],
       ),
     );
@@ -288,6 +284,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
       isDismissible: false,
       showDragHandle: true,
       useSafeArea: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
       barrierColor: Colors.transparent,
       isScrollControlled: true,
       constraints: const BoxConstraints(
@@ -328,14 +325,11 @@ class ContentVideoPageState extends State<ContentVideoPage> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(top: 20),
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('reviews')
-                      .where('videoId', isEqualTo: widget.video.id)
-                      .orderBy('createdAt', descending: true)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.data!.docs.isNotEmpty) {
+                child: BlocBuilder<ReviewBloc, ReviewState>(
+                  bloc: context.read<ReviewBloc>()
+                    ..add(LoadReviewByVideo(video: widget.video)),
+                  builder: (context, state) {
+                    if (state is ReviewLoaded) {
                       return CustomScrollView(
                         shrinkWrap: true,
                         slivers: [
@@ -344,19 +338,19 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                               thickness: 2,
                               color: Color.fromARGB(255, 49, 49, 49),
                             ),
-                            itemCount: snapshot.data?.docs.length ?? 0,
+                            itemCount: state.reviews.length,
                             itemBuilder: (context, index) {
-                              final doc = snapshot.data!.docs[index];
+                              final review = state.reviews[index];
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 15,
                                 ),
                                 child: commentWidget(
-                                  doc,
+                                  review,
                                   context,
                                   commentController,
                                   toggleEditing,
-                                  doc.id,
+                                  review.id,
                                   setCommentId,
                                 ),
                               );
@@ -378,6 +372,59 @@ class ContentVideoPageState extends State<ContentVideoPage> {
                 ),
               ),
             ),
+            // Expanded(
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(top: 20),
+            //     child: StreamBuilder(
+            //       stream: FirebaseFirestore.instance
+            //           .collection('reviews')
+            //           .where('videoId', isEqualTo: widget.video.id)
+            //           .orderBy('createdAt', descending: true)
+            //           .snapshots(),
+            //       builder: (context, snapshot) {
+            //         if (snapshot.data!.docs.isNotEmpty) {
+            //           return CustomScrollView(
+            //             shrinkWrap: true,
+            //             slivers: [
+            //               SliverList.separated(
+            //                 separatorBuilder: (context, index) => const Divider(
+            //                   thickness: 2,
+            //                   color: Color.fromARGB(255, 49, 49, 49),
+            //                 ),
+            //                 itemCount: snapshot.data?.docs.length ?? 0,
+            //                 itemBuilder: (context, index) {
+            //                   final doc = snapshot.data!.docs[index];
+            //                   return Padding(
+            //                     padding: const EdgeInsets.symmetric(
+            //                       horizontal: 15,
+            //                     ),
+            //                     child: commentWidget(
+            //                       doc,
+            //                       context,
+            //                       commentController,
+            //                       toggleEditing,
+            //                       doc.id,
+            //                       setCommentId,
+            //                     ),
+            //                   );
+            //                 },
+            //               ),
+            //             ],
+            //           );
+            //         } else {
+            //           return Center(
+            //             child: Text(
+            //               'Not Yet Comment',
+            //               style: GoogleFonts.poppins(
+            //                 fontSize: 18,
+            //               ),
+            //             ),
+            //           );
+            //         }
+            //       },
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: _fieldComment(context),
@@ -390,7 +437,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
 }
 
 Widget commentWidget(
-  DocumentSnapshot docs,
+  Review review,
   BuildContext context,
   TextEditingController commentController,
   VoidCallback toggleEditing,
@@ -405,16 +452,33 @@ Widget commentWidget(
     ),
     child: ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
-      leading: CircleAvatar(
-        backgroundImage:
-            NetworkImage('https://ui-avatars.com/api/?name=${docs["name"]}'),
-        radius: 20,
+      leading: BlocBuilder<UserBloc, UserState>(
+        bloc: context.read<UserBloc>()
+          ..add(
+            LoadUserByEmail(email: review.email),
+          ),
+        builder: (context, state) {
+          if (state is UserByIdLoaded) {
+            return CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(
+                state.user.avatar!,
+              ),
+              radius: 20,
+            );
+          }
+          return CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(
+              'https://ui-avatars.com/api/?name=${review.name}',
+            ),
+            radius: 20,
+          );
+        },
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            docs['name'],
+            review.name,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w600,
               fontSize: 14,
@@ -422,7 +486,7 @@ Widget commentWidget(
             ),
           ),
           Text(
-            docs['comment'],
+            review.comment,
             style: GoogleFonts.poppins(
               fontWeight: FontWeight.w400,
               fontSize: 14,
@@ -431,7 +495,7 @@ Widget commentWidget(
           )
         ],
       ),
-      trailing: FirebaseAuth.instance.currentUser!.email == docs['email']
+      trailing: FirebaseAuth.instance.currentUser!.email == review.email
           ? IconButton(
               onPressed: () {
                 showDialog(
@@ -447,10 +511,10 @@ Widget commentWidget(
                               onTap: () {
                                 FirebaseFirestore.instance
                                     .collection('reviews')
-                                    .doc(docs.id)
+                                    .doc(review.id)
                                     .get()
                                     .then((value) {
-                                      updateCommentId(docs.id);
+                                      updateCommentId(review.id);
                                       commentController.text =
                                           value.data()!['comment'];
                                     })
@@ -465,7 +529,7 @@ Widget commentWidget(
                               onTap: () {
                                 FirebaseFirestore.instance
                                     .collection('reviews')
-                                    .doc(docs.id)
+                                    .doc(review.id)
                                     .delete()
                                     .then((value) =>
                                         ScaffoldMessenger.of(context)
@@ -499,3 +563,113 @@ Widget commentWidget(
     ),
   );
 }
+// Widget commentWidget(
+//   DocumentSnapshot docs,
+//   BuildContext context,
+//   TextEditingController commentController,
+//   VoidCallback toggleEditing,
+//   String commentId,
+//   Function(String) updateCommentId,
+// ) {
+//   return Card(
+//     color: Colors.transparent,
+//     shadowColor: Colors.transparent,
+//     shape: RoundedRectangleBorder(
+//       borderRadius: BorderRadius.circular(8),
+//     ),
+//     child: ListTile(
+//       contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+//       leading: CircleAvatar(
+//         backgroundImage:
+//             NetworkImage('https://ui-avatars.com/api/?name=${docs["name"]}'),
+//         radius: 20,
+//       ),
+//       title: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Text(
+//             docs['name'],
+//             style: GoogleFonts.poppins(
+//               fontWeight: FontWeight.w600,
+//               fontSize: 14,
+//               color: Colors.grey,
+//             ),
+//           ),
+//           Text(
+//             docs['comment'],
+//             style: GoogleFonts.poppins(
+//               fontWeight: FontWeight.w400,
+//               fontSize: 14,
+//               color: Colors.white,
+//             ),
+//           )
+//         ],
+//       ),
+//       trailing: FirebaseAuth.instance.currentUser!.email == docs['email']
+//           ? IconButton(
+//               onPressed: () {
+//                 showDialog(
+//                   context: context,
+//                   builder: (BuildContext context) {
+//                     return AlertDialog(
+//                       title: const Text('Options'),
+//                       content: SingleChildScrollView(
+//                         child: ListBody(
+//                           children: <Widget>[
+//                             GestureDetector(
+//                               child: const Text('Edit'),
+//                               onTap: () {
+//                                 FirebaseFirestore.instance
+//                                     .collection('reviews')
+//                                     .doc(docs.id)
+//                                     .get()
+//                                     .then((value) {
+//                                       updateCommentId(docs.id);
+//                                       commentController.text =
+//                                           value.data()!['comment'];
+//                                     })
+//                                     .then((value) => toggleEditing())
+//                                     .then(
+//                                         (value) => Navigator.of(context).pop());
+//                               },
+//                             ),
+//                             const Padding(padding: EdgeInsets.all(8)),
+//                             GestureDetector(
+//                               child: const Text('Hapus'),
+//                               onTap: () {
+//                                 FirebaseFirestore.instance
+//                                     .collection('reviews')
+//                                     .doc(docs.id)
+//                                     .delete()
+//                                     .then((value) =>
+//                                         ScaffoldMessenger.of(context)
+//                                             .showSnackBar(
+//                                           SnackBar(
+//                                             content: Text(
+//                                               "Komentar Berhasil Dihapus",
+//                                               style: GoogleFonts.montserrat(
+//                                                 color: Colors.white,
+//                                                 fontWeight: FontWeight.w700,
+//                                                 fontSize: 15,
+//                                               ),
+//                                             ),
+//                                             backgroundColor: Colors.red,
+//                                           ),
+//                                         ))
+//                                     .then(
+//                                         (value) => Navigator.of(context).pop());
+//                               },
+//                             ),
+//                           ],
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 );
+//               },
+//               icon: const Icon(Icons.more_vert),
+//             )
+//           : null,
+//     ),
+//   );
+// }

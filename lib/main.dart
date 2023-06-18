@@ -50,6 +50,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider(
           create: (context) => WatchlistRepository(),
         ),
+        RepositoryProvider(
+          create: (context) => ReviewRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -118,6 +121,11 @@ class MyApp extends StatelessWidget {
             create: (context) => WatchlistCubit(
               context.read<WatchlistRepository>(),
               context.read<WatchlistBloc>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => ReviewBloc(
+              reviewRepository: context.read<ReviewRepository>(),
             ),
           ),
         ],

@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 // import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -22,7 +21,6 @@ import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/app/models/video/video.dart';
 import 'package:presmaflix/routes/argument/arguments.dart';
 import 'package:presmaflix/config/themes.dart';
-import 'package:presmaflix/ui/pages/menu/watchlist/watchlist_page.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 import 'package:shimmer/shimmer.dart';
 

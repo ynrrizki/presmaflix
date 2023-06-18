@@ -55,6 +55,20 @@ class UserRepository extends Repository {
         .map((snap) => User.fromSnapshot(snap));
   }
 
+  Stream<User> getUserByEmail({String? email}) {
+    return _firebaseFirestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .snapshots()
+        .map(
+          (snap) => snap.docs
+              .map(
+                (doc) => User.fromSnapshot(doc),
+              )
+              .single,
+        );
+  }
+
   @override
   Future<void> updateUser(User user) async {
     log('Ini adalah id: ${user.id}');

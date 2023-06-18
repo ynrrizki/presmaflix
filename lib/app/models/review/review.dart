@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Review extends Equatable {
@@ -6,7 +7,7 @@ class Review extends Equatable {
   final String name;
   final String email;
   final String comment;
-  final DateTime createdAt;
+  final Timestamp createdAt;
 
   const Review({
     required this.id,
@@ -16,6 +17,28 @@ class Review extends Equatable {
     required this.comment,
     required this.createdAt,
   });
+
+  factory Review.fromSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot;
+    return Review(
+      id: data.id,
+      videoId: data['videoId'],
+      name: data['name'],
+      email: data['email'],
+      comment: data['comment'],
+      createdAt: data['createdAt'],
+    );
+  }
+
+  Map<String, dynamic> toDocument() {
+    return {
+      'videoId': videoId,
+      'name': name,
+      'email': email,
+      'comment': comment,
+      'createdAt': Timestamp.now()
+    };
+  }
 
   @override
   List<Object?> get props => [
@@ -34,7 +57,7 @@ class Review extends Equatable {
       name: 'Yanuar Rizki',
       email: 'yanuarrizki165@gmail.com',
       comment: "Videonya keren banget gilaaa",
-      createdAt: DateTime.now(),
+      createdAt: Timestamp.now(),
     ),
   ];
 }
