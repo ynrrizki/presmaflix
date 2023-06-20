@@ -8,6 +8,7 @@ abstract class UserEvent extends Equatable {
 }
 
 class LoadUser extends UserEvent {}
+
 class LoadUserById extends UserEvent {
   final String id;
   const LoadUserById({required this.id});
@@ -31,6 +32,15 @@ class UpdateUser extends UserEvent {
 
   @override
   List<Object> get props => [user];
+}
+
+class UpdateAvatar extends UserEvent {
+  const UpdateAvatar(this.avatar);
+
+  final String avatar;
+
+  @override
+  List<Object> get props => [avatar];
 }
 
 class EditUser extends UserEvent {

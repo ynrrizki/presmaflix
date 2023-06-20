@@ -18,6 +18,15 @@ class UserByIdLoaded extends UserState {
   List<Object> get props => [user];
 }
 
+class UserAvatarLoaded extends UserState {
+  final String avatar;
+
+  const UserAvatarLoaded({required this.avatar});
+
+  @override
+  List<Object> get props => [avatar];
+}
+
 class UserLoaded extends UserState {
   final List<User> users;
 

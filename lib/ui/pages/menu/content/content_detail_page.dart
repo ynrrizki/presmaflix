@@ -991,11 +991,14 @@ Widget _posterImage(Content content, {bool isShimmer = false}) {
           padding: const EdgeInsets.only(top: 95),
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: PosterWidget(
-              content: content,
-              height: 170,
-              width: 125,
-              isRedirect: false,
+            child: Hero(
+              tag: 'videoPlayer',
+              child: PosterWidget(
+                content: content,
+                height: 170,
+                width: 125,
+                isRedirect: false,
+              ),
             ),
           ),
         ),

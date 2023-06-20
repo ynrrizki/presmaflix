@@ -65,6 +65,12 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await _authRepository.signInWithGoogle();
       emit(state.copyWith(status: LoginStatus.success));
-    } catch (_) {}
+    } catch (e) {
+      String errorMessage = 'Terjadi kesalahan signIn dengan Google.';
+      if (e is auth.FirebaseException) {
+        errorMessage = '${e.message}';
+      }
+      emit(state.copyWith(info: errorMessage, status: LoginStatus.error));
+    }
   }
 }

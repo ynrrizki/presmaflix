@@ -59,6 +59,7 @@ class AppRouter {
       case "/content-video":
         final args = settings.arguments as ContentVideoArguments;
         return CupertinoPageRoute(
+          fullscreenDialog: true,
           builder: (context) => ContentVideoPage(
             video: args.video,
           ),

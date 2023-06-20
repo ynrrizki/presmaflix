@@ -21,7 +21,6 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   })  : _contentBloc = contentBloc,
         // _ratingBloc = ratingBloc,
         super(SearchLoading()) {
-    // on<SearchEvent>((event, emit) {});
     on<LoadSearch>(_onLoadSearch);
     on<SearchContent>(_onSearchContent);
     on<UpdateResult>(_onUpdateResult);
@@ -46,7 +45,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     if (event.genre.isNotEmpty) {
       searchResult = searchResult
           .where(
-            (content) => content.genre.contains(event.genre),
+            (content) => content.genre.any((element) => element == event.genre),
           )
           .toList();
       emit(SearchLoaded(contents: searchResult));

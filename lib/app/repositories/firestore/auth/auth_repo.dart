@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+// import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart' as google_auth;
 import 'package:presmaflix/app/models/user/user.dart';
@@ -126,14 +128,14 @@ class AuthRepository extends Repository {
         );
 
         // Melakukan sign in dengan kredensial Google ke Firebase
-        await _firebaseAuth.signInWithCredential(credential);
+        final result = await _firebaseAuth.signInWithCredential(credential);
 
         // Membuat objek User dari data pengguna saat ini
         user = const User().copyWith(
-          id: _firebaseAuth.currentUser!.uid,
-          avatar: _firebaseAuth.currentUser!.photoURL!,
-          name: _firebaseAuth.currentUser!.displayName!,
-          email: _firebaseAuth.currentUser!.email!,
+          id: result.user!.uid,
+          avatar: result.user!.photoURL!,
+          name: result.user!.displayName!,
+          email: result.user!.email!,
         );
 
         // Membuat pengguna di repository jika belum ada
@@ -156,6 +158,7 @@ class AuthRepository extends Repository {
     try {
       await Future.wait([
         _firebaseAuth.signOut(),
+        DefaultCacheManager().emptyCache(),
       ]);
     } catch (e) {
       rethrow;
@@ -163,13 +166,13 @@ class AuthRepository extends Repository {
   }
 }
 
-extension on firebase_auth.User {
-  User get toUser {
-    return User(
-      id: uid,
-      email: email,
-      name: displayName,
-      avatar: photoURL,
-    );
-  }
-}
+// extension on firebase_auth.User {
+//   User get toUser {
+//     return User(
+//       id: uid,
+//       email: email,
+//       name: displayName,
+//       avatar: photoURL,
+//     );
+//   }
+// }

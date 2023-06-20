@@ -56,17 +56,30 @@ class UserRepository extends Repository {
   }
 
   Stream<User> getUserByEmail({String? email}) {
+    log(email!, name: 'user_repo');
     return _firebaseFirestore
         .collection('users')
         .where('email', isEqualTo: email)
         .snapshots()
         .map(
-          (snap) => snap.docs
-              .map(
-                (doc) => User.fromSnapshot(doc),
-              )
-              .single,
-        );
+      (snapshot) {
+        return snapshot.docs.map((e) => User.fromSnapshot(e)).first;
+      },
+    );
+  }
+
+  Stream<String?> getUserAvatarByEmail({required String email}) {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .snapshots()
+        .map((snapshot) {
+      String? avatar;
+      for (var doc in snapshot.docs) {
+        avatar = doc.data()['avatar'];
+      }
+      return avatar;
+    });
   }
 
   @override

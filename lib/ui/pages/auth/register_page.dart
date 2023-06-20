@@ -87,42 +87,45 @@ class _SignupButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return state.status == SignupStatus.submitting
-            ? ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                ),
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(),
-                    ),
-                  ),
-                ),
-              )
-            : ElevatedButton(
-                onPressed: () {
-                  // Navigator.pushNamedAndRemoveUntil(
-                  //   context,
-                  //   '/home',
-                  //   (route) => false,
-                  // );
-                  context.read<SignupCubit>().signUpFormSubmitted();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: kPrimaryColor,
-                ),
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Text('Register'),
-                  ),
-                ),
-              );
+            ? _submitting()
+            : _initial(context);
       },
+    );
+  }
+
+  ElevatedButton _initial(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        context.read<SignupCubit>().signUpFormSubmitted();
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: kPrimaryColor,
+      ),
+      child: const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Text('Register'),
+        ),
+      ),
+    );
+  }
+
+  ElevatedButton _submitting() {
+    return ElevatedButton(
+      onPressed: () {},
+      style: ElevatedButton.styleFrom(
+        backgroundColor: kPrimaryColor,
+      ),
+      child: const Center(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: SizedBox(
+            height: 20,
+            width: 20,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
     );
   }
 }

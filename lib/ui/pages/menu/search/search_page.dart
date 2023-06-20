@@ -60,9 +60,6 @@ class _SearchPageState extends State<SearchPage> {
           hintText: 'Title',
           searchController: searchController,
           onChanged: (value) {
-            // context
-            //     .read<search_cubit.SearchCubit>()
-            //     .searchChanged(title: value);
             context.read<SearchBloc>().add(
                   SearchContent(title: value),
                 );
@@ -161,7 +158,6 @@ class LoadSearch extends StatelessWidget {
                         if (totalRating.isNaN) {
                           totalRating = 0.0;
                         }
-
                         return ContentCardWidget(
                           content,
                           name: content.title,
@@ -306,47 +302,35 @@ class IdleSearch extends StatelessWidget {
                   mainAxisSpacing: 5,
                   crossAxisCount: 2,
                   children: [
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.house_outlined),
-                        title: const Text('Drama'),
-                      ),
+                    _genreCard(
+                      context,
+                      title: 'Drama',
+                      leading: const Icon(Icons.house_outlined),
                     ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(CupertinoIcons.heart),
-                        title: const Text('Romance'),
-                      ),
+                    _genreCard(
+                      context,
+                      title: 'Romance',
+                      leading: const Icon(CupertinoIcons.heart),
                     ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.emoji_emotions_outlined),
-                        title: const Text('Comedy'),
-                      ),
+                    _genreCard(
+                      context,
+                      title: 'Comedy',
+                      leading: const Icon(Icons.emoji_emotions_outlined),
                     ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.local_movies_outlined),
-                        title: const Text('Horror'),
-                      ),
+                    _genreCard(
+                      context,
+                      title: 'Horror',
+                      leading: const Icon(Icons.local_movies_outlined),
                     ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.science_outlined),
-                        title: const Text('Fiction'),
-                      ),
+                    _genreCard(
+                      context,
+                      title: 'Fiction',
+                      leading: const Icon(Icons.science_outlined),
                     ),
-                    Card(
-                      child: ListTile(
-                        onTap: () {},
-                        leading: const Icon(Icons.search_outlined),
-                        title: const Text('Mystery'),
-                      ),
+                    _genreCard(
+                      context,
+                      title: 'Mystery',
+                      leading: const Icon(Icons.search_outlined),
                     ),
                   ],
                 ),
@@ -354,6 +338,37 @@ class IdleSearch extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Card _genreCard(BuildContext context,
+      {required String title, required Widget leading}) {
+    List<Content> contents = [];
+    return Card(
+      child: BlocListener<ContentBloc, ContentState>(
+        bloc: context.read<ContentBloc>()..add(LoadContents()),
+        listener: (context, state) {
+          if (state is ContentLoaded) {
+            contents = state.contents;
+          }
+        },
+        child: ListTile(
+          onTap: () {
+            Navigator.of(context, rootNavigator: true).pushNamed(
+              '/content-all',
+              arguments: ContentAllArguments(
+                title: title,
+                contents: contents
+                    .where((content) =>
+                        content.genre.any((element) => element.contains(title)))
+                    .toList(),
+              ),
+            );
+          },
+          leading: leading,
+          title: Text(title),
+        ),
       ),
     );
   }

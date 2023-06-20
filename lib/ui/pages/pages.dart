@@ -19,9 +19,9 @@ export 'onboarding/onboarding_page.dart';
 export 'menu/bottom_navigation.dart';
 // - home
 export 'menu/home/home_page.dart';
-export 'menu/home/content/content_all_page.dart';
-export 'menu/home/content/content_detail_page.dart';
-export 'menu/home/content/content_video_page.dart';
+export 'menu/content/content_all_page.dart';
+export 'menu/content/content_detail_page.dart';
+export 'menu/content/content_video_page.dart';
 // - search
 export 'menu/search/search_page.dart';
 // - watchlist

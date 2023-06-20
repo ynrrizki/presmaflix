@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 class Review extends Equatable {
   final String id;
   final String videoId;
+  final String userId;
   final String name;
   final String email;
   final String comment;
@@ -12,6 +13,7 @@ class Review extends Equatable {
   const Review({
     required this.id,
     required this.videoId,
+    required this.userId,
     required this.name,
     required this.email,
     required this.comment,
@@ -23,6 +25,7 @@ class Review extends Equatable {
     return Review(
       id: data.id,
       videoId: data['videoId'],
+      userId: data['userId'],
       name: data['name'],
       email: data['email'],
       comment: data['comment'],
@@ -33,6 +36,7 @@ class Review extends Equatable {
   Map<String, dynamic> toDocument() {
     return {
       'videoId': videoId,
+      'userId': userId,
       'name': name,
       'email': email,
       'comment': comment,
@@ -44,6 +48,7 @@ class Review extends Equatable {
   List<Object?> get props => [
         id,
         videoId,
+        userId,
         name,
         email,
         comment,
@@ -54,6 +59,7 @@ class Review extends Equatable {
     Review(
       id: '1',
       videoId: '1',
+      userId: '1',
       name: 'Yanuar Rizki',
       email: 'yanuarrizki165@gmail.com',
       comment: "Videonya keren banget gilaaa",

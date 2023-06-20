@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,7 +67,12 @@ class HomePage extends StatelessWidget {
                         const SizedBox(height: 15),
                         _contentSection(
                             title: 'Music Video', type: 'music-video'),
-                        const SizedBox(height: 50),
+                        // AspectRatio(
+                        //   aspectRatio: 16 / 9,
+                        //   child: Image.asset(
+                        //       'assets/illustration/Popcorns-pana.png'),
+                        // ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),

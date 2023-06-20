@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -11,6 +12,7 @@ part 'user_state.dart';
 class UserBloc extends Bloc<UserEvent, UserState> {
   final UserRepository _userRepository;
   StreamSubscription? _userSubscription;
+  StreamSubscription? _userEmailSubscription;
 
   UserBloc({required UserRepository userRepository})
       : _userRepository = userRepository,
@@ -18,6 +20,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<LoadUserById>(_onLoadUserById);
     on<LoadUserByEmail>(_onLoadUserByEmail);
     on<UpdateUser>(_onUpdateUser);
+    on<UpdateAvatar>(_onUpdateAvatar);
 
     on<EditUser>((event, emit) async {
       await _userRepository.updateUser(event.user);
@@ -32,10 +35,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   }
 
   void _onLoadUserByEmail(LoadUserByEmail event, Emitter<UserState> emit) {
-    _userSubscription?.cancel();
-    _userSubscription =
-        _userRepository.getUserByEmail(email: event.email).listen((user) {
-      return add(UpdateUser(user));
+    _userEmailSubscription?.cancel();
+    _userEmailSubscription = _userRepository
+        .getUserAvatarByEmail(email: event.email)
+        .listen((avatar) {
+      log(event.email, name: 'user_bloc ');
+      return add(UpdateAvatar(avatar!));
     });
   }
 
@@ -43,16 +48,14 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     emit(UserByIdLoaded(user: event.user));
   }
 
-  // void _onUpdateUserToState(
-  //   UpdateUser event,
-  //   Emitter<UserState> emit,
-  // ) {
-  //   emit(UserLoaded(user: event.user));
-  // }
+  void _onUpdateAvatar(UpdateAvatar event, Emitter<UserState> emit) {
+    emit(UserAvatarLoaded(avatar: event.avatar));
+  }
 
   @override
   Future<void> close() async {
     _userSubscription?.cancel();
+    _userEmailSubscription?.cancel();
     super.close();
   }
 }
