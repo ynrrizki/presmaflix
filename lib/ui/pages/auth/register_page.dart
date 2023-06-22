@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/cubits/signup/signup_cubit.dart';
+import 'package:presmaflix/app/helpers/helpers.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 
@@ -17,6 +18,7 @@ class RegisterPage extends StatelessWidget {
         if (state.status == SignupStatus.success) {
           Navigator.of(context).pop();
         } else if (state.status == SignupStatus.error) {
+          loading(context, isLoading: false);
           final snackBar = SnackBar(
             content: Text(
               state.info,
@@ -86,46 +88,21 @@ class _SignupButton extends StatelessWidget {
     return BlocBuilder<SignupCubit, SignupState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status == SignupStatus.submitting
-            ? _submitting()
-            : _initial(context);
-      },
-    );
-  }
-
-  ElevatedButton _initial(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        context.read<SignupCubit>().signUpFormSubmitted();
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: kPrimaryColor,
-      ),
-      child: const Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Text('Register'),
-        ),
-      ),
-    );
-  }
-
-  ElevatedButton _submitting() {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        backgroundColor: kPrimaryColor,
-      ),
-      child: const Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator(),
+        return ElevatedButton(
+          onPressed: () {
+            context.read<SignupCubit>().signUpFormSubmitted();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kPrimaryColor,
           ),
-        ),
-      ),
+          child: const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text('Register'),
+            ),
+          ),
+        );
+      },
     );
   }
 }

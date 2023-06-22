@@ -158,6 +158,17 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
             const SizedBox(
               height: 25,
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            Shimmer.fromColors(
+              baseColor: const Color.fromARGB(123, 121, 121, 121),
+              highlightColor: const Color.fromARGB(255, 128, 128, 128),
+              child: _RatingWidget(content: widget.content),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
             _buttonPlay(
               context,
               video: videos.isEmpty
@@ -547,7 +558,7 @@ Future<dynamic> _moreModalBottomSheet(BuildContext context) {
     ),
     builder: (BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [

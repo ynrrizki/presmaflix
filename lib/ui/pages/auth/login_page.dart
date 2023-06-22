@@ -58,13 +58,6 @@ class LoginPage extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          // if (state.status == LoginStatus.submitting) {
-          //   return Center(
-          //     child: CircularProgressIndicator(
-          //       color: kPrimaryColor,
-          //     ),
-          //   );
-          // }
           return SingleChildScrollView(
             child: SafeArea(
               child: Container(

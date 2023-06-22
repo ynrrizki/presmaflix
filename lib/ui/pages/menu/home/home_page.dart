@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -59,14 +58,25 @@ class HomePage extends StatelessWidget {
                         child: FadeInAnimation(child: widget),
                       ),
                       children: [
-                        _contentSection(title: 'Movie', type: 'movie'),
-                        const SizedBox(height: 15),
-                        _contentSection(title: 'Animation', type: 'animation'),
-                        const SizedBox(height: 15),
-                        _contentSection(title: 'Tv Global', type: 'tv-global'),
+                        _contentSection(
+                          title: 'Movie',
+                          type: 'movie',
+                        ),
                         const SizedBox(height: 15),
                         _contentSection(
-                            title: 'Music Video', type: 'music-video'),
+                          title: 'Animation',
+                          type: 'animation',
+                        ),
+                        const SizedBox(height: 15),
+                        _contentSection(
+                          title: 'Tv Global',
+                          type: 'tv-global',
+                        ),
+                        const SizedBox(height: 15),
+                        _contentSection(
+                          title: 'Music Video',
+                          type: 'music-video',
+                        ),
                         // AspectRatio(
                         //   aspectRatio: 16 / 9,
                         //   child: Image.asset(

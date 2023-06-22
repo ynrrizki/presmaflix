@@ -17,11 +17,11 @@ class ReviewRepository {
         .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
-          (snapshot) => snapshot.docs
-              .map(
-                (doc) => Review.fromSnapshot(doc),
-              )
-              .toList(),
+          (snapshot) => snapshot.docs.map(
+            (doc) {
+              return Review.fromSnapshot(doc);
+            },
+          ).toList(),
         );
   }
 

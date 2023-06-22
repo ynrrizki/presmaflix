@@ -44,7 +44,6 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   flutter_downloader: ^1.10.4
   flutter_icons_null_safety: ^1.1.0
-  flutter_multi_select_items: ^0.4.2
   flutter_rating_bar: ^4.0.1
   flutter_slidable: ^3.0.0
   flutter_staggered_animations: ^1.1.1
@@ -52,13 +51,15 @@ dependencies:
   google_sign_in: ^6.1.2
   icons_launcher: ^2.1.1
   intl: ^0.18.1
+  miniplayer: ^1.0.1
   modal_bottom_sheet: ^3.0.0-pre
   path_provider: ^2.0.15
   permission_handler: ^10.3.0
   persistent_bottom_nav_bar_v2: ^4.2.8
-  pod_player: ^0.1.4
+  pod_player: ^0.1.5
   share_plus: ^6.3.4
   shimmer: ^2.0.0
+  timeago: ^3.4.0
   zoom_tap_animation: ^1.1.0
 
 dev_dependencies:

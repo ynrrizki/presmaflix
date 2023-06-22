@@ -76,7 +76,7 @@ class AuthRepository extends Repository {
       );
 
       // Membuat objek User dari data pengguna yang baru dibuat
-      final user = User(
+      final user = const User().copyWith(
         id: userCredential.user!.uid,
         avatar: 'https://ui-avatars.com/api/?name=$name',
         name: name,
