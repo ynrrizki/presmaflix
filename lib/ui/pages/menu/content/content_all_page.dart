@@ -20,7 +20,7 @@ class ContentAllPage extends StatelessWidget {
           style: GoogleFonts.plusJakartaSans(
             color: Colors.white,
             fontWeight: FontWeight.w700,
-            fontSize: 25,
+            fontSize: 17,
           ),
         ),
         iconTheme: const IconThemeData(

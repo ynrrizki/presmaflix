@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/models/content/content.dart';
 import 'package:presmaflix/routes/argument/content/content_detail_args.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class BannerWidget extends StatefulWidget {
   const BannerWidget({Key? key, required this.contents}) : super(key: key);
@@ -18,6 +19,102 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return _web();
+    }
+    return _mobile();
+  }
+
+  Widget _web() {
+    return Center(
+      child: Container(
+        constraints: const BoxConstraints(
+          maxWidth: 1110,
+          maxHeight: 416,
+        ),
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            widget.contents.isNotEmpty
+                ? CarouselSlider(
+                    items: widget.contents
+                        .map(
+                          (content) => HeroCarouselCard(
+                            content: content,
+                          ),
+                        )
+                        .toList(),
+                    options: CarouselOptions(
+                      initialPage: 0,
+                      viewportFraction: 1,
+                      reverse: false,
+                      autoPlay: true,
+                      autoPlayInterval: const Duration(seconds: 5),
+                      autoPlayAnimationDuration:
+                          const Duration(milliseconds: 300),
+                      autoPlayCurve: Curves.fastLinearToSlowEaseIn,
+                      scrollDirection: Axis.horizontal,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _indexCarousel = index;
+                        });
+                      },
+                    ),
+                  )
+                : CarouselSlider(
+                    items: [
+                      Shimmer.fromColors(
+                        baseColor: const Color.fromARGB(123, 121, 121, 121),
+                        highlightColor:
+                            const Color.fromARGB(255, 128, 128, 128),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                    options: CarouselOptions(
+                      viewportFraction: 1,
+                      scrollPhysics: const NeverScrollableScrollPhysics(),
+                    ),
+                  ),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(150, 158, 158, 158),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${_indexCarousel + 1}',
+                    style: GoogleFonts.plusJakartaSans(),
+                  ),
+                  Text(
+                    ' / ',
+                    style: GoogleFonts.plusJakartaSans(
+                      color: const Color.fromARGB(157, 255, 255, 255),
+                    ),
+                  ),
+                  Text(
+                    '${widget.contents.length}',
+                    style: GoogleFonts.plusJakartaSans(
+                      color: const Color.fromARGB(157, 255, 255, 255),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Stack _mobile() {
     return Stack(
       alignment: Alignment.bottomRight,
       children: [

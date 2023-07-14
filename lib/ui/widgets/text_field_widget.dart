@@ -11,6 +11,8 @@ class TextFieldWidget extends StatefulWidget {
   final String? initialValue;
   final Function(String)? onChanged;
   bool? readOnly;
+  void Function(String?)? onSaved;
+  AutovalidateMode? autovalidateMode;
 
   TextFieldWidget({
     Key? key,
@@ -22,6 +24,8 @@ class TextFieldWidget extends StatefulWidget {
     this.initialValue,
     this.onChanged,
     this.readOnly = false,
+    this.onSaved,
+    this.autovalidateMode,
   }) : super(key: key);
 
   @override
@@ -39,17 +43,23 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       initialValue: widget.initialValue,
       readOnly: widget.readOnly!,
       onChanged: widget.onChanged,
+      onSaved: widget.onSaved,
+      autovalidateMode: widget.autovalidateMode,
       decoration: InputDecoration(
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: Colors.red),
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: Theme.of(context).primaryColor),
+          borderSide: const BorderSide(color: Colors.white),
         ),
         floatingLabelStyle: GoogleFonts.plusJakartaSans(
-          color: Theme.of(context).primaryColor,
+          color: Colors.white,
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
@@ -71,17 +81,14 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                   });
                 },
                 child: widget.obscureText ?? true
-                    ? const Icon(Icons.visibility_off)
-                    : Icon(Icons.visibility,
-                        color: Theme.of(context).primaryColor),
+                    ? const Icon(Icons.visibility_off, color: Colors.grey)
+                    : const Icon(Icons.visibility, color: Colors.white),
               )
             : null,
-        hoverColor: Theme.of(context).primaryColor,
-        focusColor: Theme.of(context).primaryColor,
         label: widget.label,
         iconColor: Theme.of(context).primaryColor,
       ),
-      cursorColor: Theme.of(context).primaryColor,
+      cursorColor: Colors.white,
     );
   }
 }

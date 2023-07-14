@@ -31,32 +31,39 @@ class LoginCubit extends Cubit<LoginState> {
     );
   }
 
-  Future<void> logInWithCredentials() async {
+  Future<void> logInWithCredentials(bool validate) async {
     if (state.status == LoginStatus.submitting) return;
     emit(state.copyWith(status: LoginStatus.submitting));
-    try {
-      await _authRepository.logInWithEmailAndPassword(
-        email: state.email,
-        password: state.password,
-      );
-      emit(state.copyWith(status: LoginStatus.success));
-      emit(state.copyWith(
-        email: '',
-        password: '',
-        status: LoginStatus.initial,
-      ));
-      log('${_authRepository.isVerify!}', name: 'LoginCubit');
-      if (_authRepository.isVerify!) {
-        emit(state.copyWith(status: LoginStatus.verify));
-      } else {
-        emit(state.copyWith(status: LoginStatus.notVerify));
+    if (validate) {
+      try {
+        await _authRepository.logInWithEmailAndPassword(
+          email: state.email,
+          password: state.password,
+        );
+        emit(state.copyWith(status: LoginStatus.success));
+        emit(state.copyWith(
+          email: '',
+          password: '',
+          status: LoginStatus.initial,
+        ));
+
+        final user = auth.FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await user.reload();
+          log('${user.emailVerified}', name: 'LoginCubit');
+          if (!user.emailVerified) {
+            emit(state.copyWith(status: LoginStatus.notVerify));
+          } else {
+            emit(state.copyWith(status: LoginStatus.verify));
+          }
+        }
+      } catch (e) {
+        String errorMessage = 'Terjadi kesalahan saat mendaftar.';
+        if (e is auth.FirebaseException) {
+          errorMessage = '${e.message}';
+        }
+        emit(state.copyWith(info: errorMessage, status: LoginStatus.error));
       }
-    } catch (e) {
-      String errorMessage = 'Terjadi kesalahan saat mendaftar.';
-      if (e is auth.FirebaseException) {
-        errorMessage = '${e.message}';
-      }
-      emit(state.copyWith(info: errorMessage, status: LoginStatus.error));
     }
   }
 

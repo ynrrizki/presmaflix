@@ -31,7 +31,7 @@ class AppRouter {
         );
       case "/home":
         return CupertinoPageRoute(
-          builder: (context) => const BottomNavigation(index: 0),
+          builder: (context) => const Navigate(),
         );
       case "/watchlist":
         return CupertinoPageRoute(

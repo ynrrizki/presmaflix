@@ -83,90 +83,90 @@ class ContentVideoPageState extends State<ContentVideoPage> {
       body: ListView(
         children: [
           _videoPlayer(),
-          Column(
-            children: [
-              const SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: SizedBox(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
                       width: MediaQuery.of(context).size.width * 0.8,
                       child: Text(
                         widget.video.title.toString(),
                         softWrap: true,
+                        style: GoogleFonts.poppins(
+                          fontSize: 17,
+                        ),
                       ),
                     ),
-                  ),
-                  IconButton.filled(
-                    onPressed: () {},
-                    icon: const Icon(Icons.share),
-                  )
-                ],
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
                   widget.video.description.toString(),
                   style: GoogleFonts.poppins(
                     fontWeight: FontWeight.w400,
                     color: Colors.grey,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(
             height: 15,
           ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            color: const Color.fromARGB(255, 41, 41, 41),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 7),
-                  Text(
-                    'Comments',
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  ListTile(
-                    // onTap: () => _commentColumn(context),
-                    onTap: () => _scaffoldKey.currentState!
-                        .showBottomSheet((context) => commentSection(context)),
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    leading: CircleAvatar(
-                      radius: 15,
-                      backgroundImage: CachedNetworkImageProvider(
-                        user.avatar ??
-                            'https://ui-avatars.com/api/?name=${user.name}',
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              color: const Color.fromARGB(255, 41, 41, 41),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 7),
+                    Text(
+                      'Comments',
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    title: TextField(
-                      controller: TextEditingController(),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(6),
-                        hintText: 'Add a comment',
-                        enabled: false,
-                        constraints: BoxConstraints(
-                          maxHeight: 30,
+                    ListTile(
+                      // onTap: () => _commentColumn(context),
+                      onTap: () => _scaffoldKey.currentState!.showBottomSheet(
+                          (context) => commentSection(context)),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      leading: CircleAvatar(
+                        radius: 15,
+                        backgroundImage: CachedNetworkImageProvider(
+                          user.avatar ??
+                              'https://ui-avatars.com/api/?name=${user.name}',
                         ),
-                        border: OutlineInputBorder(),
-                        filled: true,
+                      ),
+                      title: TextField(
+                        controller: TextEditingController(),
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(6),
+                          hintText: 'Add a comment',
+                          enabled: false,
+                          constraints: BoxConstraints(
+                            maxHeight: 30,
+                          ),
+                          border: OutlineInputBorder(),
+                          filled: true,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 7),
-                ],
+                    const SizedBox(height: 7),
+                  ],
+                ),
               ),
             ),
           ),
@@ -198,7 +198,7 @@ class ContentVideoPageState extends State<ContentVideoPage> {
     bool isReadonly = false,
     GestureTapCallback? onTap,
     bool autofocus = false,
-    bool enableBorderFocus = false,
+    // bool enableBorderFocus = false,
   }) {
     final user = context.select((AppBloc bloc) => bloc.state.user);
     return Padding(

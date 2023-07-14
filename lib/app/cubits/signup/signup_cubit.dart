@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 // import 'package:flutter/services.dart';
 import 'package:presmaflix/app/repositories/firestore/auth/auth_repo.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'dart:developer';
 
 part 'signup_state.dart';
 
@@ -38,22 +39,26 @@ class SignupCubit extends Cubit<SignupState> {
     );
   }
 
-  Future<void> signUpFormSubmitted() async {
+  Future<void> signUpFormSubmitted(bool validate) async {
     if (state.status == SignupStatus.submitting) return;
     emit(state.copyWith(status: SignupStatus.submitting));
-    try {
-      await _authRepository.signUp(
-        name: state.name,
-        email: state.email,
-        password: state.password,
-      );
-      emit(state.copyWith(status: SignupStatus.success));
-    } catch (e) {
-      String errorMessage = 'Terjadi kesalahan saat mendaftar.';
-      if (e is auth.FirebaseException) {
-        errorMessage = '${e.message}';
+    if (validate) {
+      try {
+        await _authRepository.signUp(
+          name: state.name,
+          email: state.email,
+          password: state.password,
+        );
+        emit(state.copyWith(status: SignupStatus.success));
+        log(state.status.toString());
+      } catch (e) {
+        String errorMessage = 'Terjadi kesalahan saat mendaftar.';
+        if (e is auth.FirebaseException) {
+          errorMessage = '${e.message}';
+        }
+        emit(state.copyWith(info: errorMessage, status: SignupStatus.error));
+        log(state.status.toString());
       }
-      emit(state.copyWith(info: errorMessage, status: SignupStatus.error));
     }
   }
 }

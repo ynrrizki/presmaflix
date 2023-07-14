@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:presmaflix/app/cubits/login/login_cubit.dart';
-import 'package:presmaflix/app/helpers/helpers.dart';
+import 'package:presmaflix/app/helpers/functions.dart';
+import 'package:presmaflix/app/helpers/text_input_validator.dart';
 import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/widgets/widgets.dart';
 
@@ -17,30 +18,24 @@ class LoginPage extends StatelessWidget {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       key: scaffoldKey,
-      // body: Center(child: CircularProgressIndicator()),
       body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state.status == LoginStatus.success) {
-            // Navigator.pushNamedAndRemoveUntil(
-            //   context,
-            //   '/verif',
-            //   (route) => false,
-            // );
-            if (state.status == LoginStatus.verify) {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/verif',
-                (route) => false,
-              );
-            } else {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/home',
-                (route) => false,
-              );
-            }
+          if (state.status == LoginStatus.notVerify) {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/verif',
+              (route) => false,
+            );
+          } else if (state.status == LoginStatus.verify) {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/home',
+              (route) => false,
+            );
           } else if (state.status == LoginStatus.submitting) {
-            loading(context);
+            if (formKey.currentState!.validate()) {
+              loading(context);
+            }
           } else if (state.status == LoginStatus.error) {
             loading(context, isLoading: false);
             final snackBar = SnackBar(
@@ -60,10 +55,15 @@ class LoginPage extends StatelessWidget {
         builder: (context, state) {
           return SingleChildScrollView(
             child: SafeArea(
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(15.0),
-                child: LoginForm(formKey: formKey),
+              child: Center(
+                child: Container(
+                  constraints: const BoxConstraints(
+                    maxWidth: 600,
+                  ),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(15.0),
+                  child: LoginForm(formKey: formKey),
+                ),
               ),
             ),
           );
@@ -95,7 +95,7 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           const SizedBox(height: 85),
           Text(
-            'Selamat Datang!',
+            'Selamat Datang',
             style: GoogleFonts.plusJakartaSans(
               fontSize: 24,
               color: kPrimaryColor,
@@ -116,7 +116,9 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           _PasswordInput(),
           const SizedBox(height: 50),
-          _LoginButton(),
+          _LoginButton(
+            formKey: widget.formKey,
+          ),
           const SizedBox(height: 25),
           _SignInGoogleButton(),
           const SizedBox(height: 50),
@@ -181,12 +183,17 @@ class _SignInGoogleButton extends StatelessWidget {
   }
 }
 
+// ignore: must_be_immutable
 class _LoginButton extends StatelessWidget {
+  _LoginButton({required this.formKey});
+  GlobalKey<FormState> formKey;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        context.read<LoginCubit>().logInWithCredentials();
+        context
+            .read<LoginCubit>()
+            .logInWithCredentials(formKey.currentState!.validate());
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: kPrimaryColor,
@@ -209,9 +216,11 @@ class _EmailInput extends StatelessWidget {
       builder: (context, state) {
         return TextFieldWidget(
           label: const Text('Email'),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (email) {
             context.read<LoginCubit>().emailChanged(email);
           },
+          validator: TextInputValidator.validateEmail,
         );
       },
     );
@@ -227,9 +236,11 @@ class _PasswordInput extends StatelessWidget {
         return TextFieldWidget(
           label: const Text('Password'),
           obscureText: true,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           onChanged: (password) {
             context.read<LoginCubit>().passwordChanged(password);
           },
+          validator: TextInputValidator.validatePassword,
         );
       },
     );

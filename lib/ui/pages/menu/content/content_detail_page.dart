@@ -76,62 +76,69 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
                 color: Colors.white,
               ),
             ),
-            body: TabBarController(
-              header: Column(
-                children: [
-                  _posterImage(
-                    widget.content,
+            body: Center(
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 1110,
+                ),
+                child: TabBarController(
+                  header: Column(
+                    children: [
+                      _posterImage(
+                        widget.content,
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      _title(
+                        widget.content.title,
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      _genre(
+                        widget.content.genre.join(' • '),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      _RatingWidget(content: widget.content),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      _buttonPlay(
+                        context,
+                        video: state.videos
+                            .where((video) => video.type == 'full-length')
+                            .single,
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      _description(
+                        widget.content.description,
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      _actionsBtn(context),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                      _directsAndCasts(
+                        widget.content.directors.join(', '),
+                        widget.content.casts.join(', '),
+                      ),
+                      const SizedBox(
+                        height: 25,
+                      ),
+                    ],
                   ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _title(
-                    widget.content.title,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _genre(
-                    widget.content.genre.join(' • '),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  _RatingWidget(content: widget.content),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _buttonPlay(
-                    context,
-                    video: state.videos
-                        .where((video) => video.type == 'full-length')
-                        .single,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _description(
-                    widget.content.description,
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _actionsBtn(context),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                  _directsAndCasts(
-                    widget.content.directors.join(', '),
-                    widget.content.casts.join(', '),
-                  ),
-                  const SizedBox(
-                    height: 25,
-                  ),
-                ],
+                  tabCount: _generateTab(videos, tabTypes).length + 1,
+                  tabs: _generateTabs(videos, tabTypes),
+                  tabBarViews: _generateTabViews(videos, tabTypes),
+                ),
               ),
-              tabCount: _generateTab(videos, tabTypes).length + 1,
-              tabs: _generateTabs(videos, tabTypes),
-              tabBarViews: _generateTabViews(videos, tabTypes),
             ),
           );
         }
@@ -142,58 +149,67 @@ class _ContentDetailPageState extends State<ContentDetailPage> {
 
   Scaffold _skleton(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        child: Column(
-          children: [
-            _posterImage(widget.content, isShimmer: true),
-            const SizedBox(
-              height: 25,
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(
+            maxWidth: 1110,
+          ),
+          child: SingleChildScrollView(
+            physics: const NeverScrollableScrollPhysics(),
+            child: Column(
+              children: [
+                _posterImage(widget.content, isShimmer: true),
+                const SizedBox(
+                  height: 25,
+                ),
+                _title(widget.content.title, isShimmer: true),
+                const SizedBox(
+                  height: 25,
+                ),
+                _genre(widget.content.genre.join(' • '), isShimmer: true),
+                const SizedBox(
+                  height: 25,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Shimmer.fromColors(
+                  baseColor: const Color.fromARGB(123, 121, 121, 121),
+                  highlightColor: const Color.fromARGB(255, 128, 128, 128),
+                  child: _RatingWidget(content: widget.content),
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                _buttonPlay(
+                  context,
+                  video: videos.isEmpty
+                      ? null
+                      : videos
+                          .where((video) => video.type == 'full-length')
+                          .single,
+                  isShimmer: true,
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                _description(widget.content.description, isShimmer: true),
+                const SizedBox(
+                  height: 25,
+                ),
+                _actionsBtn(context, isShimmer: true),
+                const SizedBox(
+                  height: 25,
+                ),
+                _directsAndCasts(widget.content.directors.join(', '),
+                    widget.content.casts.join(', '),
+                    isShimmer: true),
+                const SizedBox(
+                  height: 25,
+                ),
+              ],
             ),
-            _title(widget.content.title, isShimmer: true),
-            const SizedBox(
-              height: 25,
-            ),
-            _genre(widget.content.genre.join(' • '), isShimmer: true),
-            const SizedBox(
-              height: 25,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Shimmer.fromColors(
-              baseColor: const Color.fromARGB(123, 121, 121, 121),
-              highlightColor: const Color.fromARGB(255, 128, 128, 128),
-              child: _RatingWidget(content: widget.content),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            _buttonPlay(
-              context,
-              video: videos.isEmpty
-                  ? null
-                  : videos.where((video) => video.type == 'full-length').single,
-              isShimmer: true,
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            _description(widget.content.description, isShimmer: true),
-            const SizedBox(
-              height: 25,
-            ),
-            _actionsBtn(context, isShimmer: true),
-            const SizedBox(
-              height: 25,
-            ),
-            _directsAndCasts(widget.content.directors.join(', '),
-                widget.content.casts.join(', '),
-                isShimmer: true),
-            const SizedBox(
-              height: 25,
-            ),
-          ],
+          ),
         ),
       ),
     );

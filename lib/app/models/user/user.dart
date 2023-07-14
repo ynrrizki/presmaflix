@@ -21,6 +21,9 @@ class User extends Equatable {
   bool get isEmpty => this == User.empty;
   bool get isNotEmpty => this != User.empty;
 
+  String get avatarDefault =>
+      Uri.encodeFull('https://ui-avatars.com/api/?name=$name').toString();
+
   User copyWith({
     String? id,
     String? avatar,

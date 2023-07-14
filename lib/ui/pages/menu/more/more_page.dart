@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:presmaflix/app/bloc/app/app_bloc.dart';
 import 'package:presmaflix/app/bloc/user/user_bloc.dart';
 import 'package:presmaflix/app/cubits/logout/logout_cubit.dart';
-import 'package:presmaflix/app/helpers/helpers.dart';
+import 'package:presmaflix/app/helpers/functions.dart';
 import 'package:presmaflix/app/models/user/user.dart';
 import 'package:presmaflix/config/themes.dart';
 
@@ -143,8 +143,7 @@ class _AccountCard extends StatelessWidget {
                 leading: CircleAvatar(
                   radius: 25.0,
                   backgroundImage: CachedNetworkImageProvider(
-                    state.user.avatar ??
-                        'https://ui-avatars.com/api/?name=${state.user.name}',
+                    state.user.avatar ?? state.user.avatarDefault,
                     scale: 2,
                   ),
                 ),

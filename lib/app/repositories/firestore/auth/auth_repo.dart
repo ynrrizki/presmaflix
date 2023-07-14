@@ -24,10 +24,15 @@ class AuthRepository extends Repository {
 
   var currentUser = User.empty;
 
-  bool? get isVerify {
-    final user = _firebaseAuth.currentUser!;
-    user.reload();
-    return user.emailVerified;
+  Future<bool> get isVerify async {
+    final user = _firebaseAuth.currentUser;
+    if (user != null) {
+      await user.reload();
+      if (user.emailVerified) {
+        return true;
+      }
+    }
+    return false;
   }
 
   // Mendapatkan stream dari perubahan pengguna saat ini
@@ -78,7 +83,8 @@ class AuthRepository extends Repository {
       // Membuat objek User dari data pengguna yang baru dibuat
       final user = const User().copyWith(
         id: userCredential.user!.uid,
-        avatar: 'https://ui-avatars.com/api/?name=$name',
+        avatar:
+            Uri.encodeFull('https://ui-avatars.com/api/?name=$name').toString(),
         name: name,
         email: email,
       );

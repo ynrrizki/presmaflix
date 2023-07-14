@@ -16,7 +16,7 @@ export 'auth/verif_page.dart';
 export 'onboarding/onboarding_page.dart';
 
 // Path: lib\ui\menu
-export 'menu/bottom_navigation.dart';
+export 'menu/navigate.dart';
 // - home
 export 'menu/home/home_page.dart';
 export 'menu/content/content_all_page.dart';

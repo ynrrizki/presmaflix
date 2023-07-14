@@ -4,9 +4,99 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:presmaflix/app/cubits/bottomNavigation/bottom_navigation_cubit.dart';
+import 'package:presmaflix/config/themes.dart';
 import 'package:presmaflix/ui/pages/menu/download/download_page.dart';
 import 'package:presmaflix/ui/pages/pages.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter/foundation.dart' show kIsWeb;
+
+class Navigate extends StatelessWidget {
+  const Navigate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return const SidebarNavigation();
+    }
+    return const BottomNavigation();
+  }
+}
+
+class SidebarNavigation extends StatefulWidget {
+  const SidebarNavigation({super.key});
+
+  @override
+  State<SidebarNavigation> createState() => _SidebarNavigationState();
+}
+
+class _SidebarNavigationState extends State<SidebarNavigation> {
+  List<Widget> buildScreens() {
+    return const [
+      HomePage(),
+      DownloadPage(),
+      WatchListPage(),
+      MorePage(),
+    ];
+  }
+
+  int _selectedIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Row(
+        children: <Widget>[
+          NavigationRail(
+            backgroundColor:
+                Theme.of(context).bottomNavigationBarTheme.backgroundColor ??
+                    Colors.white,
+            selectedIndex: _selectedIndex,
+            unselectedIconTheme: const IconThemeData(color: Colors.white),
+            selectedIconTheme: IconThemeData(color: kPrimaryColor),
+            selectedLabelTextStyle: TextStyle(
+              color: kPrimaryColor,
+            ),
+            unselectedLabelTextStyle: const TextStyle(
+              color: Colors.white,
+            ),
+            onDestinationSelected: (int index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            labelType: NavigationRailLabelType.selected,
+            destinations: const [
+              NavigationRailDestination(
+                icon: Icon(CupertinoIcons.house),
+                selectedIcon: Icon(CupertinoIcons.house_fill),
+                label: Text('Home'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.download_outlined),
+                selectedIcon: Icon(Icons.download),
+                label: Text('Download'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(CupertinoIcons.bookmark),
+                selectedIcon: Icon(CupertinoIcons.bookmark_fill),
+                label: Text('Watchlist'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.menu),
+                selectedIcon: Icon(Icons.menu),
+                label: Text('More'),
+              ),
+            ],
+          ),
+          const VerticalDivider(thickness: 1, width: 1),
+          // This is the main content.
+          Expanded(
+            child: buildScreens().elementAt(_selectedIndex),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key, this.index = 0});
