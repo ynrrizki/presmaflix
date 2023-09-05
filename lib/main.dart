@@ -2,18 +2,19 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:presmaflix/app/bloc/rating/rating_bloc.dart';
-import 'package:presmaflix/app/bloc/watchlist/watchlist_bloc.dart';
-import 'package:presmaflix/app/cubits/watchlist/watchlist_cubit.dart';
-import 'package:presmaflix/app/repositories/firestore/rating/rating_repo.dart';
-import 'package:presmaflix/app/repositories/firestore/watchlist/watchlist_repo.dart';
+import 'package:presmaflix/presentation/bloc/rating/rating_bloc.dart';
+import 'package:presmaflix/presentation/bloc/watchlist/watchlist_bloc.dart';
+import 'package:presmaflix/presentation/cubits/watchlist/watchlist_cubit.dart';
+import 'package:presmaflix/data/repositories/firestore/rating/rating_repo.dart';
+import 'package:presmaflix/data/repositories/firestore/watchlist/watchlist_repo.dart';
 import 'firebase_options.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'app/bloc/blocs.dart';
-import 'app/cubits/cubits.dart';
-import 'app/repositories/firestore/repositories.dart';
-import 'package:presmaflix/routes/routes.dart';
-import 'package:presmaflix/config/themes.dart';
+import 'presentation/bloc/blocs.dart';
+import 'presentation/cubits/cubits.dart';
+import 'data/repositories/firestore/repositories.dart';
+import 'package:presmaflix/presentation/routes/routes.dart';
+import 'package:presmaflix/presentation/config/themes_config.dart';
+// import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,9 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
+  // await initializeDateFormatting("id_ID", null).then(
+  //   (onValue) => runApp(const MyApp()),
+  // );
 }
 
 class MyApp extends StatelessWidget {
@@ -127,6 +131,9 @@ class MyApp extends StatelessWidget {
             create: (context) => ReviewBloc(
               reviewRepository: context.read<ReviewRepository>(),
             ),
+          ),
+          BlocProvider(
+            create: (context) => ViewMoreCubit(),
           ),
         ],
         child: BlocBuilder<AppBloc, AppState>(
